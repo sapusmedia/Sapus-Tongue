@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>MonusSelected1.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2, 338}, {256, 296}}</string>
+			<key>offset</key>
+			<string>{-14, -10}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 21}, {256, 296}}</string>
+			<key>sourceSize</key>
+			<string>{284, 318}</string>
+		</dict>
+		<key>MonusSelected2.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{271, 2}, {284, 318}}</string>
+			<key>offset</key>
+			<string>{0, -0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {284, 318}}</string>
+			<key>sourceSize</key>
+			<string>{284, 318}</string>
+		</dict>
+		<key>MonusUnselected.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{500, 322}, {250, 298}}</string>
+			<key>offset</key>
+			<string>{-17, -10}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 20}, {250, 298}}</string>
+			<key>sourceSize</key>
+			<string>{284, 318}</string>
+		</dict>
+		<key>SapusSelected1.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{557, 2}, {227, 306}}</string>
+			<key>offset</key>
+			<string>{8, -10}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{40, 28}, {227, 306}}</string>
+			<key>sourceSize</key>
+			<string>{291, 342}</string>
+		</dict>
+		<key>SapusSelected2.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2, 2}, {267, 334}}</string>
+			<key>offset</key>
+			<string>{-12, 4}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {267, 334}}</string>
+			<key>sourceSize</key>
+			<string>{291, 342}</string>
+		</dict>
+		<key>SapusUnselected.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{271, 322}, {227, 306}}</string>
+			<key>offset</key>
+			<string>{8, -10}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{40, 28}, {227, 306}}</string>
+			<key>sourceSize</key>
+			<string>{291, 342}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>2</integer>
+		<key>size</key>
+		<string>{1024, 1024}</string>
+	</dict>
+</dict>
+</plist>
