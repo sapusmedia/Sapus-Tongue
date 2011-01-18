@@ -114,8 +114,8 @@
 	float contentScaleFactor = [director contentScaleFactor];
 	
 	if( contentScaleFactor != 1 ) {
-		rect.size.width *= contentScaleFactor;
-		rect.size.height *= contentScaleFactor;
+//		rect.size.width *= contentScaleFactor;
+//		rect.size.height *= contentScaleFactor;
 	}
 	glView.frame = rect;
 }

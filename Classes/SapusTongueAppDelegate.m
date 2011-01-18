@@ -297,6 +297,10 @@
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
 	
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	if( ! [director enableRetinaDisplay:YES] )
+		CCLOG(@"Retina Display Not supported");
+
 	//
 	// VERY IMPORTANT:
 	// If the rotation is going to be controlled by a UIViewController
@@ -309,6 +313,7 @@
 #endif
 	
 	[director setAnimationInterval:1.0/60];
+	
 //	[director setDisplayFPS:YES];
 	
 	// make the OpenGLView a child of the view controller

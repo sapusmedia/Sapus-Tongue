@@ -10,17 +10,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{0, 14}, {147, 171}}</string>
+			<string>{{2, 28}, {292, 342}}</string>
 			<key>spriteOffset</key>
-			<string>{-9, -7}</string>
+			<string>{-17, -14}</string>
 			<key>spriteSize</key>
-			<string>{147, 171}</string>
+			<string>{292, 342}</string>
 			<key>spriteSourceSize</key>
-			<string>{165, 185}</string>
+			<string>{330, 370}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{2, 195}, {147, 171}}</string>
+			<string>{{604, 2}, {292, 342}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -30,17 +30,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{0, 0}, {165, 185}}</string>
+			<string>{{2, 4}, {328, 366}}</string>
 			<key>spriteOffset</key>
-			<string>{0, -0}</string>
+			<string>{1, -2}</string>
 			<key>spriteSize</key>
-			<string>{165, 185}</string>
+			<string>{328, 366}</string>
 			<key>spriteSourceSize</key>
-			<string>{165, 185}</string>
+			<string>{330, 370}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{155, 2}, {165, 185}}</string>
+			<string>{{2, 2}, {328, 366}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -50,17 +50,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{0, 14}, {145, 171}}</string>
+			<string>{{1, 28}, {290, 342}}</string>
 			<key>spriteOffset</key>
-			<string>{-10, -7}</string>
+			<string>{-19, -14}</string>
 			<key>spriteSize</key>
-			<string>{145, 171}</string>
+			<string>{290, 342}</string>
 			<key>spriteSourceSize</key>
-			<string>{165, 185}</string>
+			<string>{330, 370}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{286, 189}, {145, 171}}</string>
+			<string>{{604, 346}, {290, 342}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -70,17 +70,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{25, 17}, {129, 175}}</string>
+			<string>{{79, 0}, {270, 365}}</string>
 			<key>spriteOffset</key>
-			<string>{5, -5}</string>
+			<string>{15, -0}</string>
 			<key>spriteSize</key>
-			<string>{129, 175}</string>
+			<string>{270, 365}</string>
 			<key>spriteSourceSize</key>
-			<string>{169, 199}</string>
+			<string>{398, 365}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{322, 2}, {129, 175}}</string>
+			<string>{{304, 370}, {270, 365}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -90,17 +90,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{3, 2}, {151, 191}}</string>
+			<string>{{48, 0}, {300, 365}}</string>
 			<key>spriteOffset</key>
-			<string>{-6, 2}</string>
+			<string>{-1, -0}</string>
 			<key>spriteSize</key>
-			<string>{151, 191}</string>
+			<string>{300, 365}</string>
 			<key>spriteSourceSize</key>
-			<string>{169, 199}</string>
+			<string>{398, 365}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{2, 2}, {151, 191}}</string>
+			<string>{{2, 370}, {300, 365}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -110,17 +110,17 @@
 			<key>aliases</key>
 			<array/>
 			<key>spriteColorRect</key>
-			<string>{{25, 17}, {129, 175}}</string>
+			<string>{{79, 1}, {270, 363}}</string>
 			<key>spriteOffset</key>
-			<string>{5, -5}</string>
+			<string>{15, -0}</string>
 			<key>spriteSize</key>
-			<string>{129, 175}</string>
+			<string>{270, 363}</string>
 			<key>spriteSourceSize</key>
-			<string>{169, 199}</string>
+			<string>{398, 365}</string>
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{155, 189}, {129, 175}}</string>
+			<string>{{332, 2}, {270, 363}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -131,7 +131,7 @@
 		<key>format</key>
 		<integer>3</integer>
 		<key>size</key>
-		<string>{512, 512}</string>
+		<string>{1024, 1024}</string>
 	</dict>
 </dict>
 </plist>

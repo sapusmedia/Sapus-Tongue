@@ -780,6 +780,8 @@
 		E0285AE01295E24B002E2303 /* Icon-lite-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADB1295E24B002E2303 /* Icon-lite-Small.png */; };
 		E0285AE11295E24B002E2303 /* Icon-lite-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADC1295E24B002E2303 /* Icon-lite-Small@2x.png */; };
 		E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADD1295E24B002E2303 /* Icon-lite@2x.png */; };
+		E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
+		E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
 		E042CD82125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E04BBA28120069B800445B60 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BBA26120069B800445B60 /* RootViewController.m */; };
@@ -954,6 +956,18 @@
 		E054FD5512283A9C00263E36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E054FD5212283A9C00263E36 /* main.m */; };
 		E054FD5612283A9C00263E36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E054FD5212283A9C00263E36 /* main.m */; };
 		E065A764125E21FB00E3226C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E065A763125E21FB00E3226C /* GameKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
+		E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
+		E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
+		E0709BB312E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */; };
+		E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
+		E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
+		E0709BB612E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */; };
+		E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
+		E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
+		E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
+		E0709BE412E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
+		E0709BE512E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
 		E08FB6B8122A024D009077FC /* GameHUDSaveScore.m in Sources */ = {isa = PBXBuildFile; fileRef = E08FB6B7122A024D009077FC /* GameHUDSaveScore.m */; };
 		E08FB6B9122A024D009077FC /* GameHUDSaveScore.m in Sources */ = {isa = PBXBuildFile; fileRef = E08FB6B7122A024D009077FC /* GameHUDSaveScore.m */; };
 		E0B1E8A412638F1500ACD961 /* cpSpaceComponent.c in Sources */ = {isa = PBXBuildFile; fileRef = E0B1E8A112638F1500ACD961 /* cpSpaceComponent.c */; };
@@ -1458,6 +1472,7 @@
 		E0285ADB1295E24B002E2303 /* Icon-lite-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-lite-Small.png"; sourceTree = "<group>"; };
 		E0285ADC1295E24B002E2303 /* Icon-lite-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-lite-Small@2x.png"; sourceTree = "<group>"; };
 		E0285ADD1295E24B002E2303 /* Icon-lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-lite@2x.png"; sourceTree = "<group>"; };
+		E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-buttons-hd.plist"; sourceTree = "<group>"; };
 		E042CD80125E4B21006D81AB /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		E042CD81125E4B21006D81AB /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		E04BBA25120069B800445B60 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -1633,6 +1648,12 @@
 		E054FD5212283A9C00263E36 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Resources/main.m; sourceTree = "<group>"; };
 		E054FD5312283A9C00263E36 /* SapusTongue_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SapusTongue_Prefix.pch; path = Resources/SapusTongue_Prefix.pch; sourceTree = "<group>"; };
 		E065A763125E21FB00E3226C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		E0709BAC12E60F40008D93FF /* Default-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-hd.png"; sourceTree = "<group>"; };
+		E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-buttons-hd.png"; sourceTree = "<group>"; };
+		E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-hd.png"; sourceTree = "<group>"; };
+		E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusMenu-hd.png"; sourceTree = "<group>"; };
+		E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-monus-selection-hd.plist"; sourceTree = "<group>"; };
+		E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-monus-selection-hd.png"; sourceTree = "<group>"; };
 		E08FB6B6122A024D009077FC /* GameHUDSaveScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameHUDSaveScore.h; sourceTree = "<group>"; };
 		E08FB6B7122A024D009077FC /* GameHUDSaveScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameHUDSaveScore.m; sourceTree = "<group>"; };
 		E0B1E8A112638F1500ACD961 /* cpSpaceComponent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpSpaceComponent.c; sourceTree = "<group>"; };
@@ -1893,6 +1914,7 @@
 				501E7D64114042D300BE00B5 /* tileMap */,
 				501E7389114041F800BE00B5 /* Images */,
 				5076EBBD1147CB42007B9F9D /* Default.png */,
+				E0709BAC12E60F40008D93FF /* Default-hd.png */,
 				E02859A912958C96002E2303 /* Default-LandscapeLeft.png */,
 				E02859AA12958C96002E2303 /* Default-Portrait.png */,
 				E0285AD91295E24B002E2303 /* Icon-lite-72.png */,
@@ -1936,13 +1958,18 @@
 				501E749A114041F800BE00B5 /* number_fonts_small.png */,
 				501E76A4114041FA00BE00B5 /* sapus-buttons.plist */,
 				501E76A5114041FA00BE00B5 /* sapus-buttons.png */,
+				E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */,
+				E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */,
 				501E76A7114041FA00BE00B5 /* sapus-monus-selection.plist */,
-				E0285A4A1295D0DF002E2303 /* sapus-monus-selection-ipad.plist */,
 				501E76A8114041FA00BE00B5 /* sapus-monus-selection.png */,
+				E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */,
+				E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */,
+				E0285A4A1295D0DF002E2303 /* sapus-monus-selection-ipad.plist */,
 				E0285A4B1295D0DF002E2303 /* sapus-monus-selection-ipad.png */,
 				501E76AA114041FA00BE00B5 /* SapusBuy.png */,
 				E0285AA41295DBDC002E2303 /* SapusBuy-ipad.png */,
 				501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */,
+				E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */,
 				E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */,
 				501E76AD114041FA00BE00B5 /* SapusCredits.png */,
 				501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */,
@@ -1950,6 +1977,7 @@
 				501E76B2114041FA00BE00B5 /* SapusInstructions.png */,
 				E028595F1295864E002E2303 /* SapusInstructions-ipad.png */,
 				501E76B5114041FA00BE00B5 /* SapusMenu.png */,
+				E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */,
 				E028593D1295848D002E2303 /* SapusMenu-ipad.png */,
 				501E76B6114041FA00BE00B5 /* SapusMenuLite.png */,
 				E0285A6B1295D59E002E2303 /* SapusMenuLite-ipad.png */,
@@ -3252,6 +3280,13 @@
 				E02859AC12958C96002E2303 /* Default-Portrait.png in Resources */,
 				E0285A4C1295D0DF002E2303 /* sapus-monus-selection-ipad.plist in Resources */,
 				E0285A4D1295D0DF002E2303 /* sapus-monus-selection-ipad.png in Resources */,
+				E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */,
+				E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
+				E0709BB312E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */,
+				E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
+				E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
+				E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
+				E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3573,6 +3608,13 @@
 				E0285AE01295E24B002E2303 /* Icon-lite-Small.png in Resources */,
 				E0285AE11295E24B002E2303 /* Icon-lite-Small@2x.png in Resources */,
 				E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */,
+				E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */,
+				E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
+				E0709BB612E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */,
+				E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
+				E0709BE412E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
+				E0709BE512E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
+				E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

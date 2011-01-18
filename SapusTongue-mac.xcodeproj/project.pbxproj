@@ -219,6 +219,8 @@
 		E054FB6A122833A900263E36 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E054FB69122833A900263E36 /* QuartzCore.framework */; };
 		E054FCDD122833DC00263E36 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E054FCDC122833DC00263E36 /* libz.dylib */; };
 		E054FCE61228343400263E36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E054FCE41228343400263E36 /* main.m */; };
+		E0709B7812E6080D008D93FF /* MacWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = E0709B7612E6080D008D93FF /* MacWindow.h */; };
+		E0709B7912E6080D008D93FF /* MacWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = E0709B7712E6080D008D93FF /* MacWindow.m */; };
 		E08FB6CE122A02C1009077FC /* GameHUDSaveScore.m in Sources */ = {isa = PBXBuildFile; fileRef = E08FB6CD122A02C1009077FC /* GameHUDSaveScore.m */; };
 		E0B1E91C1263A15000ACD961 /* cpSpaceComponent.c in Sources */ = {isa = PBXBuildFile; fileRef = E0B1E9191263A15000ACD961 /* cpSpaceComponent.c */; };
 		E0B1E91D1263A15000ACD961 /* cpSpaceQuery.c in Sources */ = {isa = PBXBuildFile; fileRef = E0B1E91A1263A15000ACD961 /* cpSpaceQuery.c */; };
@@ -629,6 +631,8 @@
 		E054FCDC122833DC00263E36 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E054FCE41228343400263E36 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Resources-Mac/main.m"; sourceTree = "<group>"; };
 		E054FCE51228343400263E36 /* SapusTongue_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SapusTongue_Prefix.pch; path = "Resources-Mac/SapusTongue_Prefix.pch"; sourceTree = "<group>"; };
+		E0709B7612E6080D008D93FF /* MacWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacWindow.h; sourceTree = "<group>"; };
+		E0709B7712E6080D008D93FF /* MacWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacWindow.m; sourceTree = "<group>"; };
 		E08FB6CC122A02C1009077FC /* GameHUDSaveScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameHUDSaveScore.h; sourceTree = "<group>"; };
 		E08FB6CD122A02C1009077FC /* GameHUDSaveScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameHUDSaveScore.m; sourceTree = "<group>"; };
 		E0B1E9191263A15000ACD961 /* cpSpaceComponent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpSpaceComponent.c; sourceTree = "<group>"; };
@@ -1427,6 +1431,8 @@
 		E0BBACDF1282DC3B007DB81E /* Mac */ = {
 			isa = PBXGroup;
 			children = (
+				E0709B7612E6080D008D93FF /* MacWindow.h */,
+				E0709B7712E6080D008D93FF /* MacWindow.m */,
 				E0BBACE01282DC3B007DB81E /* CCDirectorMac.h */,
 				E0BBACE11282DC3B007DB81E /* CCDirectorMac.m */,
 				E0BBACE21282DC3B007DB81E /* CCEventDispatcher.h */,
@@ -1589,6 +1595,7 @@
 				E0BBADAD1282DC3B007DB81E /* uthash.h in Headers */,
 				E0BBADAE1282DC3B007DB81E /* utlist.h in Headers */,
 				E0BBADAF1282DC3B007DB81E /* ZipUtils.h in Headers */,
+				E0709B7812E6080D008D93FF /* MacWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1925,6 +1932,7 @@
 				E0BBADAA1282DC3B007DB81E /* TGAlib.m in Sources */,
 				E0BBADAC1282DC3B007DB81E /* TransformUtils.m in Sources */,
 				E0BBADB01282DC3B007DB81E /* ZipUtils.m in Sources */,
+				E0709B7912E6080D008D93FF /* MacWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
