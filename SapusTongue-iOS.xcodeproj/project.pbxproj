@@ -1741,8 +1741,8 @@
 			isa = PBXGroup;
 			children = (
 				5057B30D0F6E9BCE0019C38F /* CHANGELOG */,
-				50D218D10F27828500E8A303 /* cocos2d related */,
 				080E96DDFE201D6D7F000001 /* Classes */,
+				50D218D10F27828500E8A303 /* cocos2d related */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				501E7388114041F800BE00B5 /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
