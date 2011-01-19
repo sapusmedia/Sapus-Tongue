@@ -41,6 +41,7 @@ enum {
 		// TIP: When possible, try to use the sprite frame cache:
 		// TIP: Faster loading times, less memory consuption, and faster rendering in case you use an SpriteSheet.
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-buttons.plist"];		
+		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-monus-ufo-hud.plist"];		
 		
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED

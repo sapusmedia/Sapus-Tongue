@@ -23,25 +23,24 @@
 #endif
 {
 	
-	CCSprite		*sapusSprite;
+	CCSprite		*sapusSprite_;
 	
-	ccTime		flyingDeltaAccum;
-	CCTexture2D	*tongue;
+	ccTime			flyingDeltaAccum_;
+	CCTexture2D		*tongue_;
 	
 	NSURL *mMovieURL;
 	
-	BOOL			newMVPlayer;
+	BOOL			newMVPlayer_;
 	
 	BOOL			isLandscapeLeft_;
 
 
-@public
-	cpSpace			*space;
-	cpConstraint	*joint;
-	cpBody			*pivotBody;
-	cpBody			*sapusBody;
-	cpVect			force;
-	BOOL			jointAdded;
+	cpSpace			*space_;
+	cpConstraint	*joint_;
+	cpBody			*pivotBody_;
+	cpBody			*sapusBody_;
+	cpVect			force_;
+	BOOL			jointAdded_;
 }
 
 +(CCScene*) scene;

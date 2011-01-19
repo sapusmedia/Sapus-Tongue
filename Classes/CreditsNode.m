@@ -16,12 +16,6 @@
 #import "MainMenuNode.h"
 #import "FastGrid.h"
 
-enum {
-	kTagSpriteSheetUFO =1,
-	kTagSpriteSheetSapus =1,
-	
-};
-
 
 @interface CreditsNode ()
 -(void) setupGradient;
@@ -33,14 +27,16 @@ enum {
 
 @implementation CreditsNode
 
-+(id) scene {
++(id) scene
+{
 	CCScene *s = [CCScene node];
 	id node = [CreditsNode node];
 	[s addChild:node];
 	return s;
 }
 
--(id) init {
+-(id) init
+{
 	if( (self = [super init]) ) {
 	
 		nodesToRemove_ = [[NSMutableArray arrayWithCapacity:2] retain];
@@ -92,37 +88,29 @@ enum {
 
 -(void) setupUFO
 {
-	// ufo
-	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-ufo.png"];
-	[self addChild:batch z:-8 tag:kTagSpriteSheetUFO];
-
-	ufo_ = [[CCSprite spriteWithBatchNode:batch rect:CGRectMake(0,0,138,84)] retain];
-	
-	CCAnimation *ufos = [CCAnimation animationWithFrames:nil delay:0.0f];
-	[ufos addFrameWithTexture:batch.texture rect:CGRectMake(0,0,138,84)]; // UFO 1
-	[ufos addFrameWithTexture:batch.texture rect:CGRectMake(0,168,195,87)]; // UFO 2
-	[ufos addFrameWithTexture:batch.texture rect:CGRectMake(176,0,81,160)]; // UFO 3
-	
-	[[CCAnimationCache sharedAnimationCache] addAnimation:ufos name:@"ufos"];
+	ufo_ = [CCSprite spriteWithSpriteFrameName:@"ufo_00.png"];
+	[ufo_ retain];
+	[self addChild:ufo_ z:-8];
 	
 	ufo_.visible = NO;
 	ufo_.scale = 0.4f;
 	ufo_.position = ccp(winSize_.width+60,260);
-	[batch addChild:ufo_];
 	
 	// ufo trigger
 	[self schedule:@selector(triggerUFO:) interval:10];
 	[self scheduleUpdate];
 }
 
--(void) setupTree {
+-(void) setupTree
+{
 	CCSprite *tree = [CCSprite spriteWithFile:@"SapusCreditsBackground.png"];
 	[self addChild:tree z:-5];
 	tree.anchorPoint = CGPointZero;
 }
 
 
--(void) setupCredits: (ccTime) dt {
+-(void) setupCredits: (ccTime) dt
+{
 	[self unschedule:_cmd];
 
 	CCSprite *credits = [CCSprite spriteWithFile:@"SapusCredits.png"];
@@ -139,36 +127,35 @@ enum {
 	
 	[credits runAction: [CCRepeatForever actionWithAction:action]];
 	
-	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-sapus.png"];
-	[credits addChild:batch z:1 tag:kTagSpriteSheetSapus];
-
 	// animated sapus
-	CCSprite *sapus = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(64*2, 0, 64, 64)];
-	CCAnimation *animFly = [CCAnimation animationWithFrames:nil delay:0.14f];
-	CCTexture2D *texture = [batch texture];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*0, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*1, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*2, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*3, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*0, 64*1, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*3, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*2, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect: CGRectMake(64*1, 64*0, 64, 64)];
-	
-	[batch addChild:sapus];
+	CCSprite *sapus = [CCSprite spriteWithSpriteFrameName:@"sapus_01.png"];
+	[credits addChild:sapus z:1];
+
+	CCSpriteFrameCache *frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+	NSArray *array = [NSArray arrayWithObjects:
+					 [frameCache spriteFrameByName:@"sapus_00.png"],
+					 [frameCache spriteFrameByName:@"sapus_01.png"],
+					 [frameCache spriteFrameByName:@"sapus_02.png"],
+					 [frameCache spriteFrameByName:@"sapus_03.png"],
+					 [frameCache spriteFrameByName:@"sapus_04.png"],
+					 [frameCache spriteFrameByName:@"sapus_03.png"],
+					 [frameCache spriteFrameByName:@"sapus_02.png"],
+					 [frameCache spriteFrameByName:@"sapus_01.png"],
+					 nil];
+					 
+	CCAnimation *animFly = [CCAnimation animationWithFrames:array delay:0.14f];
 	sapus.position = ccp(240,50+12);
 	
 	id animate = [CCAnimate actionWithAnimation: animFly];
 	[sapus runAction: [CCRepeatForever actionWithAction:animate]];
 }
 
--(void) delayJump:(ccTime) dt {
+-(void) delayJump:(ccTime) dt
+{
 	[self unschedule:_cmd];
 	
-	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-sapus.png"];
-	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(64*0, 64*1, 64, 64)];
-	[batch addChild:sprite];
-	[self addChild: batch z:-2];
+	CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:@"sapus_01.png"];
+	[self addChild:sprite z:-2];
 	sprite.position = ccp(30,20);
 	
 	int jumps = (winSize_.width-45)/108;
@@ -184,8 +171,8 @@ enum {
 }
 
 
--(void) delayMeteor: (ccTime) dt {
-
+-(void) delayMeteor: (ccTime) dt
+{
 	CCParticleMeteor *meteor = [[CCParticleMeteor alloc] initWithTotalParticles:250];
 	// custom meteor
 	meteor.startSize = 30.0f;
@@ -207,8 +194,8 @@ enum {
 	[meteor runAction:action];
 }
 
--(void) update:(ccTime) dt {
-	
+-(void) update:(ccTime) dt
+{
 	for(id node in nodesToRemove_) {
 		[self removeChild:node cleanup:YES];
 	}
@@ -225,23 +212,28 @@ enum {
 	ufo_.position = v;
 }
 
--(void) triggerUFO:(ccTime) dt {
+-(void) triggerUFO:(ccTime) dt
+{
 	float x = winSize_.width + 100 + CCRANDOM_0_1() * 80;
 	ufoY_ = winSize_.height/2 + CCRANDOM_0_1() * 220;
 	ufo_.position = ccp(x,ufoY_);
 	ufo_.visible = ~ufo_.visible;
 	ufo_.scale = 0.2f + CCRANDOM_0_1()/2.0f;
 	
-	[ufo_ setDisplayFrameWithAnimationName:@"ufos" index:CCRANDOM_0_1()*3.0f];
+	int index = CCRANDOM_0_1()*3.0f;
+	NSString *frameName = [NSString stringWithFormat:@"ufo_%02d.png", index];
+	[ufo_ setDisplayFrame: [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName: frameName]];
 }
 
 #pragma mark CreditsNode - callbacks
 
--(void) removeNodeCallback:(id) node {
+-(void) removeNodeCallback:(id) node
+{
 	[nodesToRemove_ addObject:node];
 }
 
--(void) menuCallback:(id) sender {
+-(void) menuCallback:(id) sender
+{
 	ufo_.visible = NO;
     [[CCDirector sharedDirector] replaceScene: [CCTransitionTurnOffTiles transitionWithDuration:1.0f scene:[MainMenuNode scene] ]];
 

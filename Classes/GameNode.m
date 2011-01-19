@@ -300,14 +300,10 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 +(NSArray*) textureNames
 {
 	return [NSArray arrayWithObjects:
-			@"tree1.png",
 			@"fixed-tiles_8x8.png",
-			@"sprite-sheet-ufo.png",
-			@"fly.png", @"branch.png",
+			@"sapus-monus-ufo-hud.png",
 			@"MonusTail.png",
 			@"SapusTongue.png",
-			@"sprite-sheet-monus.png",
-			@"sprite-sheet-sapus.png",
 			@"mountains1.png",
 			@"mountains2.png",			
 			nil];
@@ -358,19 +354,18 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	tree.anchorPoint = CGPointZero;
 	[self addChild:tree z:-1];
 
-	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-ufo.png"];
-	[self addChild:batch z:-2];
-	
 	// ufos
-	CCSprite *ufo1 = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(0,0,138,84)];
+	CCSprite *ufo1 = [CCSprite spriteWithSpriteFrameName:@"ufo_00.png"];
+	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithTexture:[ufo1 texture] capacity:3];
+	[self addChild:batch z:-2];
 	[batch addChild:ufo1];
 	ufo1.position = ccp(1400,2000);	
 		
-	CCSprite *ufo2 = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(0,168,195,87)];
+	CCSprite *ufo2 = [CCSprite spriteWithSpriteFrameName:@"ufo_01.png"];
 	[batch addChild:ufo2];
 	ufo2.position = ccp(900,2100);
 
-	CCSprite *ufo3 = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(176,0,81,160)];
+	CCSprite *ufo3 = [CCSprite spriteWithSpriteFrameName:@"ufo_02.png"];
 	[batch addChild:ufo3];
 	ufo3.position = ccp(400,2100);
 	
@@ -429,9 +424,9 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// pivot point. fly
 	CCSprite *fly;
 	if( [SelectCharNode selectedChar] == 0 )
-		fly = [CCSprite spriteWithFile:@"fly.png"];
+		fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
 	else {
-		fly = [CCSprite spriteWithFile:@"branch.png"];
+		fly = [CCSprite spriteWithSpriteFrameName:@"branch.png"];
 		CGSize s = [fly contentSize];
 		fly.anchorPoint = ccp(19/s.width,30/s.height);
 	}
@@ -493,64 +488,86 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 -(void) setupSapus
 {
-	// Using an AtlasSprite to render all the frames of the Monus/Sapus
-	int sapusY = 0;
-	CCSpriteBatchNode *batch = nil;
+	CCSpriteFrameCache *frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+	CCAnimationCache *animCache = [CCAnimationCache sharedAnimationCache];
+
+	CCSpriteFrame *rollFrame = nil;
 	if( [SelectCharNode selectedChar] == 0 ) {
-		batch = [[CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-sapus.png"] retain];
-		sapusSprite_ = [[CCSprite spriteWithBatchNode:batch rect:CGRectMake(64*2, 64*0, 64, 64)] retain];
-		sapusY = 0;
+		sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
+		rollFrame = [frameCache spriteFrameByName:@"sapus_02.png"];
+		
 	} else {
-		batch = [[CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-monus.png"] retain];
-		sapusSprite_ = [[CCSprite spriteWithBatchNode:batch rect:CGRectMake(64*2, 64*0, 64, 64)] retain];
-		sapusY = 2;
+		sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"monus_01.png"] retain];
+		rollFrame = [frameCache spriteFrameByName:@"monus_12.png"];
 	}
 
-	[batch addChild:sapusSprite_];
+	[self addChild:sapusSprite_ z:-1];
 
 	CGSize s = [sapusSprite_ contentSize];
 	CGPoint ta = sapusSprite_.anchorPoint;
 	ta.y = kSapusOffsetY / s.height;
 	sapusSprite_.anchorPoint = ta;
 
-	CCAnimationCache *animCache = [CCAnimationCache sharedAnimationCache];
-	// Roll Frame
-	CCAnimation *animRoll = [CCAnimation animationWithFrames:nil delay:0.2f];
-	[animRoll addFrameWithTexture:batch.texture rect:CGRectMake(64*2, 64*sapusY, 64, 64)];
+
+	// Rolling Animation
+	NSArray *rollArray = [NSArray arrayWithObjects: rollFrame, nil];
+														  
+	CCAnimation *animRoll = [CCAnimation animationWithFrames:rollArray delay:0.2f];
 	[animCache addAnimation:animRoll name:@"roll"];
 
-	CCAnimation *animFly = [CCAnimation animationWithFrames:nil delay:0.2f];
-	CCTexture2D *texture = [batch texture];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*0, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*1, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*2, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*3, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*0, 64*1, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*3, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*2, 64*0, 64, 64)];
-	[animFly addFrameWithTexture:texture rect:CGRectMake(64*1, 64*0, 64, 64)];
+	
+	// Flying Animation
+	NSArray *flyArray = nil;
+	
+	if( [SelectCharNode selectedChar] == 0 ) {
+		flyArray = [NSArray arrayWithObjects:
+					[frameCache spriteFrameByName:@"sapus_00.png"],
+					[frameCache spriteFrameByName:@"sapus_01.png"],
+					[frameCache spriteFrameByName:@"sapus_02.png"],
+					[frameCache spriteFrameByName:@"sapus_03.png"],
+					[frameCache spriteFrameByName:@"sapus_04.png"],
+					[frameCache spriteFrameByName:@"sapus_03.png"],
+					[frameCache spriteFrameByName:@"sapus_02.png"],
+					[frameCache spriteFrameByName:@"sapus_01.png"],
+					nil];
+	} else {
+		flyArray = [NSArray arrayWithObjects:
+					[frameCache spriteFrameByName:@"monus_00.png"],
+					[frameCache spriteFrameByName:@"monus_01.png"],
+					[frameCache spriteFrameByName:@"monus_02.png"],
+					[frameCache spriteFrameByName:@"monus_03.png"],
+					[frameCache spriteFrameByName:@"monus_04.png"],
+					[frameCache spriteFrameByName:@"monus_03.png"],
+					[frameCache spriteFrameByName:@"monus_02.png"],
+					[frameCache spriteFrameByName:@"monus_01.png"],
+					nil];
+	}
 
+	CCAnimation *animFly = [CCAnimation animationWithFrames:flyArray delay:0.2f];
 	[animCache addAnimation:animFly name:@"fly"];
 	
+	// Flying NoTail Aniimation (only valid for Monus)
 	// monus
 	if( [SelectCharNode selectedChar] == 1 ) {
-		CCAnimation *animNoTail = [CCAnimation animationWithFrames:nil delay:0.2f];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*0, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*1, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*2, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*3, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*0, 64*3, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*3, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*2, 64*2, 64, 64)];
-		[animNoTail addFrameWithTexture:texture rect:CGRectMake(64*1, 64*2, 64, 64)];
-
+		NSArray *noTailArray = [NSArray arrayWithObjects:
+								[frameCache spriteFrameByName:@"monus_10.png"],
+								[frameCache spriteFrameByName:@"monus_11.png"],
+								[frameCache spriteFrameByName:@"monus_12.png"],
+								[frameCache spriteFrameByName:@"monus_13.png"],
+								[frameCache spriteFrameByName:@"monus_14.png"],
+								[frameCache spriteFrameByName:@"monus_13.png"],
+								[frameCache spriteFrameByName:@"monus_12.png"],
+								[frameCache spriteFrameByName:@"monus_11.png"],
+					nil];
+		
+		CCAnimation *animNoTail = [CCAnimation animationWithFrames:noTailArray delay:0.2f];
 		[animCache addAnimation:animNoTail name:@"notail"];
 	}
 
-	
-	[self addChild:batch z:-1];
-	
-	
+	//
+	// Physics
+	//
+
 	// Sapus / Monus is simulated using 5 circles.
 	// (imagine a pentagon, and with a circle in each of it's vertices)
 	//

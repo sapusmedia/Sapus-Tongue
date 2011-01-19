@@ -62,9 +62,6 @@
 		501224DF111892D200457E98 /* cpSpaceHash.c in Sources */ = {isa = PBXBuildFile; fileRef = 501224AC111892D100457E98 /* cpSpaceHash.c */; };
 		501224E0111892D200457E98 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 501224AD111892D100457E98 /* cpVect.c */; };
 		501224E1111892D200457E98 /* prime.h in Headers */ = {isa = PBXBuildFile; fileRef = 501224AE111892D100457E98 /* prime.h */; };
-		501E79FB114041FB00BE00B5 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738A114041F800BE00B5 /* arrow.png */; };
-		501E79FC114041FB00BE00B5 /* branch.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738B114041F800BE00B5 /* branch.png */; };
-		501E79FE114041FB00BE00B5 /* circle_angle.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738D114041F800BE00B5 /* circle_angle.png */; };
 		501E7A01114041FB00BE00B5 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7390114041F800BE00B5 /* fire.png */; };
 		501E7A02114041FB00BE00B5 /* ad.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7392114041F800BE00B5 /* ad.png */; };
 		501E7A03114041FB00BE00B5 /* ae.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7393114041F800BE00B5 /* ae.png */; };
@@ -309,11 +306,9 @@
 		501E7AF2114041FB00BE00B5 /* zm.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7482114041F800BE00B5 /* zm.png */; };
 		501E7AF3114041FB00BE00B5 /* zw.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7483114041F800BE00B5 /* zw.png */; };
 		501E7AF4114041FB00BE00B5 /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7484114041F800BE00B5 /* floor.png */; };
-		501E7AF5114041FB00BE00B5 /* fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7485114041F800BE00B5 /* fly.png */; };
 		501E7AF6114041FB00BE00B5 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7486114041F800BE00B5 /* fps_images.png */; };
 		501E7AFC114041FB00BE00B5 /* loading_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E748C114041F800BE00B5 /* loading_bar.png */; };
 		501E7B00114041FB00BE00B5 /* MonusHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7490114041F800BE00B5 /* MonusHead.png */; };
-		501E7B01114041FB00BE00B5 /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7491114041F800BE00B5 /* MonusTail.png */; };
 		501E7B03114041FB00BE00B5 /* mountains1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7493114041F800BE00B5 /* mountains1.png */; };
 		501E7B05114041FB00BE00B5 /* mountains2.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7495114041F800BE00B5 /* mountains2.png */; };
 		501E7B08114041FB00BE00B5 /* number_fonts.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7498114041F800BE00B5 /* number_fonts.png */; };
@@ -331,12 +326,6 @@
 		501E7D1F114041FB00BE00B5 /* SapusMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B5114041FA00BE00B5 /* SapusMenu.png */; };
 		501E7D21114041FB00BE00B5 /* SapusScores.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B7114041FA00BE00B5 /* SapusScores.png */; };
 		501E7D23114041FB00BE00B5 /* SapusTongue.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B9114041FA00BE00B5 /* SapusTongue.png */; };
-		501E7D24114041FB00BE00B5 /* score.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BA114041FA00BE00B5 /* score.png */; };
-		501E7D27114041FB00BE00B5 /* speed_angle.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BD114041FA00BE00B5 /* speed_angle.png */; };
-		501E7D29114041FB00BE00B5 /* sprite-sheet-monus.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BF114041FA00BE00B5 /* sprite-sheet-monus.png */; };
-		501E7D2A114041FB00BE00B5 /* sprite-sheet-sapus.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C0114041FA00BE00B5 /* sprite-sheet-sapus.png */; };
-		501E7D2B114041FB00BE00B5 /* sprite-sheet-ufo.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C1114041FA00BE00B5 /* sprite-sheet-ufo.png */; };
-		501E7D2C114041FB00BE00B5 /* sprite1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C2114041FA00BE00B5 /* sprite1.png */; };
 		501E7D2F114041FB00BE00B5 /* tree1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C5114041FA00BE00B5 /* tree1.png */; };
 		50335D300EB12CE400A42517 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50335D2F0EB12CE400A42517 /* MediaPlayer.framework */; };
 		504692B20E9FDA8200CC2FF4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 504692B10E9FDA8200CC2FF4 /* libsqlite3.dylib */; };
@@ -415,9 +404,6 @@
 		50795ECC114046BC003C55B1 /* snd-select-sapus.caf in Resources */ = {isa = PBXBuildFile; fileRef = 50795E9C114046BC003C55B1 /* snd-select-sapus.caf */; };
 		50795ECD114046BC003C55B1 /* snd-select-sapus_burp.caf in Resources */ = {isa = PBXBuildFile; fileRef = 50795E9D114046BC003C55B1 /* snd-select-sapus_burp.caf */; };
 		50795ECE114046BC003C55B1 /* snd-tap-button.caf in Resources */ = {isa = PBXBuildFile; fileRef = 50795E9E114046BC003C55B1 /* snd-tap-button.caf */; };
-		50795ED511404807003C55B1 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738A114041F800BE00B5 /* arrow.png */; };
-		50795ED611404807003C55B1 /* branch.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738B114041F800BE00B5 /* branch.png */; };
-		50795ED711404807003C55B1 /* circle_angle.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E738D114041F800BE00B5 /* circle_angle.png */; };
 		50795ED911404807003C55B1 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7390114041F800BE00B5 /* fire.png */; };
 		50795EDA11404807003C55B1 /* ad.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7392114041F800BE00B5 /* ad.png */; };
 		50795EDB11404807003C55B1 /* ae.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7393114041F800BE00B5 /* ae.png */; };
@@ -662,11 +648,9 @@
 		50795FCA11404807003C55B1 /* zm.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7482114041F800BE00B5 /* zm.png */; };
 		50795FCB11404807003C55B1 /* zw.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7483114041F800BE00B5 /* zw.png */; };
 		50795FCC11404807003C55B1 /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7484114041F800BE00B5 /* floor.png */; };
-		50795FCD11404807003C55B1 /* fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7485114041F800BE00B5 /* fly.png */; };
 		50795FCE11404807003C55B1 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7486114041F800BE00B5 /* fps_images.png */; };
 		50795FD111404807003C55B1 /* loading_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E748C114041F800BE00B5 /* loading_bar.png */; };
 		50795FD211404807003C55B1 /* MonusHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7490114041F800BE00B5 /* MonusHead.png */; };
-		50795FD311404807003C55B1 /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7491114041F800BE00B5 /* MonusTail.png */; };
 		50795FD411404807003C55B1 /* mountains1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7493114041F800BE00B5 /* mountains1.png */; };
 		50795FD511404807003C55B1 /* mountains2.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7495114041F800BE00B5 /* mountains2.png */; };
 		50795FD611404807003C55B1 /* number_fonts.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E7498114041F800BE00B5 /* number_fonts.png */; };
@@ -684,12 +668,6 @@
 		50795FE411404807003C55B1 /* SapusMenuLite.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B6114041FA00BE00B5 /* SapusMenuLite.png */; };
 		50795FE511404807003C55B1 /* SapusScores.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B7114041FA00BE00B5 /* SapusScores.png */; };
 		50795FE611404807003C55B1 /* SapusTongue.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B9114041FA00BE00B5 /* SapusTongue.png */; };
-		50795FE711404807003C55B1 /* score.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BA114041FA00BE00B5 /* score.png */; };
-		50795FE811404807003C55B1 /* speed_angle.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BD114041FA00BE00B5 /* speed_angle.png */; };
-		50795FE911404807003C55B1 /* sprite-sheet-monus.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76BF114041FA00BE00B5 /* sprite-sheet-monus.png */; };
-		50795FEA11404807003C55B1 /* sprite-sheet-sapus.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C0114041FA00BE00B5 /* sprite-sheet-sapus.png */; };
-		50795FEB11404807003C55B1 /* sprite-sheet-ufo.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C1114041FA00BE00B5 /* sprite-sheet-ufo.png */; };
-		50795FEC11404807003C55B1 /* sprite1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C2114041FA00BE00B5 /* sprite1.png */; };
 		50795FED11404807003C55B1 /* tree1.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76C5114041FA00BE00B5 /* tree1.png */; };
 		508A46DF10B189DD004B9CC3 /* FontLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 508A462B10B189DD004B9CC3 /* FontLabel.h */; };
 		508A46E010B189DD004B9CC3 /* FontLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 508A462C10B189DD004B9CC3 /* FontLabel.m */; };
@@ -782,6 +760,20 @@
 		E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADD1295E24B002E2303 /* Icon-lite@2x.png */; };
 		E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
 		E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
+		E029200812E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */; };
+		E029200912E63DF9009CD87B /* tilemap-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E029200712E63DF9009CD87B /* tilemap-hd.tmx */; };
+		E029200A12E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */; };
+		E029200B12E63DF9009CD87B /* tilemap-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E029200712E63DF9009CD87B /* tilemap-hd.tmx */; };
+		E029202512E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */ = {isa = PBXBuildFile; fileRef = E029202312E64811009CD87B /* sapus-monus-ufo-hud.plist */; };
+		E029202612E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */ = {isa = PBXBuildFile; fileRef = E029202412E64811009CD87B /* sapus-monus-ufo-hud.png */; };
+		E029202712E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */ = {isa = PBXBuildFile; fileRef = E029202312E64811009CD87B /* sapus-monus-ufo-hud.plist */; };
+		E029202812E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */ = {isa = PBXBuildFile; fileRef = E029202412E64811009CD87B /* sapus-monus-ufo-hud.png */; };
+		E029204312E64A2D009CD87B /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = E029204212E64A2D009CD87B /* MonusTail.png */; };
+		E029204412E64A2D009CD87B /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = E029204212E64A2D009CD87B /* MonusTail.png */; };
+		E02920F812E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
+		E02920F912E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
+		E02920FA12E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
+		E02920FB12E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
 		E042CD82125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E04BBA28120069B800445B60 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BBA26120069B800445B60 /* RootViewController.m */; };
@@ -959,10 +951,8 @@
 		E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
 		E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
 		E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
-		E0709BB312E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */; };
 		E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
 		E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
-		E0709BB612E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */; };
 		E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
 		E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
 		E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
@@ -1065,9 +1055,6 @@
 		501224AC111892D100457E98 /* cpSpaceHash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpSpaceHash.c; sourceTree = "<group>"; };
 		501224AD111892D100457E98 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		501224AE111892D100457E98 /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
-		501E738A114041F800BE00B5 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
-		501E738B114041F800BE00B5 /* branch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = branch.png; sourceTree = "<group>"; };
-		501E738D114041F800BE00B5 /* circle_angle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_angle.png; sourceTree = "<group>"; };
 		501E7390114041F800BE00B5 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		501E7392114041F800BE00B5 /* ad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ad.png; sourceTree = "<group>"; };
 		501E7393114041F800BE00B5 /* ae.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ae.png; sourceTree = "<group>"; };
@@ -1312,11 +1299,9 @@
 		501E7482114041F800BE00B5 /* zm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zm.png; sourceTree = "<group>"; };
 		501E7483114041F800BE00B5 /* zw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zw.png; sourceTree = "<group>"; };
 		501E7484114041F800BE00B5 /* floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floor.png; sourceTree = "<group>"; };
-		501E7485114041F800BE00B5 /* fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fly.png; sourceTree = "<group>"; };
 		501E7486114041F800BE00B5 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
 		501E748C114041F800BE00B5 /* loading_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_bar.png; sourceTree = "<group>"; };
 		501E7490114041F800BE00B5 /* MonusHead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MonusHead.png; sourceTree = "<group>"; };
-		501E7491114041F800BE00B5 /* MonusTail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MonusTail.png; sourceTree = "<group>"; };
 		501E7493114041F800BE00B5 /* mountains1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mountains1.png; sourceTree = "<group>"; };
 		501E7495114041F800BE00B5 /* mountains2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mountains2.png; sourceTree = "<group>"; };
 		501E7498114041F800BE00B5 /* number_fonts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = number_fonts.png; sourceTree = "<group>"; };
@@ -1335,12 +1320,6 @@
 		501E76B6114041FA00BE00B5 /* SapusMenuLite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusMenuLite.png; sourceTree = "<group>"; };
 		501E76B7114041FA00BE00B5 /* SapusScores.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusScores.png; sourceTree = "<group>"; };
 		501E76B9114041FA00BE00B5 /* SapusTongue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusTongue.png; sourceTree = "<group>"; };
-		501E76BA114041FA00BE00B5 /* score.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = score.png; sourceTree = "<group>"; };
-		501E76BD114041FA00BE00B5 /* speed_angle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speed_angle.png; sourceTree = "<group>"; };
-		501E76BF114041FA00BE00B5 /* sprite-sheet-monus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sprite-sheet-monus.png"; sourceTree = "<group>"; };
-		501E76C0114041FA00BE00B5 /* sprite-sheet-sapus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sprite-sheet-sapus.png"; sourceTree = "<group>"; };
-		501E76C1114041FA00BE00B5 /* sprite-sheet-ufo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sprite-sheet-ufo.png"; sourceTree = "<group>"; };
-		501E76C2114041FA00BE00B5 /* sprite1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sprite1.png; sourceTree = "<group>"; };
 		501E76C5114041FA00BE00B5 /* tree1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tree1.png; sourceTree = "<group>"; };
 		50335D2F0EB12CE400A42517 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		504692B10E9FDA8200CC2FF4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -1473,6 +1452,13 @@
 		E0285ADC1295E24B002E2303 /* Icon-lite-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-lite-Small@2x.png"; sourceTree = "<group>"; };
 		E0285ADD1295E24B002E2303 /* Icon-lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-lite@2x.png"; sourceTree = "<group>"; };
 		E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-buttons-hd.plist"; sourceTree = "<group>"; };
+		E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fixed-tiles_8x8-hd.png"; sourceTree = "<group>"; };
+		E029200712E63DF9009CD87B /* tilemap-hd.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "tilemap-hd.tmx"; sourceTree = "<group>"; };
+		E029202312E64811009CD87B /* sapus-monus-ufo-hud.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-monus-ufo-hud.plist"; sourceTree = "<group>"; };
+		E029202412E64811009CD87B /* sapus-monus-ufo-hud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-monus-ufo-hud.png"; sourceTree = "<group>"; };
+		E029204212E64A2D009CD87B /* MonusTail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MonusTail.png; sourceTree = "<group>"; };
+		E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-monus-ufo-hud-hd.plist"; sourceTree = "<group>"; };
+		E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-monus-ufo-hud-hd.png"; sourceTree = "<group>"; };
 		E042CD80125E4B21006D81AB /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		E042CD81125E4B21006D81AB /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		E04BBA25120069B800445B60 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -1650,7 +1636,6 @@
 		E065A763125E21FB00E3226C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		E0709BAC12E60F40008D93FF /* Default-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-hd.png"; sourceTree = "<group>"; };
 		E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-buttons-hd.png"; sourceTree = "<group>"; };
-		E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-hd.png"; sourceTree = "<group>"; };
 		E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusMenu-hd.png"; sourceTree = "<group>"; };
 		E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "sapus-monus-selection-hd.plist"; sourceTree = "<group>"; };
 		E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sapus-monus-selection-hd.png"; sourceTree = "<group>"; };
@@ -1942,16 +1927,11 @@
 			isa = PBXGroup;
 			children = (
 				501E7391114041F800BE00B5 /* flags */,
-				501E738A114041F800BE00B5 /* arrow.png */,
-				501E738B114041F800BE00B5 /* branch.png */,
-				501E738D114041F800BE00B5 /* circle_angle.png */,
 				501E7390114041F800BE00B5 /* fire.png */,
 				501E7484114041F800BE00B5 /* floor.png */,
-				501E7485114041F800BE00B5 /* fly.png */,
 				501E7486114041F800BE00B5 /* fps_images.png */,
 				501E748C114041F800BE00B5 /* loading_bar.png */,
 				501E7490114041F800BE00B5 /* MonusHead.png */,
-				501E7491114041F800BE00B5 /* MonusTail.png */,
 				501E7493114041F800BE00B5 /* mountains1.png */,
 				501E7495114041F800BE00B5 /* mountains2.png */,
 				501E7498114041F800BE00B5 /* number_fonts.png */,
@@ -1966,10 +1946,13 @@
 				E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */,
 				E0285A4A1295D0DF002E2303 /* sapus-monus-selection-ipad.plist */,
 				E0285A4B1295D0DF002E2303 /* sapus-monus-selection-ipad.png */,
+				E029202312E64811009CD87B /* sapus-monus-ufo-hud.plist */,
+				E029202412E64811009CD87B /* sapus-monus-ufo-hud.png */,
+				E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */,
+				E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */,
 				501E76AA114041FA00BE00B5 /* SapusBuy.png */,
 				E0285AA41295DBDC002E2303 /* SapusBuy-ipad.png */,
 				501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */,
-				E0709BB012E60F7E008D93FF /* SapusChoosePlayer-hd.png */,
 				E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */,
 				501E76AD114041FA00BE00B5 /* SapusCredits.png */,
 				501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */,
@@ -1984,12 +1967,7 @@
 				501E76B7114041FA00BE00B5 /* SapusScores.png */,
 				E028595212958582002E2303 /* SapusScores-ipad.png */,
 				501E76B9114041FA00BE00B5 /* SapusTongue.png */,
-				501E76BA114041FA00BE00B5 /* score.png */,
-				501E76BD114041FA00BE00B5 /* speed_angle.png */,
-				501E76BF114041FA00BE00B5 /* sprite-sheet-monus.png */,
-				501E76C0114041FA00BE00B5 /* sprite-sheet-sapus.png */,
-				501E76C1114041FA00BE00B5 /* sprite-sheet-ufo.png */,
-				501E76C2114041FA00BE00B5 /* sprite1.png */,
+				E029204212E64A2D009CD87B /* MonusTail.png */,
 				501E76C5114041FA00BE00B5 /* tree1.png */,
 				E0B1EE041264A60600ACD961 /* trophy.png */,
 			);
@@ -2248,8 +2226,10 @@
 		501E7D64114042D300BE00B5 /* tileMap */ = {
 			isa = PBXGroup;
 			children = (
-				50C8DA1A11AD825E0081BB67 /* fixed-tiles_8x8.png */,
 				50F4338B11AD51BB00A23662 /* tilemap.tmx */,
+				50C8DA1A11AD825E0081BB67 /* fixed-tiles_8x8.png */,
+				E029200712E63DF9009CD87B /* tilemap-hd.tmx */,
+				E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */,
 			);
 			path = tileMap;
 			sourceTree = "<group>";
@@ -2967,9 +2947,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				501E79FB114041FB00BE00B5 /* arrow.png in Resources */,
-				501E79FC114041FB00BE00B5 /* branch.png in Resources */,
-				501E79FE114041FB00BE00B5 /* circle_angle.png in Resources */,
 				501E7A01114041FB00BE00B5 /* fire.png in Resources */,
 				501E7A02114041FB00BE00B5 /* ad.png in Resources */,
 				501E7A03114041FB00BE00B5 /* ae.png in Resources */,
@@ -3214,11 +3191,9 @@
 				501E7AF2114041FB00BE00B5 /* zm.png in Resources */,
 				501E7AF3114041FB00BE00B5 /* zw.png in Resources */,
 				501E7AF4114041FB00BE00B5 /* floor.png in Resources */,
-				501E7AF5114041FB00BE00B5 /* fly.png in Resources */,
 				501E7AF6114041FB00BE00B5 /* fps_images.png in Resources */,
 				501E7AFC114041FB00BE00B5 /* loading_bar.png in Resources */,
 				501E7B00114041FB00BE00B5 /* MonusHead.png in Resources */,
-				501E7B01114041FB00BE00B5 /* MonusTail.png in Resources */,
 				501E7B03114041FB00BE00B5 /* mountains1.png in Resources */,
 				501E7B05114041FB00BE00B5 /* mountains2.png in Resources */,
 				501E7B08114041FB00BE00B5 /* number_fonts.png in Resources */,
@@ -3236,12 +3211,6 @@
 				501E7D1F114041FB00BE00B5 /* SapusMenu.png in Resources */,
 				501E7D21114041FB00BE00B5 /* SapusScores.png in Resources */,
 				501E7D23114041FB00BE00B5 /* SapusTongue.png in Resources */,
-				501E7D24114041FB00BE00B5 /* score.png in Resources */,
-				501E7D27114041FB00BE00B5 /* speed_angle.png in Resources */,
-				501E7D29114041FB00BE00B5 /* sprite-sheet-monus.png in Resources */,
-				501E7D2A114041FB00BE00B5 /* sprite-sheet-sapus.png in Resources */,
-				501E7D2B114041FB00BE00B5 /* sprite-sheet-ufo.png in Resources */,
-				501E7D2C114041FB00BE00B5 /* sprite1.png in Resources */,
 				501E7D2F114041FB00BE00B5 /* tree1.png in Resources */,
 				50795EBF114046BC003C55B1 /* music-background.mp3 in Resources */,
 				50795EC0114046BC003C55B1 /* snd-buy-ohno.caf in Resources */,
@@ -3282,11 +3251,17 @@
 				E0285A4D1295D0DF002E2303 /* sapus-monus-selection-ipad.png in Resources */,
 				E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */,
 				E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
-				E0709BB312E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */,
 				E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
 				E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
 				E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
 				E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
+				E029200812E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */,
+				E029200912E63DF9009CD87B /* tilemap-hd.tmx in Resources */,
+				E029202512E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */,
+				E029202612E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */,
+				E029204312E64A2D009CD87B /* MonusTail.png in Resources */,
+				E02920F812E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
+				E02920F912E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3310,9 +3285,6 @@
 				50795EBC114046BC003C55B1 /* snd-select-sapus.caf in Resources */,
 				50795EBD114046BC003C55B1 /* snd-select-sapus_burp.caf in Resources */,
 				50795EBE114046BC003C55B1 /* snd-tap-button.caf in Resources */,
-				50795ED511404807003C55B1 /* arrow.png in Resources */,
-				50795ED611404807003C55B1 /* branch.png in Resources */,
-				50795ED711404807003C55B1 /* circle_angle.png in Resources */,
 				50795ED911404807003C55B1 /* fire.png in Resources */,
 				50795EDA11404807003C55B1 /* ad.png in Resources */,
 				50795EDB11404807003C55B1 /* ae.png in Resources */,
@@ -3557,11 +3529,9 @@
 				50795FCA11404807003C55B1 /* zm.png in Resources */,
 				50795FCB11404807003C55B1 /* zw.png in Resources */,
 				50795FCC11404807003C55B1 /* floor.png in Resources */,
-				50795FCD11404807003C55B1 /* fly.png in Resources */,
 				50795FCE11404807003C55B1 /* fps_images.png in Resources */,
 				50795FD111404807003C55B1 /* loading_bar.png in Resources */,
 				50795FD211404807003C55B1 /* MonusHead.png in Resources */,
-				50795FD311404807003C55B1 /* MonusTail.png in Resources */,
 				50795FD411404807003C55B1 /* mountains1.png in Resources */,
 				50795FD511404807003C55B1 /* mountains2.png in Resources */,
 				50795FD611404807003C55B1 /* number_fonts.png in Resources */,
@@ -3579,12 +3549,6 @@
 				50795FE411404807003C55B1 /* SapusMenuLite.png in Resources */,
 				50795FE511404807003C55B1 /* SapusScores.png in Resources */,
 				50795FE611404807003C55B1 /* SapusTongue.png in Resources */,
-				50795FE711404807003C55B1 /* score.png in Resources */,
-				50795FE811404807003C55B1 /* speed_angle.png in Resources */,
-				50795FE911404807003C55B1 /* sprite-sheet-monus.png in Resources */,
-				50795FEA11404807003C55B1 /* sprite-sheet-sapus.png in Resources */,
-				50795FEB11404807003C55B1 /* sprite-sheet-ufo.png in Resources */,
-				50795FEC11404807003C55B1 /* sprite1.png in Resources */,
 				50795FED11404807003C55B1 /* tree1.png in Resources */,
 				50622F761146BE4900241346 /* scores.sqlite in Resources */,
 				50CCAE001147BF2B001E34CE /* Movie.m4v in Resources */,
@@ -3610,11 +3574,17 @@
 				E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */,
 				E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */,
 				E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
-				E0709BB612E60F7E008D93FF /* SapusChoosePlayer-hd.png in Resources */,
 				E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
 				E0709BE412E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
 				E0709BE512E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
 				E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
+				E029200A12E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */,
+				E029200B12E63DF9009CD87B /* tilemap-hd.tmx in Resources */,
+				E029202712E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */,
+				E029202812E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */,
+				E029204412E64A2D009CD87B /* MonusTail.png in Resources */,
+				E02920FA12E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
+				E02920FB12E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

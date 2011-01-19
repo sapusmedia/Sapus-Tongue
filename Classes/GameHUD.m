@@ -122,7 +122,7 @@ enum {
 	[self addChild:scoreAtlas z:1];
 	scoreAtlas.position = ccp(s.width/2, s.height-32);
 	
-	CCSprite *score = [CCSprite spriteWithFile:@"score.png"];
+	CCSprite *score = [CCSprite spriteWithSpriteFrameName:@"score.png"];
 	score.position = ccp(s.width/2, s.height-7);
 	[self addChild:score];
 }
@@ -141,11 +141,11 @@ enum {
 {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 
-	CCSprite *circle = [CCSprite spriteWithFile:@"circle_angle.png"];
+	CCSprite *circle = [CCSprite spriteWithSpriteFrameName:@"circle_angle.png"];
 	circle.position = ccp(s.width-45,s.height-45);
 	[self addChild:circle];
 	
-	arrowSprite = [[CCSprite spriteWithFile:@"arrow.png"] retain];
+	arrowSprite = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
 	CGSize size = [arrowSprite contentSize];
 	arrowSprite.anchorPoint = ccp(2/size.width,2/size.height);
 	arrowSprite.position = ccp(s.width-45-1, s.height-45-1);
@@ -163,11 +163,11 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 
 #define speedY (s.height-150)
-	CCSprite *circle = [CCSprite spriteWithFile:@"speed_angle.png"];
+	CCSprite *circle = [CCSprite spriteWithSpriteFrameName:@"speed_angle.png"];
 	circle.position = ccp(s.width-45,speedY);
 	[self addChild:circle];
 	
-	speedSprite = [[CCSprite spriteWithFile:@"arrow.png"] retain];
+	speedSprite = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
 	CGSize speedcs = [speedSprite contentSize];
 	speedSprite.anchorPoint = ccp(2/speedcs.width,2/speedcs.height);
 	speedSprite.position = ccp(s.width-45-1, speedY-10);

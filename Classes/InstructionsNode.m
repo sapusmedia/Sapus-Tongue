@@ -51,6 +51,7 @@ static const float kForceFactor = 350.0f;
 static const float kSapusElasticity = 0.4f;
 static const float kSapusFriction = 0.8f;
 static const float kSapusOffsetY = 32;
+static const float kCircleRadius = 12.0f;
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 static const float kGravityRoll = -50.0f;
@@ -203,26 +204,26 @@ eachShape(void *ptr, void* instance)
 {	
 	cpInitChipmunk();
 		
-	space = cpSpaceNew();
-	cpSpaceResizeStaticHash(space, 100, 30);
-	cpSpaceResizeActiveHash(space, 100, 100);
+	space_ = cpSpaceNew();
+	cpSpaceResizeStaticHash(space_, 100, 30);
+	cpSpaceResizeActiveHash(space_, 100, 100);
 
-	space->elasticIterations = space->iterations = 10;
-	space->gravity = cpv(0, kGravityRoll);
+	space_->elasticIterations = space_->iterations = 10;
+	space_->gravity = cpv(0, kGravityRoll);
 	
 	cpShape *shape;
 
 	// pivot point. fly
-	CCSprite *fly = [CCSprite spriteWithFile:@"fly.png"];
+	CCSprite *fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
 	[self addChild:fly z:1];
 	
-	pivotBody = cpBodyNew(INFINITY, INFINITY);
-	pivotBody->p =  cpv(kJointX,kJointY);
-	shape = cpCircleShapeNew(pivotBody, 5.0f, cpvzero);
+	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
+	pivotBody_->p =  cpv(kJointX,kJointY);
+	shape = cpCircleShapeNew(pivotBody_, 5.0f, cpvzero);
 	shape->e = 0.9f;
 	shape->u = 0.9f;
 	shape->data = fly;
-	cpSpaceAddStaticShape(space, shape);
+	cpSpaceAddStaticShape(space_, shape);
 
 	[self setupSapus];
 	[self setupJoint];
@@ -231,26 +232,23 @@ eachShape(void *ptr, void* instance)
 
 -(void) setupJoint
 {
-	joint = cpPivotJointNew(sapusBody, pivotBody, cpv(kJointX, kJointY));
+	joint_ = cpPivotJointNew(sapusBody_, pivotBody_, cpv(kJointX, kJointY));
 }
 
 -(void) setupSapus
-{
-	// Using a CCSpriteBatchNode to render all the frames of the Monus/Sapus	
-	CCSpriteBatchNode *batch = [[CCSpriteBatchNode batchNodeWithFile:@"sprite-sheet-sapus.png"] retain];
-	sapusSprite = [[CCSprite spriteWithBatchNode:batch rect:CGRectMake(64*2, 64*0, 64, 64)] retain];
-
-	[batch addChild:sapusSprite];
+{	
+	sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];		
+	[self addChild:sapusSprite_ z:-1];
 	
-	CGSize s = [sapusSprite contentSize];
-	CGPoint ta = sapusSprite.anchorPoint;
+	CGSize s = [sapusSprite_ contentSize];
+	CGPoint ta = sapusSprite_.anchorPoint;
 	ta.y = kSapusOffsetY / s.height;
-	sapusSprite.anchorPoint = ta;
+	sapusSprite_.anchorPoint = ta;
+	
 			
-	[self addChild:batch z:-1];
-	
-	
-	cpFloat radius = 12;
+	//
+	// Physics
+	//
 	
 	// Sapus / Monus is simulated using 5 circles.
 	// (imagine a pentagon, and with a circle in each of it's vertices)
@@ -259,72 +257,71 @@ eachShape(void *ptr, void* instance)
 	// According to my expirience it is easier and faster to model objects using circles
 	// than using custom polygons.
 	
-	cpFloat moment = cpMomentForCircle(kSapusMass/5.0f, 0, radius, cpv(0,(64-radius)-kSapusOffsetY) );
-	moment += cpMomentForCircle(kSapusMass/5.0f, 0, radius, cpv(-14,3+radius-kSapusOffsetY) );
-	moment += cpMomentForCircle(kSapusMass/5.0f, 0, radius, cpv(14,3+radius-kSapusOffsetY) );
-	moment += cpMomentForCircle(kSapusMass/5.0f, 0, radius, cpv(22,29+radius-kSapusOffsetY) );
-	moment += cpMomentForCircle(kSapusMass/5.0f, 0, radius, cpv(-22,29+radius-kSapusOffsetY) );
+	cpFloat moment = cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(0,(64-kCircleRadius)-kSapusOffsetY) );
+	moment += cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(-14,3+kCircleRadius-kSapusOffsetY) );
+	moment += cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(14,3+kCircleRadius-kSapusOffsetY) );
+	moment += cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(22,29+kCircleRadius-kSapusOffsetY) );
+	moment += cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(-22,29+kCircleRadius-kSapusOffsetY) );
 	
-	sapusBody = cpBodyNew(kSapusMass, moment);
+	sapusBody_ = cpBodyNew(kSapusMass, moment);
 	
-	sapusBody->p = pivotBody->p;
-	sapusBody->p.y = pivotBody->p.y - kSapusTongueLength;
-	//	sapusBody->p.y = 30;
+	sapusBody_->p = pivotBody_->p;
+	sapusBody_->p.y = pivotBody_->p.y - kSapusTongueLength;
+	//	sapusBody_->p.y = 30;
 	
-	cpSpaceAddBody(space, sapusBody);
+	cpSpaceAddBody(space_, sapusBody_);
 	
 	
 	//
 	// The position/elasticity/friction of the 5 circles
 	//
-	//	cpShape *shape = cpPolyShapeNew(sapusBody, numVertices, verts, cpvzero);
-	cpShape *shape = cpCircleShapeNew(sapusBody, radius, cpv(0,(64-radius)-kSapusOffsetY) );
+	//	cpShape *shape = cpPolyShapeNew(sapusBody_, numVertices, verts, cpvzero);
+	cpShape *shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(0,(64-kCircleRadius)-kSapusOffsetY) );
 	shape->e = kSapusElasticity;
 	shape->u = kSapusFriction;
 	shape->collision_type = kCollTypeSapus;	
-	shape->data = sapusSprite;
-	cpSpaceAddShape(space, shape);
+	shape->data = sapusSprite_;
+	cpSpaceAddShape(space_, shape);
 	
-	shape = cpCircleShapeNew(sapusBody, radius, cpv(-14,3+radius-kSapusOffsetY) );
+	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(-14,3+kCircleRadius-kSapusOffsetY) );
 	shape->e = kSapusElasticity;
 	shape->u = kSapusFriction;
 	shape->collision_type = kCollTypeSapus;	
-	cpSpaceAddShape(space, shape);
+	cpSpaceAddShape(space_, shape);
 	
-	shape = cpCircleShapeNew(sapusBody, radius, cpv(14,3+radius-kSapusOffsetY) );
+	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(14,3+kCircleRadius-kSapusOffsetY) );
 	shape->e = kSapusElasticity;
 	shape->u = kSapusFriction;
 	shape->collision_type = kCollTypeSapus;	
-	cpSpaceAddShape(space, shape);
+	cpSpaceAddShape(space_, shape);
 	
-	shape = cpCircleShapeNew(sapusBody, radius, cpv(22,29+radius-kSapusOffsetY) );
+	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(22,29+kCircleRadius-kSapusOffsetY) );
 	shape->e = kSapusElasticity;
 	shape->u = kSapusFriction;
 	shape->collision_type = kCollTypeSapus;	
-	cpSpaceAddShape(space, shape);
+	cpSpaceAddShape(space_, shape);
 	
-	shape = cpCircleShapeNew(sapusBody, radius, cpv(-22,29+radius-kSapusOffsetY) );
+	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(-22,29+kCircleRadius-kSapusOffsetY) );
 	shape->e = kSapusElasticity;
 	shape->u = kSapusFriction;
 	shape->collision_type = kCollTypeSapus;	
-	cpSpaceAddShape(space, shape);
+	cpSpaceAddShape(space_, shape);
 	
 }
 
-
 -(void) setupTongue
 {
-	tongue = [[CCTextureCache sharedTextureCache] addImage: @"SapusTongue.png"];
-	[tongue retain];
+	tongue_ = [[CCTextureCache sharedTextureCache] addImage: @"SapusTongue.png"];
+	[tongue_ retain];
 }
 
 -(void) dealloc
 {
-	[sapusSprite release];
-	[tongue release];
+	[sapusSprite_ release];
+	[tongue_ release];
 	
-	cpSpaceFreeChildren(space);
-	cpSpaceFree(space);
+	cpSpaceFreeChildren(space_);
+	cpSpaceFree(space_);
 	
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
 
@@ -352,21 +349,21 @@ eachShape(void *ptr, void* instance)
 
 -(void) update: (ccTime) delta
 {
-	cpBodyResetForces(sapusBody);
+	cpBodyResetForces(sapusBody_);
 
-	cpVect f = cpvmult(force, kForceFactor);
+	cpVect f = cpvmult(force_, kForceFactor);
 
-	cpBodyApplyForce(sapusBody, f, cpvzero);
+	cpBodyApplyForce(sapusBody_, f, cpvzero);
 	
 	int steps = 7;
 	cpFloat dt = delta/(cpFloat)steps;
 	
 	for(int i=0; i<steps; i++){
-		cpSpaceStep(space, dt);
+		cpSpaceStep(space_, dt);
 	}
 	
-	cpSpaceHashEach(space->activeShapes, &eachShape, self);
-	cpSpaceHashEach(space->staticShapes, &eachShape, self);
+	cpSpaceHashEach(space_->activeShapes, &eachShape, self);
+	cpSpaceHashEach(space_->staticShapes, &eachShape, self);
 }
 
 
@@ -377,18 +374,18 @@ eachShape(void *ptr, void* instance)
 
 -(void) drawTongue {
 	
-	GLfloat	 coordinates[] = {  0,				tongue.maxT,
-								tongue.maxS,	tongue.maxT,
+	GLfloat	 coordinates[] = {  0,				tongue_.maxT,
+								tongue_.maxS,	tongue_.maxT,
 								0,				0,
-								tongue.maxS,	0  };
+								tongue_.maxS,	0  };
 
-	cpVect sapusV = sapusBody->p;
-	float angle = cpvtoangle( cpvsub(pivotBody->p, sapusV) );
+	cpVect sapusV = sapusBody_->p;
+	float angle = cpvtoangle( cpvsub(pivotBody_->p, sapusV) );
 	float x = sinf(angle);
 	float y = -cosf(angle);
 
-	float ys = sinf( sapusBody->a + (float)M_PI_2);
-	float xs = cosf( sapusBody->a + (float)M_PI_2);
+	float ys = sinf( sapusBody_->a + (float)M_PI_2);
+	float xs = cosf( sapusBody_->a + (float)M_PI_2);
 
 	float tongueLen = 15;
 	
@@ -397,8 +394,8 @@ eachShape(void *ptr, void* instance)
 	
 	GLfloat	vertices[] = {	sapusV.x - x*1.5f,		sapusV.y - y*1.5f,		0.0f,
 							sapusV.x + x*1.5f,		sapusV.y + y*1.5f,		0.0f,
-							pivotBody->p.x - x*1.5f,	pivotBody->p.y - y*1.5f,	0.0f,
-							pivotBody->p.x + x*1.5f,	pivotBody->p.y + y*1.5f,	0.0f };
+							pivotBody_->p.x - x*1.5f,	pivotBody_->p.y - y*1.5f,	0.0f,
+							pivotBody_->p.x + x*1.5f,	pivotBody_->p.y + y*1.5f,	0.0f };
 	
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
@@ -406,7 +403,7 @@ eachShape(void *ptr, void* instance)
 	
 	glDisableClientState(GL_COLOR_ARRAY);
 	
-	glBindTexture(GL_TEXTURE_2D, tongue.name );
+	glBindTexture(GL_TEXTURE_2D, tongue_.name );
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -415,10 +412,11 @@ eachShape(void *ptr, void* instance)
 	glEnableClientState(GL_COLOR_ARRAY);
 }
 
--(void) addJoint {
-	cpSpaceAddConstraint(space, joint);
-	jointAdded = YES;
-	space->gravity = cpv(0, kGravityRoll);
+-(void) addJoint
+{
+	cpSpaceAddConstraint(space_, joint_);
+	jointAdded_ = YES;
+	space_->gravity = cpv(0, kGravityRoll);
 }
 
 #pragma mark InstructionsNode - Accelerometer Event (iOS only)
@@ -438,9 +436,9 @@ eachShape(void *ptr, void* instance)
 	
 	// landscape left mode
 	if( isLandscapeLeft_ )
-		force = cpv( (float)-acceleration.y, (float)acceleration.x);
+		force_ = cpv( (float)-acceleration.y, (float)acceleration.x);
 	else
-		force = cpv( (float)acceleration.y, (float)-acceleration.x);
+		force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
 }
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
@@ -506,7 +504,7 @@ eachShape(void *ptr, void* instance)
 	// MPMoviePlayer works differently in iOS >= 3.2 than iOS < 3.2, so we need to check
 	// in runtime if the new MPMoviePlayer is supported.	
 
-	newMVPlayer = [theMovie respondsToSelector:@selector(setControlStyle:)];
+	newMVPlayer_ = [theMovie respondsToSelector:@selector(setControlStyle:)];
 	
 	// TIP:
 	// In SDK 3.2 (and newer), the right way to play a video, is by adding a "controller"
@@ -522,7 +520,7 @@ eachShape(void *ptr, void* instance)
 	//
 
 
-	if( newMVPlayer ) {
+	if( newMVPlayer_ ) {
 		
 		// Code valid for iOS 3.2 or newer
 		theMovie.scalingMode = MPMovieScalingModeNone;
@@ -579,7 +577,7 @@ eachShape(void *ptr, void* instance)
 	MPMoviePlayerController* theMovie = [aNotification object];
 
 	// Only valid in iOS 3.2 or newer
-	if( newMVPlayer )
+	if( newMVPlayer_ )
 		[[theMovie view] removeFromSuperview];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self

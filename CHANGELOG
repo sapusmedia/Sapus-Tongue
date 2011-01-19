@@ -1,6 +1,8 @@
-Changes in 2010-11-19 (v3.3)
-* [FIX] GameNode: Compiles if ST_EXPERIMENTAL_PHYSICS_STEP is enabled
+Changes in 2011-01-20 (v3.3)
+* [NEW] Added Retina Display support
 * [NEW-MAC] Added support for FullScreen (experimental)
+* [FIX] Spritesheets: Merged many images in sapus-monus-ufo-hud spritesheet
+* [FIX] GameNode: Compiles if ST_EXPERIMENTAL_PHYSICS_STEP is enabled
 
 Changes in 2010-11-19 (v3.2)
 * [NEW] SapusTongue: is a Universal binary (iPad + iPhone)
