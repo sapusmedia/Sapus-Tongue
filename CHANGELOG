@@ -1,9 +1,12 @@
-Changes in 2011-01-20 (v3.3)
+Changes in 2011-01-21 (v3.3)
 * [NEW] Added Retina Display support
 * [NEW-MAC] Added support for FullScreen (experimental)
-* [FIX] Spritesheets: Merged many images in sapus-monus-ufo-hud spritesheet
+* [FIX] GameHUD: Uses the "_" suffix for the ivars
 * [FIX] GameNode / InstructionsNode: Simplified animation code using new spritesheet sapus-monus-ufo-hud
 * [FIX] GameNode: Compiles if ST_EXPERIMENTAL_PHYSICS_STEP is enabled
+* [FIX] SelectCharNode: Uses kSTSelectedCharSapus/Monus instead of hardcoded values 0 & 1
+* [FIX] Spritesheets: Merged many images in sapus-monus-ufo-hud spritesheet
+* [3RD] cocos2d: uses cocos2d v0.99.5 + fixes
 
 Changes in 2010-11-19 (v3.2)
 * [NEW] SapusTongue: is a Universal binary (iPad + iPhone)
@@ -17,7 +20,7 @@ Changes in 2010-11-19 (v3.2)
 * [FIX] RootViewController: Fix crash when trying to adjust the viewController on iOS < 4.1
 * [FIX] SapusTongueAppDelegate: fixed initial flicker
 * [FIX] SapusTongue: Added UIInterfaceOrientation in plist file
-* [3RD] cocos2d: uses cocos2d  / CocosDenshion v0.99.5-rc1 + fixes
+* [3RD] cocos2d: uses cocos2d / CocosDenshion v0.99.5-rc1 + fixes
 
 Changes in 2010-10-13 (v3.1)
 * [NEW] Game Center: Added support for Game Center's logic

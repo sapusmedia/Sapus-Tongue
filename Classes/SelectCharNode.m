@@ -26,7 +26,7 @@ enum  {
 	kTagBatchNode,
 };
 
-static int selectedChar = 0;
+static int _selectedChar = kSTSelectedCharSapus;
 
 @interface SelectCharNode (Private)
 -(void) initBackground;
@@ -44,7 +44,7 @@ static int selectedChar = 0;
 
 +(int) selectedChar
 {
-	return selectedChar;
+	return _selectedChar;
 }
 
 -(id) init
@@ -195,7 +195,7 @@ static int selectedChar = 0;
 		location = [[CCDirector sharedDirector] convertToGL:location];
 
 		if( location.x < s.width/2 && location.y < s.height-50 ) {
-			selectedChar = 0;
+			_selectedChar = kSTSelectedCharSapus;
 			animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"sapus-anim"];
 			[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
 			[monusSprite_ setDisplayFrameWithAnimationName:@"monus-default" index:0];
@@ -205,7 +205,7 @@ static int selectedChar = 0;
 			startButton_.visible = YES;
 
 		} else if( location.x > s.width/2 && location.y < s.height-50) {
-			selectedChar = 1;
+			_selectedChar = kSTSelectedCharMonus;
 			animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"monus-anim"];
 			[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
 			[sapusSprite_ setDisplayFrameWithAnimationName:@"sapus-default" index:0];

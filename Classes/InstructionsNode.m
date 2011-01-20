@@ -170,7 +170,7 @@ eachShape(void *ptr, void* instance)
 	// tree
 	CCSprite *tree = [CCSprite spriteWithFile:@"tree1.png"];
 	tree.anchorPoint = CGPointZero;
-	[self addChild:tree z:-1];
+	[self addChild:tree z:-5];
 	
 	// floor
 	FloorNode *floor = [FloorNode node];
@@ -215,7 +215,7 @@ eachShape(void *ptr, void* instance)
 
 	// pivot point. fly
 	CCSprite *fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
-	[self addChild:fly z:1];
+	[self addChild:fly z:-1];
 	
 	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
 	pivotBody_->p =  cpv(kJointX,kJointY);
@@ -392,10 +392,10 @@ eachShape(void *ptr, void* instance)
 	sapusV.x = sapusV.x + tongueLen*xs;
 	sapusV.y = sapusV.y + tongueLen*ys;	
 	
-	GLfloat	vertices[] = {	sapusV.x - x*1.5f,		sapusV.y - y*1.5f,		0.0f,
-							sapusV.x + x*1.5f,		sapusV.y + y*1.5f,		0.0f,
-							pivotBody_->p.x - x*1.5f,	pivotBody_->p.y - y*1.5f,	0.0f,
-							pivotBody_->p.x + x*1.5f,	pivotBody_->p.y + y*1.5f,	0.0f };
+	GLfloat	vertices[] = {	(sapusV.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
+							(sapusV.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
+							(pivotBody_->p.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f,
+							(pivotBody_->p.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f };
 	
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY

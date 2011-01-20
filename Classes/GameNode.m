@@ -352,7 +352,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// tree
 	CCSprite *tree = [CCSprite spriteWithFile:@"tree1.png"];
 	tree.anchorPoint = CGPointZero;
-	[self addChild:tree z:-1];
+	[self addChild:tree z:-5];
 
 	// ufos
 	CCSprite *ufo1 = [CCSprite spriteWithSpriteFrameName:@"ufo_00.png"];
@@ -419,11 +419,9 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	space_->elasticIterations = space_->iterations = 10;
 	space_->gravity = cpv(0, kGravityRoll);
 	
-	cpShape *shape;
-
 	// pivot point. fly
-	CCSprite *fly;
-	if( [SelectCharNode selectedChar] == 0 )
+	CCSprite *fly = nil;
+	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
 		fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
 	else {
 		fly = [CCSprite spriteWithSpriteFrameName:@"branch.png"];
@@ -431,8 +429,10 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		fly.anchorPoint = ccp(19/s.width,30/s.height);
 	}
 	
-	[self addChild:fly z:1];
+	[self addChild:fly z:-1];
 	
+	cpShape *shape = NULL;
+
 	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
 	pivotBody_->p =  cpv(kJointX,kJointY);
 	shape = cpCircleShapeNew(pivotBody_, 5.0f, cpvzero);
@@ -492,7 +492,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	CCAnimationCache *animCache = [CCAnimationCache sharedAnimationCache];
 
 	CCSpriteFrame *rollFrame = nil;
-	if( [SelectCharNode selectedChar] == 0 ) {
+	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus ) {
 		sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
 		rollFrame = [frameCache spriteFrameByName:@"sapus_02.png"];
 		
@@ -519,7 +519,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// Flying Animation
 	NSArray *flyArray = nil;
 	
-	if( [SelectCharNode selectedChar] == 0 ) {
+	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus ) {
 		flyArray = [NSArray arrayWithObjects:
 					[frameCache spriteFrameByName:@"sapus_00.png"],
 					[frameCache spriteFrameByName:@"sapus_01.png"],
@@ -548,7 +548,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 	// Flying NoTail Aniimation (only valid for Monus)
 	// monus
-	if( [SelectCharNode selectedChar] == 1 ) {
+	if( [SelectCharNode selectedChar] == kSTSelectedCharMonus ) {
 		NSArray *noTailArray = [NSArray arrayWithObjects:
 								[frameCache spriteFrameByName:@"monus_10.png"],
 								[frameCache spriteFrameByName:@"monus_11.png"],
@@ -629,7 +629,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 -(void) setupTongue
 {
-	if( [SelectCharNode selectedChar] == 0 )
+	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
 		tongue_ = [[CCTextureCache sharedTextureCache] addImage: @"SapusTongue.png"];
 	else
 		tongue_ = [[CCTextureCache sharedTextureCache] addImage: @"MonusTail.png"];
@@ -912,17 +912,16 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	float ys = sinf( sapusBody_->a + (float)M_PI_2);
 	float xs = cosf( sapusBody_->a + (float)M_PI_2);
 
-	float tongueLen = 11;
-	if( [SelectCharNode selectedChar] == 0 )
+	float tongueLen = CC_CONTENT_SCALE_FACTOR() ? 11 : 7;
+	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
 		tongueLen = 15;
 	sapusV.x = sapusV.x + tongueLen*xs;
 	sapusV.y = sapusV.y + tongueLen*ys;	
 	
-	GLfloat	vertices[] = {	sapusV.x - x*1.5f,		sapusV.y - y*1.5f,		0.0f,
-							sapusV.x + x*1.5f,		sapusV.y + y*1.5f,		0.0f,
-							pivotBody_->p.x - x*1.5f,	pivotBody_->p.y - y*1.5f,	0.0f,
-							pivotBody_->p.x + x*1.5f,	pivotBody_->p.y + y*1.5f,	0.0f };
-	
+	GLfloat	vertices[] = {	(sapusV.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
+							(sapusV.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
+							(pivotBody_->p.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f,
+							(pivotBody_->p.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f };		
 	
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY

@@ -9,6 +9,12 @@
 
 #import "cocos2d.h"
 
+enum
+{
+	kSTSelectedCharSapus,
+	kSTSelectedCharMonus,
+};
+
 @interface SelectCharNode : CCLayer {
 	CCSprite		*sapusSprite_;
 	CCSprite		*monusSprite_;

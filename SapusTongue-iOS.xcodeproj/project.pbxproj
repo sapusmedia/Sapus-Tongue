@@ -754,8 +754,6 @@
 		E0285AE01295E24B002E2303 /* Icon-lite-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADB1295E24B002E2303 /* Icon-lite-Small.png */; };
 		E0285AE11295E24B002E2303 /* Icon-lite-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADC1295E24B002E2303 /* Icon-lite-Small@2x.png */; };
 		E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285ADD1295E24B002E2303 /* Icon-lite@2x.png */; };
-		E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
-		E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
 		E029200812E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */; };
 		E029200912E63DF9009CD87B /* tilemap-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E029200712E63DF9009CD87B /* tilemap-hd.tmx */; };
 		E029200A12E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029200612E63DF9009CD87B /* fixed-tiles_8x8-hd.png */; };
@@ -766,34 +764,55 @@
 		E029202812E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */ = {isa = PBXBuildFile; fileRef = E029202412E64811009CD87B /* sapus-monus-ufo-hud.png */; };
 		E029204312E64A2D009CD87B /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = E029204212E64A2D009CD87B /* MonusTail.png */; };
 		E029204412E64A2D009CD87B /* MonusTail.png in Resources */ = {isa = PBXBuildFile; fileRef = E029204212E64A2D009CD87B /* MonusTail.png */; };
-		E02920F812E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
-		E02920F912E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
-		E02920FA12E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
-		E02920FB12E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
-		E029210F12E66C8D009CD87B /* floor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210812E66C8D009CD87B /* floor-hd.png */; };
-		E029211012E66C8D009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
-		E029211112E66C8D009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
-		E029211212E66C8D009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
-		E029211312E66C8D009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
-		E029211412E66C8D009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
-		E029211512E66C8D009CD87B /* trophy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210E12E66C8D009CD87B /* trophy-hd.png */; };
-		E029211612E66C8D009CD87B /* floor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210812E66C8D009CD87B /* floor-hd.png */; };
-		E029211712E66C8D009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
-		E029211812E66C8D009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
-		E029211912E66C8D009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
-		E029211A12E66C8D009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
-		E029211B12E66C8D009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
-		E029211C12E66C8D009CD87B /* trophy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210E12E66C8D009CD87B /* trophy-hd.png */; };
-		E029225812E89C97009CD87B /* loading_bar-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029225712E89C97009CD87B /* loading_bar-hd.png */; };
-		E029225912E89C97009CD87B /* loading_bar-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029225712E89C97009CD87B /* loading_bar-hd.png */; };
 		E029230212E8CE06009CD87B /* font_grinched_21.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230012E8CE06009CD87B /* font_grinched_21.png */; };
 		E029230312E8CE06009CD87B /* font_grinched_42.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230112E8CE06009CD87B /* font_grinched_42.png */; };
 		E029230412E8CE06009CD87B /* font_grinched_21.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230012E8CE06009CD87B /* font_grinched_21.png */; };
 		E029230512E8CE06009CD87B /* font_grinched_42.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230112E8CE06009CD87B /* font_grinched_42.png */; };
-		E029230812E8CE1C009CD87B /* font_grinched_21-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */; };
-		E029230912E8CE1C009CD87B /* font_grinched_42-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */; };
-		E029230A12E8CE1C009CD87B /* font_grinched_21-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */; };
-		E029230B12E8CE1C009CD87B /* font_grinched_42-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */; };
+		E02928D312E8D00B009CD87B /* MonusTail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */; };
+		E02928D412E8D00B009CD87B /* SapusTongue-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029250012E8CFD4009CD87B /* SapusTongue-hd.png */; };
+		E02928D512E8D00B009CD87B /* font_grinched_21-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */; };
+		E02928D612E8D00B009CD87B /* font_grinched_42-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */; };
+		E02928D712E8D00B009CD87B /* loading_bar-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029225712E89C97009CD87B /* loading_bar-hd.png */; };
+		E02928D812E8D00B009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
+		E02928D912E8D00B009CD87B /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
+		E02928DA12E8D00B009CD87B /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
+		E02928DB12E8D00B009CD87B /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
+		E02928DC12E8D00B009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
+		E02928DD12E8D00B009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
+		E02928DE12E8D00B009CD87B /* floor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210812E66C8D009CD87B /* floor-hd.png */; };
+		E02928DF12E8D00B009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
+		E02928E012E8D00B009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
+		E02928E112E8D00B009CD87B /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
+		E02928E212E8D00B009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
+		E02928E312E8D00B009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
+		E02928E412E8D00B009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
+		E02928E512E8D00B009CD87B /* trophy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210E12E66C8D009CD87B /* trophy-hd.png */; };
+		E02928E612E8D00D009CD87B /* MonusTail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */; };
+		E02928E712E8D00D009CD87B /* SapusTongue-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029250012E8CFD4009CD87B /* SapusTongue-hd.png */; };
+		E02928E812E8D00D009CD87B /* font_grinched_21-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */; };
+		E02928E912E8D00D009CD87B /* font_grinched_42-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */; };
+		E02928EA12E8D00D009CD87B /* loading_bar-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029225712E89C97009CD87B /* loading_bar-hd.png */; };
+		E02928EB12E8D00D009CD87B /* sapus-buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0291FA412E6293B009CD87B /* sapus-buttons-hd.plist */; };
+		E02928EC12E8D00D009CD87B /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
+		E02928ED12E8D00D009CD87B /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
+		E02928EE12E8D00D009CD87B /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
+		E02928EF12E8D00D009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E02920F612E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist */; };
+		E02928F012E8D00D009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02920F712E668BE009CD87B /* sapus-monus-ufo-hud-hd.png */; };
+		E02928F112E8D00D009CD87B /* floor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210812E66C8D009CD87B /* floor-hd.png */; };
+		E02928F212E8D00D009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
+		E02928F312E8D00D009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
+		E02928F412E8D00D009CD87B /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
+		E02928F512E8D00D009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
+		E02928F612E8D00D009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
+		E02928F712E8D00D009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
+		E02928F812E8D00D009CD87B /* trophy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210E12E66C8D009CD87B /* trophy-hd.png */; };
+		E02928F912E8D01A009CD87B /* SapusMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B5114041FA00BE00B5 /* SapusMenu.png */; };
+		E02928FA12E8D01B009CD87B /* SapusMenuLite.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B6114041FA00BE00B5 /* SapusMenuLite.png */; };
+		E02928FF12E8D03A009CD87B /* SapusMenu-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028593D1295848D002E2303 /* SapusMenu-ipad.png */; };
+		E029290012E8D03A009CD87B /* SapusBuy-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285AA41295DBDC002E2303 /* SapusBuy-ipad.png */; };
+		E029290112E8D03A009CD87B /* SapusMenuLite-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285A6B1295D59E002E2303 /* SapusMenuLite-ipad.png */; };
+		E029290712E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */; };
+		E029290812E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */; };
 		E042CD82125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E04BBA28120069B800445B60 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BBA26120069B800445B60 /* RootViewController.m */; };
@@ -970,14 +989,6 @@
 		E065A764125E21FB00E3226C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E065A763125E21FB00E3226C /* GameKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
 		E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAC12E60F40008D93FF /* Default-hd.png */; };
-		E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
-		E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
-		E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BAF12E60F7E008D93FF /* sapus-buttons-hd.png */; };
-		E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
-		E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
-		E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
-		E0709BE412E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE012E61C33008D93FF /* sapus-monus-selection-hd.plist */; };
-		E0709BE512E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BE112E61C33008D93FF /* sapus-monus-selection-hd.png */; };
 		E08FB6B8122A024D009077FC /* GameHUDSaveScore.m in Sources */ = {isa = PBXBuildFile; fileRef = E08FB6B7122A024D009077FC /* GameHUDSaveScore.m */; };
 		E08FB6B9122A024D009077FC /* GameHUDSaveScore.m in Sources */ = {isa = PBXBuildFile; fileRef = E08FB6B7122A024D009077FC /* GameHUDSaveScore.m */; };
 		E0B1E8A412638F1500ACD961 /* cpSpaceComponent.c in Sources */ = {isa = PBXBuildFile; fileRef = E0B1E8A112638F1500ACD961 /* cpSpaceComponent.c */; };
@@ -1489,6 +1500,9 @@
 		E029230112E8CE06009CD87B /* font_grinched_42.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font_grinched_42.png; sourceTree = "<group>"; };
 		E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font_grinched_21-hd.png"; sourceTree = "<group>"; };
 		E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font_grinched_42-hd.png"; sourceTree = "<group>"; };
+		E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MonusTail-hd.png"; sourceTree = "<group>"; };
+		E029250012E8CFD4009CD87B /* SapusTongue-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusTongue-hd.png"; sourceTree = "<group>"; };
+		E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-hd.png"; sourceTree = "<group>"; };
 		E042CD80125E4B21006D81AB /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		E042CD81125E4B21006D81AB /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		E04BBA25120069B800445B60 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -2387,6 +2401,8 @@
 		E029211D12E66C94009CD87B /* RetinaDisplay */ = {
 			isa = PBXGroup;
 			children = (
+				E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */,
+				E029250012E8CFD4009CD87B /* SapusTongue-hd.png */,
 				E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */,
 				E029230712E8CE1C009CD87B /* font_grinched_42-hd.png */,
 				E029225712E89C97009CD87B /* loading_bar-hd.png */,
@@ -2401,6 +2417,7 @@
 				E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */,
 				E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */,
 				E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */,
+				E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */,
 				E029210C12E66C8D009CD87B /* SapusScores-hd.png */,
 				E029210D12E66C8D009CD87B /* tree1-hd.png */,
 				E029210E12E66C8D009CD87B /* trophy-hd.png */,
@@ -3304,30 +3321,36 @@
 				E0285A4C1295D0DF002E2303 /* sapus-monus-selection-ipad.plist in Resources */,
 				E0285A4D1295D0DF002E2303 /* sapus-monus-selection-ipad.png in Resources */,
 				E0709BAD12E60F40008D93FF /* Default-hd.png in Resources */,
-				E0709BB212E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
-				E0709BB412E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
-				E0709BE212E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
-				E0709BE312E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
-				E0291FA512E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
 				E029200812E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */,
 				E029200912E63DF9009CD87B /* tilemap-hd.tmx in Resources */,
 				E029202512E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */,
 				E029202612E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */,
 				E029204312E64A2D009CD87B /* MonusTail.png in Resources */,
-				E02920F812E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
-				E02920F912E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
-				E029210F12E66C8D009CD87B /* floor-hd.png in Resources */,
-				E029211012E66C8D009CD87B /* SapusCredits-hd.png in Resources */,
-				E029211112E66C8D009CD87B /* SapusInstructions-hd.png in Resources */,
-				E029211212E66C8D009CD87B /* SapusMenuLite-hd.png in Resources */,
-				E029211312E66C8D009CD87B /* SapusScores-hd.png in Resources */,
-				E029211412E66C8D009CD87B /* tree1-hd.png in Resources */,
-				E029211512E66C8D009CD87B /* trophy-hd.png in Resources */,
-				E029225812E89C97009CD87B /* loading_bar-hd.png in Resources */,
 				E029230212E8CE06009CD87B /* font_grinched_21.png in Resources */,
 				E029230312E8CE06009CD87B /* font_grinched_42.png in Resources */,
-				E029230812E8CE1C009CD87B /* font_grinched_21-hd.png in Resources */,
-				E029230912E8CE1C009CD87B /* font_grinched_42-hd.png in Resources */,
+				E02928E612E8D00D009CD87B /* MonusTail-hd.png in Resources */,
+				E02928E712E8D00D009CD87B /* SapusTongue-hd.png in Resources */,
+				E02928E812E8D00D009CD87B /* font_grinched_21-hd.png in Resources */,
+				E02928E912E8D00D009CD87B /* font_grinched_42-hd.png in Resources */,
+				E02928EA12E8D00D009CD87B /* loading_bar-hd.png in Resources */,
+				E02928EB12E8D00D009CD87B /* sapus-buttons-hd.plist in Resources */,
+				E02928EC12E8D00D009CD87B /* sapus-buttons-hd.png in Resources */,
+				E02928ED12E8D00D009CD87B /* sapus-monus-selection-hd.plist in Resources */,
+				E02928EE12E8D00D009CD87B /* sapus-monus-selection-hd.png in Resources */,
+				E02928EF12E8D00D009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
+				E02928F012E8D00D009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
+				E02928F112E8D00D009CD87B /* floor-hd.png in Resources */,
+				E02928F212E8D00D009CD87B /* SapusCredits-hd.png in Resources */,
+				E02928F312E8D00D009CD87B /* SapusInstructions-hd.png in Resources */,
+				E02928F412E8D00D009CD87B /* SapusMenu-hd.png in Resources */,
+				E02928F512E8D00D009CD87B /* SapusMenuLite-hd.png in Resources */,
+				E02928F612E8D00D009CD87B /* SapusScores-hd.png in Resources */,
+				E02928F712E8D00D009CD87B /* tree1-hd.png in Resources */,
+				E02928F812E8D00D009CD87B /* trophy-hd.png in Resources */,
+				E02928FA12E8D01B009CD87B /* SapusMenuLite.png in Resources */,
+				E029290012E8D03A009CD87B /* SapusBuy-ipad.png in Resources */,
+				E029290112E8D03A009CD87B /* SapusMenuLite-ipad.png in Resources */,
+				E029290712E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3637,30 +3660,35 @@
 				E0285AE11295E24B002E2303 /* Icon-lite-Small@2x.png in Resources */,
 				E0285AE21295E24B002E2303 /* Icon-lite@2x.png in Resources */,
 				E0709BAE12E60F40008D93FF /* Default-hd.png in Resources */,
-				E0709BB512E60F7E008D93FF /* sapus-buttons-hd.png in Resources */,
-				E0709BB712E60F7E008D93FF /* SapusMenu-hd.png in Resources */,
-				E0709BE412E61C33008D93FF /* sapus-monus-selection-hd.plist in Resources */,
-				E0709BE512E61C33008D93FF /* sapus-monus-selection-hd.png in Resources */,
-				E0291FA612E6293B009CD87B /* sapus-buttons-hd.plist in Resources */,
 				E029200A12E63DF9009CD87B /* fixed-tiles_8x8-hd.png in Resources */,
 				E029200B12E63DF9009CD87B /* tilemap-hd.tmx in Resources */,
 				E029202712E64811009CD87B /* sapus-monus-ufo-hud.plist in Resources */,
 				E029202812E64811009CD87B /* sapus-monus-ufo-hud.png in Resources */,
 				E029204412E64A2D009CD87B /* MonusTail.png in Resources */,
-				E02920FA12E668BE009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
-				E02920FB12E668BE009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
-				E029211612E66C8D009CD87B /* floor-hd.png in Resources */,
-				E029211712E66C8D009CD87B /* SapusCredits-hd.png in Resources */,
-				E029211812E66C8D009CD87B /* SapusInstructions-hd.png in Resources */,
-				E029211912E66C8D009CD87B /* SapusMenuLite-hd.png in Resources */,
-				E029211A12E66C8D009CD87B /* SapusScores-hd.png in Resources */,
-				E029211B12E66C8D009CD87B /* tree1-hd.png in Resources */,
-				E029211C12E66C8D009CD87B /* trophy-hd.png in Resources */,
-				E029225912E89C97009CD87B /* loading_bar-hd.png in Resources */,
 				E029230412E8CE06009CD87B /* font_grinched_21.png in Resources */,
 				E029230512E8CE06009CD87B /* font_grinched_42.png in Resources */,
-				E029230A12E8CE1C009CD87B /* font_grinched_21-hd.png in Resources */,
-				E029230B12E8CE1C009CD87B /* font_grinched_42-hd.png in Resources */,
+				E02928D312E8D00B009CD87B /* MonusTail-hd.png in Resources */,
+				E02928D412E8D00B009CD87B /* SapusTongue-hd.png in Resources */,
+				E02928D512E8D00B009CD87B /* font_grinched_21-hd.png in Resources */,
+				E02928D612E8D00B009CD87B /* font_grinched_42-hd.png in Resources */,
+				E02928D712E8D00B009CD87B /* loading_bar-hd.png in Resources */,
+				E02928D812E8D00B009CD87B /* sapus-buttons-hd.plist in Resources */,
+				E02928D912E8D00B009CD87B /* sapus-buttons-hd.png in Resources */,
+				E02928DA12E8D00B009CD87B /* sapus-monus-selection-hd.plist in Resources */,
+				E02928DB12E8D00B009CD87B /* sapus-monus-selection-hd.png in Resources */,
+				E02928DC12E8D00B009CD87B /* sapus-monus-ufo-hud-hd.plist in Resources */,
+				E02928DD12E8D00B009CD87B /* sapus-monus-ufo-hud-hd.png in Resources */,
+				E02928DE12E8D00B009CD87B /* floor-hd.png in Resources */,
+				E02928DF12E8D00B009CD87B /* SapusCredits-hd.png in Resources */,
+				E02928E012E8D00B009CD87B /* SapusInstructions-hd.png in Resources */,
+				E02928E112E8D00B009CD87B /* SapusMenu-hd.png in Resources */,
+				E02928E212E8D00B009CD87B /* SapusMenuLite-hd.png in Resources */,
+				E02928E312E8D00B009CD87B /* SapusScores-hd.png in Resources */,
+				E02928E412E8D00B009CD87B /* tree1-hd.png in Resources */,
+				E02928E512E8D00B009CD87B /* trophy-hd.png in Resources */,
+				E02928F912E8D01A009CD87B /* SapusMenu.png in Resources */,
+				E02928FF12E8D03A009CD87B /* SapusMenu-ipad.png in Resources */,
+				E029290812E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
