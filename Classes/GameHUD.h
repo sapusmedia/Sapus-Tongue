@@ -36,28 +36,28 @@ typedef enum {
 	
 #if __IPHONE_OS_VERSION_MAX_ALLOWED
 	// UI controls
-	UITextField		*nameField;
-	UIToolbar		*toolbar;
-	UISwitch		*switchCtl;
-	UIActivityIndicatorView *activityIndicator;	
-#endif
+	UITextField		*nameField_;
+	UIToolbar		*toolbar_;
+	UISwitch		*switchCtl_;
+	UIActivityIndicatorView *activityIndicator_;
+#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
 
 	// pointer to State
-	GameNode *game;
+	GameNode		*game_;
 
 	// player name
-	NSString		*name;
+	NSString		*name_;
 
 	tHUDState	state;
 	
-	CCLabelAtlas	*scoreAtlas;
-	CCSprite		*arrowSprite;
-	CCLabelAtlas	*angleAtlas;
-	CCLabelAtlas	*speedAtlas;
-	CCSprite		*speedSprite;
+	CCLabelAtlas	*scoreLabel_;
+	CCSprite		*arrowSprite_;
+	CCLabelAtlas	*angleLabel_;
+	CCLabelAtlas	*speedLabel_;
+	CCSprite		*speedSprite_;
 	
 	// global scores stuff
-	BOOL					submittingInProgress;	
+	BOOL					submittingInProgress_;
 }
 
 // initialization

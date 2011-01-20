@@ -67,7 +67,7 @@ enum {
 #endif
 		
 		// Reference to GameNode
-		game = [g retain];
+		game_ = [g retain];
 		
 		//
 		// Initialization
@@ -90,15 +90,15 @@ enum {
 
 -(void) dealloc
 {
-	[game release];
-	[scoreAtlas release];
-	[arrowSprite release];
-	[angleAtlas release];
-	[speedAtlas release];
-	[speedSprite release];
+	[game_ release];
+	[scoreLabel_ release];
+	[arrowSprite_ release];
+	[angleLabel_ release];
+	[speedLabel_ release];
+	[speedSprite_ release];
 	
 #if __IPHONE_OS_VERSION_MAX_ALLOWED
-	[activityIndicator release];
+	[activityIndicator_ release];
 #endif
 	
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -113,14 +113,15 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 
 	// TIP:
-	// Score is a number is udpated too often. It can't be rendered using normal Label since they are very slow.
+	// Score is a number is udpated too often. It can't be rendered using normal CCLabelTTF since they are very slow.
 	// The only solution to render numbers (or characters) that are updated very often (like scores, times, etc) is
-	// to use a CCLabelAtlas or CCBitmapFontAtlas
-	scoreAtlas = [[CCLabelAtlas labelWithString:@":::0" charMapFile:@"number_fonts.png" itemWidth:32 itemHeight:48 startCharMap:'0'] retain];
-	scoreAtlas.anchorPoint = ccp( 0.5f, 0.5f );
+	// to use a CCLabelAtlas or CCLabelBMFont
+	scoreLabel_ = [[CCLabelAtlas alloc] initWithString:@":::0" charMapFile:@"font_grinched_42.png" itemWidth:32 itemHeight:48 startCharMap:'0'];
+	scoreLabel_.anchorPoint = ccp( 0.5f, 0.5f );
+						  
 
-	[self addChild:scoreAtlas z:1];
-	scoreAtlas.position = ccp(s.width/2, s.height-32);
+	[self addChild:scoreLabel_ z:1];
+	scoreLabel_.position = ccp(s.width/2, s.height-32);
 	
 	CCSprite *score = [CCSprite spriteWithSpriteFrameName:@"score.png"];
 	score.position = ccp(s.width/2, s.height-7);
@@ -130,11 +131,11 @@ enum {
 -(void) createGlobalScoresVars
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED
-	activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-	activityIndicator.frame = CGRectMake(20, 20, 20, 20);
-	[[[CCDirector sharedDirector] openGLView] addSubview:activityIndicator];
-	activityIndicator.hidesWhenStopped = YES;
-#endif
+	activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+	activityIndicator_.frame = CGRectMake(20, 20, 20, 20);
+	[[[CCDirector sharedDirector] openGLView] addSubview:activityIndicator_];
+	activityIndicator_.hidesWhenStopped = YES;
+#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
 }
 
 -(void) createAngle
@@ -145,17 +146,17 @@ enum {
 	circle.position = ccp(s.width-45,s.height-45);
 	[self addChild:circle];
 	
-	arrowSprite = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
-	CGSize size = [arrowSprite contentSize];
-	arrowSprite.anchorPoint = ccp(2/size.width,2/size.height);
-	arrowSprite.position = ccp(s.width-45-1, s.height-45-1);
-	[self addChild:arrowSprite z:1];
+	arrowSprite_ = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
+	CGSize size = [arrowSprite_ contentSize];
+	arrowSprite_.anchorPoint = ccp(2/size.width,2/size.height);
+	arrowSprite_.position = ccp(s.width-45-1, s.height-45-1);
+	[self addChild:arrowSprite_ z:1];
 	
 	// Again, a CCLabelAtlas is used to display the angle value
-	angleAtlas = [[CCLabelAtlas labelWithString:@"::0" charMapFile:@"number_fonts_small.png" itemWidth:16 itemHeight:24 startCharMap:'0'] retain];
-	angleAtlas.anchorPoint = ccp( 0.5f, 0.5f );
-	[self addChild:angleAtlas];
-	angleAtlas.position = ccp(s.width-45,s.height-88);
+	angleLabel_ = [[CCLabelAtlas labelWithString:@"::0" charMapFile:@"font_grinched_21.png" itemWidth:16 itemHeight:24 startCharMap:'0'] retain];
+	angleLabel_.anchorPoint = ccp( 0.5f, 0.5f );
+	[self addChild:angleLabel_];
+	angleLabel_.position = ccp(s.width-45,s.height-88);
 }
 
 -(void) createSpeed
@@ -167,17 +168,17 @@ enum {
 	circle.position = ccp(s.width-45,speedY);
 	[self addChild:circle];
 	
-	speedSprite = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
-	CGSize speedcs = [speedSprite contentSize];
-	speedSprite.anchorPoint = ccp(2/speedcs.width,2/speedcs.height);
-	speedSprite.position = ccp(s.width-45-1, speedY-10);
-	[self addChild:speedSprite z:1];
+	speedSprite_ = [[CCSprite spriteWithSpriteFrameName:@"arrow.png"] retain];
+	CGSize speedcs = [speedSprite_ contentSize];
+	speedSprite_.anchorPoint = ccp(2/speedcs.width,2/speedcs.height);
+	speedSprite_.position = ccp(s.width-45-1, speedY-10);
+	[self addChild:speedSprite_ z:1];
 	
 	// Again, a CCLabelAtlas is used to display the speed value
-	speedAtlas = [[CCLabelAtlas labelWithString:@"::0" charMapFile:@"number_fonts_small.png" itemWidth:16 itemHeight:24 startCharMap:'0'] retain];
-	speedAtlas.anchorPoint = ccp( 0.5f, 0.5f);
-	[self addChild:speedAtlas];
-	speedAtlas.position = ccp(s.width-45,speedY-40);	
+	speedLabel_ = [[CCLabelAtlas labelWithString:@"::0" charMapFile:@"font_grinched_21.png" itemWidth:16 itemHeight:24 startCharMap:'0'] retain];
+	speedLabel_.anchorPoint = ccp( 0.5f, 0.5f);
+	[self addChild:speedLabel_];
+	speedLabel_.position = ccp(s.width-45,speedY-40);	
 }
 
 -(void) loadPauseButton
@@ -199,13 +200,13 @@ enum {
 -(void) update: (ccTime) delta
 {	
 	// TIP: CCLabelAtas again
-	//  Try to avoid updating Labels in main loops, instead use CCLabelAtlas or CCBitmapFontAtlas
+	//  Try to avoid updating Labels in main loops, instead use CCLabelAtlas or CCLabelBMFont
 	NSString *val = [NSString stringWithFormat:@"%4d", [GameNode score] ];
 	val = [val stringByReplacingOccurrencesOfString:@" " withString:(NSString *)@":"];
-	[scoreAtlas setString:val];
+	[scoreLabel_ setString:val];
 
 	// display / hide menu according to the state machine
-	if( game->state_ == kGameOver )
+	if( game_->state_ == kGameOver )
 		[self showTryAgain];
 		
 	if ( state == kHUDRemoveMenu ) {
@@ -215,33 +216,33 @@ enum {
 
 	
 	{ // angle
-		int a = -game->throwAngle_ + 180;
-		arrowSprite.rotation = a;
+		int a = -game_->throwAngle_ + 180;
+		arrowSprite_.rotation = a;
 
-		a = game->throwAngle_ + 180;
+		a = game_->throwAngle_ + 180;
 		if( a < 0 )
 			a += 360;
 		val = [NSString stringWithFormat:@"%3d", a ];
 		val = [val stringByReplacingOccurrencesOfString:@" " withString:(NSString *)@":"];
 		// update angle CCLabelAtlas
-		[angleAtlas setString:val];
+		[angleLabel_ setString:val];
 		
 	}
 
 	{ // speed
-		speedSprite.rotation = 170 + (200.0f / 1000.0f) * game->throwVelocity_;
+		speedSprite_.rotation = 170 + (200.0f / 1000.0f) * game_->throwVelocity_;
 
-		val = [NSString stringWithFormat:@"%3d", (int)game->throwVelocity_ ];
+		val = [NSString stringWithFormat:@"%3d", (int)game_->throwVelocity_ ];
 		val = [val stringByReplacingOccurrencesOfString:@" " withString:(NSString *)@":"];
 		// update speed CCLabelAtlas
-		[speedAtlas setString:val];		
+		[speedLabel_ setString:val];		
 	}
 }
 
 #pragma mark HUD - Menu
 -(void) showTryAgain
 {
-	game->state_ = kGameTryAgain;
+	game_->state_ = kGameTryAgain;
 
 	SoundMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-tryagain-normal.png" selectedSpriteFrameName:@"btn-tryagain-selected.png" target:self selector:@selector(tryAgainCallback:)];
 	SoundMenuItem *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-save-normal.png" selectedSpriteFrameName:@"btn-save-selected.png" target:self selector:@selector(saveScoreCallback:)];
@@ -257,7 +258,7 @@ enum {
 	state = kHUDRemoveMenu;
 	[[SimpleAudioEngine sharedEngine] playEffect:@"snd-gameplay-ohno.caf"];
 
-	game->state_ = kGameDrawTongue;
+	game_->state_ = kGameDrawTongue;
 	[self schedule:@selector(addJoint:) interval:0.8f];
 	
 	// BUG FIX: Pause the monus while it is revolving. This avoids cheating.
@@ -266,20 +267,20 @@ enum {
 	
 	// monus
 	if( [SelectCharNode selectedChar] == 1 )
-		[game->sapusSprite_ setDisplayFrameWithAnimationName:@"notail" index: game->displayFrame_];
+		[game_->sapusSprite_ setDisplayFrameWithAnimationName:@"notail" index: game_->displayFrame_];
 }
 
 // Attach the tongue to the tree
 -(void) addJoint:(ccTime) dt
 {
 	[self unschedule:_cmd];
-	[game addJoint];
+	[game_ addJoint];
 }
 
 -(void) pauseRevolutions:(ccTime)dt
 {
 	[self unschedule:_cmd];
-	cpBodySetVel( game->sapusBody_, cpvzero);
+	cpBodySetVel( game_->sapusBody_, cpvzero);
 }
 
 -(void) menuCallback: (id) sender

@@ -63,7 +63,7 @@
 			if(buttonIndex == 0) { // go back to game. resume
 				return;
 			} else if(buttonIndex == 1) { // restart
-				game->state_ = kGameIsBeingReplaced;
+				game_->state_ = kGameIsBeingReplaced;
 				[[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:1.0f scene: [GameNode scene] ]];
 				
 			} else if(buttonIndex == 2) { // go to main menu
@@ -81,7 +81,7 @@
 
 -(void) scorePostFailedShowAlert
 {	
-	[activityIndicator stopAnimating];	
+	[activityIndicator_ stopAnimating];	
 
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connection failed"
 														message:@"Make sure that you have an active cellular or WiFi connection."
@@ -124,7 +124,7 @@
 			break;
 		case NSAlertSecondButtonReturn:
 			// Restart
-			game->state_ = kGameIsBeingReplaced;
+			game_->state_ = kGameIsBeingReplaced;
 			[[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:1.0f scene: [GameNode scene] ]];
 			break;
 		case NSAlertThirdButtonReturn:

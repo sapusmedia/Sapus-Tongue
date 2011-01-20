@@ -54,7 +54,7 @@ static NSString *_oldName = @"";
 {
 	ScoreManager *scoreMgr = [ScoreManager sharedManager];
 
-	int a = game->throwAngle_ + 180;
+	int a = game_->throwAngle_ + 180;
 	if( a < 0 )
 		a += 360;	
 	
@@ -62,7 +62,7 @@ static NSString *_oldName = @"";
 	score.playername = playername;
 	score.score = [NSNumber numberWithInt: [GameNode score]] ;
 	score.angle = [NSNumber numberWithInt: a];
-	score.speed = [NSNumber numberWithInt: game->throwVelocity_];
+	score.speed = [NSNumber numberWithInt: game_->throwVelocity_];
 	score.playerType = [NSNumber numberWithInt: [SelectCharNode selectedChar]];
 	
 	[score insertIntoDatabase: [scoreMgr database]];
@@ -79,9 +79,9 @@ static NSString *_oldName = @"";
 
 -(void) submitGlobalScoreWithName:(NSString*) playername
 {
-	[activityIndicator startAnimating];
+	[activityIndicator_ startAnimating];
 	
-	int a = game->throwAngle_ + 180;
+	int a = game_->throwAngle_ + 180;
 	if( a < 0 )
 		a += 360;	
 	
@@ -103,7 +103,7 @@ static NSString *_oldName = @"";
 	
 	// usr_ are fields that can be modified. user fields
 	[dict setObject: [NSNumber numberWithInt:[GameNode score]] forKey:@"cc_score"];	
-	[dict setObject: [NSNumber numberWithInt:(int)game->throwVelocity_] forKey:@"usr_speed"];
+	[dict setObject: [NSNumber numberWithInt:(int)game_->throwVelocity_] forKey:@"usr_speed"];
 	[dict setObject: [NSNumber numberWithInt:a] forKey:@"usr_angle"];
 	[dict setObject: playername forKey:@"cc_playername"];	
 	[dict setObject: [NSNumber numberWithInt:[SelectCharNode selectedChar]] forKey:@"usr_playertype"];
@@ -114,14 +114,14 @@ static NSString *_oldName = @"";
 	BOOL ok = [server updateScore:dict];	
 	
 	if( ! ok ) {
-		[activityIndicator stopAnimating];
+		[activityIndicator_ stopAnimating];
 	}
 	
 	[server release];
 }
 -(void) scorePostOk: (id) sender
 {
-	[activityIndicator stopAnimating];
+	[activityIndicator_ stopAnimating];
 	[self gotoHiScores];
 }
 
@@ -142,29 +142,29 @@ static NSString *_oldName = @"";
 	//  The only way to display them inside cocos2d is to add them to the [[[CCDirector] openGLView] addSubview:]
 	
 	state = kHUDRemoveMenu;
-	nameField = [self newTextField_Rounded];
+	nameField_ = [self newTextField_Rounded];
 	
 	CGRect frame;
 
 #if ST_AUTOROTATE == kSTAutorotationUIViewController	
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	frame = CGRectMake(s.width/2-100, 80, 200, 36);
-	nameField.frame = frame;
+	nameField_.frame = frame;
 	
 #else
 	frame = CGRectMake(130.0f, 230.0f, 200, 36);
-	nameField.frame = frame;
+	nameField_.frame = frame;
 	
 	// Rotate the control 180 degrees... remember that they don't follow cocos2d transformations
-	nameField.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
+	nameField_.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
 #endif
 	
 	if( [_oldName length] > 0 )
-		nameField.text = _oldName;
+		nameField_.text = _oldName;
 	
 	// Add the control to "cocos2d"... this is the only way to add them
-	[[[CCDirector sharedDirector] openGLView] addSubview: nameField];
-	[nameField becomeFirstResponder];
+	[[[CCDirector sharedDirector] openGLView] addSubview: nameField_];
+	[nameField_ becomeFirstResponder];
 	
 	// TIP:
 	//   Disable all cocos2d events when dealing ONLY with UIKit objects
@@ -174,9 +174,9 @@ static NSString *_oldName = @"";
 	//	[nameField release];
 	
 	//
-	// create the UIToolbar at the bottom of the view controller
+	// create the UItoolbar_ at the bottom of the view controller
 	// Only in the paid version
-	// The toolbar sais: "Submit score to global server: YES/NO?"
+	// The toolbar_ sais: "Submit score to global server: YES/NO?"
 	//
 	// TIP:
 	//   If you are going to submit data to the internet you must inform the user
@@ -184,16 +184,16 @@ static NSString *_oldName = @"";
 	//
 #if ! LITE_VERSION	
 	
-	toolbar = [UIToolbar new];
-	toolbar.barStyle = UIBarStyleDefault;
+	toolbar_ = [UIToolbar new];
+	toolbar_.barStyle = UIBarStyleDefault;
 	
-	switchCtl = [[UISwitch alloc] initWithFrame: CGRectMake(0.0f, 0.0f, 94, 27) ];
+	switchCtl_ = [[UISwitch alloc] initWithFrame: CGRectMake(0.0f, 0.0f, 94, 27) ];
 	ScoreManager *scoreMgr = [ScoreManager sharedManager];
-	switchCtl.on = scoreMgr.sendGlobalScores;
-	[switchCtl addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-	switchCtl.backgroundColor = [UIColor clearColor];
-	UIBarButtonItem *customItem = [[UIBarButtonItem alloc] initWithCustomView:switchCtl];
-	[switchCtl release];
+	switchCtl_.on = scoreMgr.sendGlobalScores;
+	[switchCtl_ addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+	switchCtl_.backgroundColor = [UIColor clearColor];
+	UIBarButtonItem *customItem = [[UIBarButtonItem alloc] initWithCustomView:switchCtl_];
+	[switchCtl_ release];
 	
 	frame = CGRectMake(0, 0.0f, 290.0f, 20);
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
@@ -206,40 +206,41 @@ static NSString *_oldName = @"";
 	[label release];
 	
 	NSArray *items = [NSArray arrayWithObjects: labelItem, customItem, nil];
-	toolbar.items = items;
+	toolbar_.items = items;
 	[customItem release];
 	[labelItem release];
 	
-	// size up the toolbar and set its frame
-	[toolbar sizeToFit];
-	CGFloat toolbarHeight = [toolbar frame].size.height;
+	// size up the toolbar_ and set its frame
+	[toolbar_ sizeToFit];
+	CGFloat toolbarHeight = [toolbar_ frame].size.height;
 	
 #if ST_AUTOROTATE == kSTAutorotationUIViewController
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		toolbar.frame = CGRectMake(0, s.height/2-12, s.width, toolbarHeight);
+		toolbar_.frame = CGRectMake(0, s.height/2-12, s.width, toolbarHeight);
 	else 
-		toolbar.frame = CGRectMake(0, s.height/2-34, s.width, toolbarHeight);
+		toolbar_.frame = CGRectMake(0, s.height/2-34, s.width, toolbarHeight);
 	
 #else
 	CGSize s = [[CCDirector sharedDirector] winSize];
-	toolbar.frame = CGRectMake(-62, 224, s.width, toolbarHeight);
-	toolbar.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
+	toolbar_.frame = CGRectMake(-62, 224, s.width, toolbarHeight);
+	toolbar_.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
 	
 #endif // ST_AUTOROTATE != UIViewController
 	
-	[[[CCDirector sharedDirector] openGLView] addSubview:toolbar];
+	[[[CCDirector sharedDirector] openGLView] addSubview:toolbar_];
 	
 #else // LITE_VERSION
-	switchCtl = nil;
-	toolbar = nil;
+	switchCtl_ = nil;
+	toolbar_ = nil;
 #endif // LITE_VERSION
 	
 	
-	//	[toolbar release];
+	//	[toolbar_ release];
 }
 
--(void) submitScore {
-	NSString *playername = nameField.text;
+-(void) submitScore
+{
+	NSString *playername = nameField_.text;
 	if( playername == nil )
 		playername = @"Anonymous";
 	else {
@@ -257,7 +258,7 @@ static NSString *_oldName = @"";
 	//   switchCtl is nil in the Lite version
 	//   and it will return False.
 	//   It is OK to deal with nil objects in obj-c.
-	if( switchCtl.on )
+	if( switchCtl_.on )
 		[self submitGlobalScoreWithName: playername];
 }
 
@@ -290,9 +291,10 @@ static NSString *_oldName = @"";
 
 #pragma mark TextField Delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)tf {
-	name = tf.text;
-	[name retain];
+- (BOOL)textFieldShouldReturn:(UITextField *)tf
+{
+	name_ = tf.text;
+	[name_ retain];
 	[tf resignFirstResponder];
 	
 	// re-enable cocos2d events
@@ -300,11 +302,11 @@ static NSString *_oldName = @"";
 	
 	[self submitScore];
 	
-	if( ! switchCtl.on )
+	if( ! switchCtl_.on )
 		[self gotoHiScores];
 	
-	[nameField removeFromSuperview];
-	[toolbar removeFromSuperview];
+	[nameField_ removeFromSuperview];
+	[toolbar_ removeFromSuperview];
 	
 	return NO;
 }
@@ -312,7 +314,7 @@ static NSString *_oldName = @"";
 //
 - (void)switchAction:(id)sender
 {
-	[[ScoreManager sharedManager] setSendGlobalScores:switchCtl.on];
+	[[ScoreManager sharedManager] setSendGlobalScores:switchCtl_.on];
 }
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
