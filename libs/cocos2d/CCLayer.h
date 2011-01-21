@@ -154,8 +154,8 @@
 {
 	GLubyte		opacity_;
 	ccColor3B	color_;	
-	GLfloat squareVertices[4 * 2];
-	GLubyte squareColors[4 * 4];
+	ccVertex2F	squareVertices_[4];
+	ccColor4B	squareColors_[4];
 	
 	ccBlendFunc	blendFunc_;
 }
@@ -210,8 +210,7 @@ the background.
  vector (starting at the origin, ending at the terminus).  If no vector is
  supplied, it defaults to (0, -1) -- a fade from top to bottom.
  
- Given the nature of
- the interpolation, you will not see either the start or end color for
+ Given the nature of the interpolation, you will not see either the start or end color for
  non-cardinal vectors; a smooth gradient implying both end points will be still
  be drawn, however.
  
@@ -236,9 +235,7 @@ the background.
 - (id) initWithColor: (ccColor4B) start fadingTo: (ccColor4B) end alongVector: (CGPoint) v;
 
 /** The starting color. */
-- (ccColor3B) startColor;
-- (void) setStartColor:(ccColor3B)colors;
-
+@property (nonatomic, readwrite) ccColor3B startColor;
 /** The ending color. */
 @property (nonatomic, readwrite) ccColor3B endColor;
 /** The starting opacity. */
@@ -257,8 +254,8 @@ the background.
  */
 @interface CCMultiplexLayer : CCLayer
 {
-	unsigned int enabledLayer;
-	NSMutableArray *layers;
+	unsigned int enabledLayer_;
+	NSMutableArray *layers_;
 }
 
 /** creates a CCMultiplexLayer with one or more layers using a variable argument list. */

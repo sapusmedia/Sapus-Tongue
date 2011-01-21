@@ -399,8 +399,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	// Gradient
 	CGSize s = [[CCDirector sharedDirector] winSize];
-	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0xb3, 0xe2, 0xe6, 0xff) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,1)];
-	[g setContentSize:CGSizeMake(s.width, 2000)];
+	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0xb3, 0xe2, 0xe6, 0xff) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,2)];
+	[g setContentSize:CGSizeMake(s.width, 1600)];
 	[self addChild: g z:-10 tag:kTagGradient];
 }
 
