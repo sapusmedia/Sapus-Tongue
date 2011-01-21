@@ -7,6 +7,7 @@ Changes in 2011-01-21 (v3.3)
 * [FIX] GameNode: Compiles if ST_EXPERIMENTAL_PHYSICS_STEP is enabled
 * [FIX] GameNode: Tongue/Tail appears on top of fly/branch
 * [FIX] GameNode / InstructionsNode: Tongue rendering works on Retina Display
+* [FIX] Gradient: Code uses CCLayerGrandient instead of GradientNode
 * [FIX] SelectCharNode: Uses kSTSelectedCharSapus/Monus instead of hardcoded values 0 & 1
 * [FIX] Spritesheets: Merged many images in sapus-monus-ufo-hud spritesheet
 * [3RD] cocos2d: uses cocos2d v0.99.5 + fixes

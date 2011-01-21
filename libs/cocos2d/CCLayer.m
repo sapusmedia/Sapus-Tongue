@@ -523,6 +523,11 @@
     [self updateColor];
 }
 
+-(void) setContentSize:(CGSize)size
+{
+	[super setContentSize:size];
+	[self updateColor];
+}
 @end
 
 #pragma mark -

@@ -27,7 +27,6 @@
 #import "SapusConfig.h"
 #import "InstructionsNode.h"
 #import "SimpleAudioEngine.h"
-#import "GradientLayer.h"
 #import "MainMenuNode.h"
 #import "SoundMenuItem.h"
 #import "SapusTongueAppDelegate.h"
@@ -187,14 +186,10 @@ eachShape(void *ptr, void* instance)
 		[self setupBackgroundTree];
 
 	// gradient
-	CGSize s = [[CCDirector sharedDirector] winSize];
-	GradientLayer *g = [GradientLayer layerWithColor:ccc4(0,0,0,0)];
-	[g setBottomColor:ccc4(0xc3,0xf2,0xf6,0xff) topColor:ccc4(0x73,0xa2,0xa6,0xff)];
-	[g changeHeight:s.height];
-	[g changeWidth:s.width];
-	[self addChild: g z:-10];	
-		
+	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0xc3,0xf2,0xf6,0xff) fadingTo:ccc4(0x73,0xa2,0xa6,0xff) alongVector:ccp(0,1)];
+	[self addChild: g z:-10];		
 	
+	CGSize s = [[CCDirector sharedDirector] winSize];
 	CCSprite *tree = [CCSprite spriteWithFile:stConverToiPadOniPad(@"SapusInstructions.png")];
 	tree.position = ccp( s.width/2, s.height/2);
 	[self addChild:tree z:-1];
@@ -450,14 +445,14 @@ eachShape(void *ptr, void* instance)
 	CGPoint diff = ccpSub( location, origin );
 	
 	CGPoint normalized = ccpNormalize( diff );
-	force = cpv( normalized.x, normalized.y );
+	force_ = cpv( normalized.x, normalized.y );
 
 	return YES;
 }
 
 -(BOOL) ccMouseUp:(NSEvent *)event
 {
-	force = cpv(0,0);
+	force_ = cpv(0,0);
 	return YES;
 }
 #endif

@@ -3,7 +3,7 @@
 //  SapusTongue
 //
 //  Created by Ricardo Quesada on 02/08/08.
-//  Copyright Sapus Media 2008. All rights reserved.
+//  Copyright Sapus Media 2008 - 2011. All rights reserved.
 //
 //  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
 

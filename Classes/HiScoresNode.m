@@ -22,7 +22,6 @@
 #import "SoundMenuItem.h"
 #import "SapusTongueAppDelegate.h"
 #import "LocalScore.h"
-#import "GradientLayer.h"
 #import "GameNode.h"
 #import "FloorNode.h"
 #import "MountainNode.h"
@@ -173,22 +172,20 @@
 
 	
 	// gradient
-	CGSize s = [[CCDirector sharedDirector] winSize];
-	GradientLayer *g = [GradientLayer layerWithColor:ccc4(0,0,0,0)];
+	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0,0,0,255) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,1)];
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[g setBottomColor:ccc4(0xb3,0xe2,0xe6,0xff) topColor:ccc4(0,0,0,255)];
+		[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
+		[g setEndColor:ccc3(0,0,0)];
 	} else {
-		[g setBottomColor:ccc4(0xb3,0xe2,0xe6,0xff) topColor:ccc4(0x93,0xc2,0xc6,0xff)];
+		[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
+		[g setEndColor:ccc3(0x93,0xc2,0xc6)];
 	}
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
-	[g setBottomColor:ccc4(0xb3,0xe2,0xe6,0xff) topColor:ccc4(0,0,0,255)];
+	[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
 #endif
-
 	
-	[g changeHeight:s.height];
-	[g changeWidth:s.width];
 	[self addChild: g z:-10];	
 }
 

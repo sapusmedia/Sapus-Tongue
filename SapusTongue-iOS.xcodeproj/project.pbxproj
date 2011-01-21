@@ -317,7 +317,6 @@
 		501E7D12114041FB00BE00B5 /* sapus-monus-selection.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76A8114041FA00BE00B5 /* sapus-monus-selection.png */; };
 		501E7D16114041FB00BE00B5 /* SapusChoosePlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */; };
 		501E7D17114041FB00BE00B5 /* SapusCredits.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AD114041FA00BE00B5 /* SapusCredits.png */; };
-		501E7D19114041FB00BE00B5 /* SapusCreditsBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */; };
 		501E7D1B114041FB00BE00B5 /* SapusHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B1114041FA00BE00B5 /* SapusHead.png */; };
 		501E7D1C114041FB00BE00B5 /* SapusInstructions.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B2114041FA00BE00B5 /* SapusInstructions.png */; };
 		501E7D1F114041FB00BE00B5 /* SapusMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B5114041FA00BE00B5 /* SapusMenu.png */; };
@@ -335,7 +334,6 @@
 		50609A8311403502002447DB /* FloorNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6611403502002447DB /* FloorNode.m */; };
 		50609A8411403502002447DB /* GameHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6811403502002447DB /* GameHUD.m */; };
 		50609A8511403502002447DB /* GameNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6A11403502002447DB /* GameNode.m */; };
-		50609A8611403502002447DB /* GradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6C11403502002447DB /* GradientLayer.m */; };
 		50609A8711403502002447DB /* HiScoresNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6E11403502002447DB /* HiScoresNode.m */; };
 		50609A8811403502002447DB /* InstructionsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A7011403502002447DB /* InstructionsNode.m */; };
 		50609A8911403502002447DB /* LoadingBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A7211403502002447DB /* LoadingBarNode.m */; };
@@ -351,7 +349,6 @@
 		50609A9311403502002447DB /* FloorNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6611403502002447DB /* FloorNode.m */; };
 		50609A9411403502002447DB /* GameHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6811403502002447DB /* GameHUD.m */; };
 		50609A9511403502002447DB /* GameNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6A11403502002447DB /* GameNode.m */; };
-		50609A9611403502002447DB /* GradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6C11403502002447DB /* GradientLayer.m */; };
 		50609A9711403502002447DB /* HiScoresNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A6E11403502002447DB /* HiScoresNode.m */; };
 		50609A9811403502002447DB /* InstructionsNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A7011403502002447DB /* InstructionsNode.m */; };
 		50609A9911403502002447DB /* LoadingBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 50609A7211403502002447DB /* LoadingBarNode.m */; };
@@ -657,7 +654,6 @@
 		50795FDC11404807003C55B1 /* SapusBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AA114041FA00BE00B5 /* SapusBuy.png */; };
 		50795FDD11404807003C55B1 /* SapusChoosePlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */; };
 		50795FDE11404807003C55B1 /* SapusCredits.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AD114041FA00BE00B5 /* SapusCredits.png */; };
-		50795FDF11404807003C55B1 /* SapusCreditsBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */; };
 		50795FE111404807003C55B1 /* SapusHead.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B1114041FA00BE00B5 /* SapusHead.png */; };
 		50795FE211404807003C55B1 /* SapusInstructions.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B2114041FA00BE00B5 /* SapusInstructions.png */; };
 		50795FE411404807003C55B1 /* SapusMenuLite.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B6114041FA00BE00B5 /* SapusMenuLite.png */; };
@@ -1339,7 +1335,6 @@
 		501E76AA114041FA00BE00B5 /* SapusBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusBuy.png; sourceTree = "<group>"; };
 		501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusChoosePlayer.png; sourceTree = "<group>"; };
 		501E76AD114041FA00BE00B5 /* SapusCredits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusCredits.png; sourceTree = "<group>"; };
-		501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusCreditsBackground.png; sourceTree = "<group>"; };
 		501E76B1114041FA00BE00B5 /* SapusHead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusHead.png; sourceTree = "<group>"; };
 		501E76B2114041FA00BE00B5 /* SapusInstructions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusInstructions.png; sourceTree = "<group>"; };
 		501E76B5114041FA00BE00B5 /* SapusMenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SapusMenu.png; sourceTree = "<group>"; };
@@ -1365,8 +1360,6 @@
 		50609A6811403502002447DB /* GameHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameHUD.m; sourceTree = "<group>"; };
 		50609A6911403502002447DB /* GameNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameNode.h; sourceTree = "<group>"; };
 		50609A6A11403502002447DB /* GameNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameNode.m; sourceTree = "<group>"; };
-		50609A6B11403502002447DB /* GradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientLayer.h; sourceTree = "<group>"; };
-		50609A6C11403502002447DB /* GradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientLayer.m; sourceTree = "<group>"; };
 		50609A6D11403502002447DB /* HiScoresNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiScoresNode.h; sourceTree = "<group>"; };
 		50609A6E11403502002447DB /* HiScoresNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HiScoresNode.m; sourceTree = "<group>"; };
 		50609A6F11403502002447DB /* InstructionsNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsNode.h; sourceTree = "<group>"; };
@@ -1991,7 +1984,6 @@
 				501E76AA114041FA00BE00B5 /* SapusBuy.png */,
 				501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */,
 				501E76AD114041FA00BE00B5 /* SapusCredits.png */,
-				501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */,
 				501E76B1114041FA00BE00B5 /* SapusHead.png */,
 				501E76B2114041FA00BE00B5 /* SapusInstructions.png */,
 				501E76B5114041FA00BE00B5 /* SapusMenu.png */,
@@ -2597,8 +2589,6 @@
 				5053BD4B117CE78F00258058 /* FastGrid.m */,
 				50609A6511403502002447DB /* FloorNode.h */,
 				50609A6611403502002447DB /* FloorNode.m */,
-				50609A6B11403502002447DB /* GradientLayer.h */,
-				50609A6C11403502002447DB /* GradientLayer.m */,
 				50609A7111403502002447DB /* LoadingBarNode.h */,
 				50609A7211403502002447DB /* LoadingBarNode.m */,
 				50609A7F11403502002447DB /* SoundMenuItem.h */,
@@ -3278,7 +3268,6 @@
 				501E7D12114041FB00BE00B5 /* sapus-monus-selection.png in Resources */,
 				501E7D16114041FB00BE00B5 /* SapusChoosePlayer.png in Resources */,
 				501E7D17114041FB00BE00B5 /* SapusCredits.png in Resources */,
-				501E7D19114041FB00BE00B5 /* SapusCreditsBackground.png in Resources */,
 				501E7D1B114041FB00BE00B5 /* SapusHead.png in Resources */,
 				501E7D1C114041FB00BE00B5 /* SapusInstructions.png in Resources */,
 				501E7D1F114041FB00BE00B5 /* SapusMenu.png in Resources */,
@@ -3630,7 +3619,6 @@
 				50795FDC11404807003C55B1 /* SapusBuy.png in Resources */,
 				50795FDD11404807003C55B1 /* SapusChoosePlayer.png in Resources */,
 				50795FDE11404807003C55B1 /* SapusCredits.png in Resources */,
-				50795FDF11404807003C55B1 /* SapusCreditsBackground.png in Resources */,
 				50795FE111404807003C55B1 /* SapusHead.png in Resources */,
 				50795FE211404807003C55B1 /* SapusInstructions.png in Resources */,
 				50795FE411404807003C55B1 /* SapusMenuLite.png in Resources */,
@@ -3704,7 +3692,6 @@
 				50609A9311403502002447DB /* FloorNode.m in Sources */,
 				50609A9411403502002447DB /* GameHUD.m in Sources */,
 				50609A9511403502002447DB /* GameNode.m in Sources */,
-				50609A9611403502002447DB /* GradientLayer.m in Sources */,
 				50609A9711403502002447DB /* HiScoresNode.m in Sources */,
 				50609A9811403502002447DB /* InstructionsNode.m in Sources */,
 				50609A9911403502002447DB /* LoadingBarNode.m in Sources */,
@@ -3736,7 +3723,6 @@
 				50609A8311403502002447DB /* FloorNode.m in Sources */,
 				50609A8411403502002447DB /* GameHUD.m in Sources */,
 				50609A8511403502002447DB /* GameNode.m in Sources */,
-				50609A8611403502002447DB /* GradientLayer.m in Sources */,
 				50609A8711403502002447DB /* HiScoresNode.m in Sources */,
 				50609A8811403502002447DB /* InstructionsNode.m in Sources */,
 				50609A8911403502002447DB /* LoadingBarNode.m in Sources */,

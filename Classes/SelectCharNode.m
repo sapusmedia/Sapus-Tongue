@@ -230,7 +230,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	CCAnimation *animation = nil;
 		
 	if( location.x < s.width/2 && location.y < s.height-50 ) {
-		selectedChar = 0;
+		_selectedChar = kSTSelectedCharSapus;
 		animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"sapus-anim"];
 
 		[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
@@ -241,7 +241,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 		startButton_.visible = YES;
 		
 	} else if( location.x > s.width/2 && location.y < s.height-50) {
-		selectedChar = 1;
+		_selectedChar = kSTSelectedCharMonus;
 		animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"monus-anim"];
 
 		[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];

@@ -38,7 +38,6 @@
 
 #import "SelectCharNode.h"
 #import "SapusTongueAppDelegate.h"
-#import "GradientLayer.h"
 #import "FloorNode.h"
 #import "MountainNode.h"
 
@@ -397,14 +396,12 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	CCParallaxNode *parallax = [CCParallaxNode node];
 	[parallax addChild:mountain z:0 parallaxRatio:ccp(0.3f, 0.3f) positionOffset:ccp(0,0)];
 	[self addChild:parallax z:-7 tag:kTagMountains];
-	
-	// gradient
+
+	// Gradient
 	CGSize s = [[CCDirector sharedDirector] winSize];
-	GradientLayer *g = [GradientLayer layerWithColor:ccc4(0,0,0,0)];
-	[g setBottomColor:ccc4(0xb3,0xe2,0xe6,0xff) topColor:ccc4(0,0,0,255)];
-	[g changeHeight:1600];
-	[g changeWidth:s.width];
-	[self addChild: g z:-10 tag:kTagGradient];	
+	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0xb3, 0xe2, 0xe6, 0xff) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,1)];
+	[g setContentSize:CGSizeMake(s.width, 2000)];
+	[self addChild: g z:-10 tag:kTagGradient];
 }
 
 -(void) setupChipmunk

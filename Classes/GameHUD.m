@@ -26,7 +26,6 @@
 #import "GameNode.h"
 #import "SoundMenuItem.h"
 #import "MainMenuNode.h"
-#import "GradientLayer.h"
 #import "SapusTongueAppDelegate.h"
 #import "SelectCharNode.h"
 

@@ -11,7 +11,6 @@
 // A nice credits scene that shows a "scrolling" layer and some sprites moving from here to there
 //
 #import "CreditsNode.h"
-#import "GradientLayer.h"
 #import "SoundMenuItem.h"
 #import "MainMenuNode.h"
 #import "FastGrid.h"
@@ -79,10 +78,7 @@
 {
 	// back color
 
-	GradientLayer *g = [GradientLayer layerWithColor:ccc4(0,0,0,0)];
-	[g setBottomColor:ccc4(0xb3,0xe2,0xe6,0xff) topColor:ccc4(0,0,0,255)];
-	[g changeHeight:winSize_.height];
-	[g changeWidth:winSize_.width];
+	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0xb3, 0xe2, 0xe6, 0xff) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,1)];
 	[self addChild: g z:-10];
 }
 
@@ -103,9 +99,11 @@
 
 -(void) setupTree
 {
-	CCSprite *tree = [CCSprite spriteWithFile:@"SapusCreditsBackground.png"];
+	CCSprite *tree = [CCSprite spriteWithFile:@"tree1.png"];
 	[self addChild:tree z:-5];
 	tree.anchorPoint = CGPointZero;
+	tree.position = ccp(-50,-30);
+	tree.scale = 0.5f;
 }
 
 
