@@ -912,7 +912,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	float ys = sinf( sapusBody_->a + (float)M_PI_2);
 	float xs = cosf( sapusBody_->a + (float)M_PI_2);
 
-	float tongueLen = CC_CONTENT_SCALE_FACTOR() ? 11 : 7;
+	float tongueLen = (CC_CONTENT_SCALE_FACTOR() == 1) ? 11 : 7;
 	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
 		tongueLen = 15;
 	sapusV.x = sapusV.x + tongueLen*xs;

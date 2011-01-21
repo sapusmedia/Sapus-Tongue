@@ -315,7 +315,6 @@
 		501E7D0F114041FB00BE00B5 /* sapus-buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76A5114041FA00BE00B5 /* sapus-buttons.png */; };
 		501E7D11114041FB00BE00B5 /* sapus-monus-selection.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501E76A7114041FA00BE00B5 /* sapus-monus-selection.plist */; };
 		501E7D12114041FB00BE00B5 /* sapus-monus-selection.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76A8114041FA00BE00B5 /* sapus-monus-selection.png */; };
-		501E7D14114041FB00BE00B5 /* SapusBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AA114041FA00BE00B5 /* SapusBuy.png */; };
 		501E7D16114041FB00BE00B5 /* SapusChoosePlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AC114041FA00BE00B5 /* SapusChoosePlayer.png */; };
 		501E7D17114041FB00BE00B5 /* SapusCredits.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AD114041FA00BE00B5 /* SapusCredits.png */; };
 		501E7D19114041FB00BE00B5 /* SapusCreditsBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76AF114041FA00BE00B5 /* SapusCreditsBackground.png */; };
@@ -782,7 +781,6 @@
 		E02928DE12E8D00B009CD87B /* floor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210812E66C8D009CD87B /* floor-hd.png */; };
 		E02928DF12E8D00B009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
 		E02928E012E8D00B009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
-		E02928E112E8D00B009CD87B /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
 		E02928E212E8D00B009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
 		E02928E312E8D00B009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
 		E02928E412E8D00B009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
@@ -802,17 +800,16 @@
 		E02928F212E8D00D009CD87B /* SapusCredits-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210912E66C8D009CD87B /* SapusCredits-hd.png */; };
 		E02928F312E8D00D009CD87B /* SapusInstructions-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210A12E66C8D009CD87B /* SapusInstructions-hd.png */; };
 		E02928F412E8D00D009CD87B /* SapusMenu-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0709BB112E60F7E008D93FF /* SapusMenu-hd.png */; };
-		E02928F512E8D00D009CD87B /* SapusMenuLite-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */; };
 		E02928F612E8D00D009CD87B /* SapusScores-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210C12E66C8D009CD87B /* SapusScores-hd.png */; };
 		E02928F712E8D00D009CD87B /* tree1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210D12E66C8D009CD87B /* tree1-hd.png */; };
 		E02928F812E8D00D009CD87B /* trophy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029210E12E66C8D009CD87B /* trophy-hd.png */; };
-		E02928F912E8D01A009CD87B /* SapusMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B5114041FA00BE00B5 /* SapusMenu.png */; };
-		E02928FA12E8D01B009CD87B /* SapusMenuLite.png in Resources */ = {isa = PBXBuildFile; fileRef = 501E76B6114041FA00BE00B5 /* SapusMenuLite.png */; };
-		E02928FF12E8D03A009CD87B /* SapusMenu-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028593D1295848D002E2303 /* SapusMenu-ipad.png */; };
-		E029290012E8D03A009CD87B /* SapusBuy-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285AA41295DBDC002E2303 /* SapusBuy-ipad.png */; };
-		E029290112E8D03A009CD87B /* SapusMenuLite-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E0285A6B1295D59E002E2303 /* SapusMenuLite-ipad.png */; };
 		E029290712E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */; };
 		E029290812E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */; };
+		E02929F112E9EDD1009CD87B /* mountains1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02929EF12E9EDD1009CD87B /* mountains1-hd.png */; };
+		E02929F212E9EDD1009CD87B /* mountains2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02929F012E9EDD1009CD87B /* mountains2-hd.png */; };
+		E02929F312E9EDD1009CD87B /* mountains1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02929EF12E9EDD1009CD87B /* mountains1-hd.png */; };
+		E02929F412E9EDD1009CD87B /* mountains2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E02929F012E9EDD1009CD87B /* mountains2-hd.png */; };
+		E0292A0512E9F19E009CD87B /* SapusBuy-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292A0312E9F19E009CD87B /* SapusBuy-hd.png */; };
 		E042CD82125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E042CD81125E4B21006D81AB /* GameCenterManager.m */; };
 		E04BBA28120069B800445B60 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04BBA26120069B800445B60 /* RootViewController.m */; };
@@ -1503,6 +1500,9 @@
 		E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MonusTail-hd.png"; sourceTree = "<group>"; };
 		E029250012E8CFD4009CD87B /* SapusTongue-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusTongue-hd.png"; sourceTree = "<group>"; };
 		E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-hd.png"; sourceTree = "<group>"; };
+		E02929EF12E9EDD1009CD87B /* mountains1-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mountains1-hd.png"; sourceTree = "<group>"; };
+		E02929F012E9EDD1009CD87B /* mountains2-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mountains2-hd.png"; sourceTree = "<group>"; };
+		E0292A0312E9F19E009CD87B /* SapusBuy-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusBuy-hd.png"; sourceTree = "<group>"; };
 		E042CD80125E4B21006D81AB /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		E042CD81125E4B21006D81AB /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		E04BBA25120069B800445B60 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -2401,6 +2401,8 @@
 		E029211D12E66C94009CD87B /* RetinaDisplay */ = {
 			isa = PBXGroup;
 			children = (
+				E02929EF12E9EDD1009CD87B /* mountains1-hd.png */,
+				E02929F012E9EDD1009CD87B /* mountains2-hd.png */,
 				E02924FF12E8CFD4009CD87B /* MonusTail-hd.png */,
 				E029250012E8CFD4009CD87B /* SapusTongue-hd.png */,
 				E029230612E8CE1C009CD87B /* font_grinched_21-hd.png */,
@@ -2419,6 +2421,7 @@
 				E029210B12E66C8D009CD87B /* SapusMenuLite-hd.png */,
 				E029290612E8D108009CD87B /* SapusChoosePlayer-hd.png */,
 				E029210C12E66C8D009CD87B /* SapusScores-hd.png */,
+				E0292A0312E9F19E009CD87B /* SapusBuy-hd.png */,
 				E029210D12E66C8D009CD87B /* tree1-hd.png */,
 				E029210E12E66C8D009CD87B /* trophy-hd.png */,
 			);
@@ -3273,7 +3276,6 @@
 				501E7D0F114041FB00BE00B5 /* sapus-buttons.png in Resources */,
 				501E7D11114041FB00BE00B5 /* sapus-monus-selection.plist in Resources */,
 				501E7D12114041FB00BE00B5 /* sapus-monus-selection.png in Resources */,
-				501E7D14114041FB00BE00B5 /* SapusBuy.png in Resources */,
 				501E7D16114041FB00BE00B5 /* SapusChoosePlayer.png in Resources */,
 				501E7D17114041FB00BE00B5 /* SapusCredits.png in Resources */,
 				501E7D19114041FB00BE00B5 /* SapusCreditsBackground.png in Resources */,
@@ -3343,14 +3345,12 @@
 				E02928F212E8D00D009CD87B /* SapusCredits-hd.png in Resources */,
 				E02928F312E8D00D009CD87B /* SapusInstructions-hd.png in Resources */,
 				E02928F412E8D00D009CD87B /* SapusMenu-hd.png in Resources */,
-				E02928F512E8D00D009CD87B /* SapusMenuLite-hd.png in Resources */,
 				E02928F612E8D00D009CD87B /* SapusScores-hd.png in Resources */,
 				E02928F712E8D00D009CD87B /* tree1-hd.png in Resources */,
 				E02928F812E8D00D009CD87B /* trophy-hd.png in Resources */,
-				E02928FA12E8D01B009CD87B /* SapusMenuLite.png in Resources */,
-				E029290012E8D03A009CD87B /* SapusBuy-ipad.png in Resources */,
-				E029290112E8D03A009CD87B /* SapusMenuLite-ipad.png in Resources */,
 				E029290712E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */,
+				E02929F112E9EDD1009CD87B /* mountains1-hd.png in Resources */,
+				E02929F212E9EDD1009CD87B /* mountains2-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3681,14 +3681,14 @@
 				E02928DE12E8D00B009CD87B /* floor-hd.png in Resources */,
 				E02928DF12E8D00B009CD87B /* SapusCredits-hd.png in Resources */,
 				E02928E012E8D00B009CD87B /* SapusInstructions-hd.png in Resources */,
-				E02928E112E8D00B009CD87B /* SapusMenu-hd.png in Resources */,
 				E02928E212E8D00B009CD87B /* SapusMenuLite-hd.png in Resources */,
 				E02928E312E8D00B009CD87B /* SapusScores-hd.png in Resources */,
 				E02928E412E8D00B009CD87B /* tree1-hd.png in Resources */,
 				E02928E512E8D00B009CD87B /* trophy-hd.png in Resources */,
-				E02928F912E8D01A009CD87B /* SapusMenu.png in Resources */,
-				E02928FF12E8D03A009CD87B /* SapusMenu-ipad.png in Resources */,
 				E029290812E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */,
+				E02929F312E9EDD1009CD87B /* mountains1-hd.png in Resources */,
+				E02929F412E9EDD1009CD87B /* mountains2-hd.png in Resources */,
+				E0292A0512E9F19E009CD87B /* SapusBuy-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

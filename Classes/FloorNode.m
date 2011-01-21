@@ -23,16 +23,16 @@
 
 -(id) init
 {
-	if( !(self = [super init]) )
-		return nil;
-		
-	floorTex_ = [[CCTextureCache sharedTextureCache] addImage:@"floor.png"];
-	[floorTex_ retain];
+	if( (self = [super init]) ) {
+		floorTex_ = [[CCTextureCache sharedTextureCache] addImage:@"floor.png"];
+		[floorTex_ retain];
+	}
 
 	return self;
 }
 
--(void) dealloc {
+-(void) dealloc
+{
 	[floorTex_ release];
 	[super dealloc];
 }
@@ -45,9 +45,9 @@
 	
 	glDisableClientState(GL_COLOR_ARRAY);
 
-	CGSize size = [[CCDirector sharedDirector] winSize];
+	CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
 	
-	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8)];
+	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8 * CC_CONTENT_SCALE_FACTOR())];
 	
 	glEnableClientState(GL_COLOR_ARRAY);
 }
