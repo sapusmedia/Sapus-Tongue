@@ -1,5 +1,6 @@
 Changes in 2011-02-XX (v3.4)
 * [FIX] Resources: All PNG images use 72 DPI
+* [FIX] Resources: Plist. Removed extra space from Icon-lite-Small@2x.png entry
 
 Changes in 2011-01-22 (v3.3)
 * [NEW] Added Retina Display support. Added "-hd" resources for all images/maps
