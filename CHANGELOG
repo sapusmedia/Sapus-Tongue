@@ -1,4 +1,4 @@
-Changes in 2011-01-21 (v3.3)
+Changes in 2011-01-22 (v3.3)
 * [NEW] Added Retina Display support. Added "-hd" resources for all images/maps
 * [NEW-MAC] Added support for FullScreen (experimental)
 * [FIX] FloorNode: works with Retina Display
