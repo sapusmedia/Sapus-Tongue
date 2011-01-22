@@ -1,3 +1,6 @@
+Changes in 2011-02-XX (v3.4)
+* [FIX] Resources: All PNG images use 72 DPI
+
 Changes in 2011-01-22 (v3.3)
 * [NEW] Added Retina Display support. Added "-hd" resources for all images/maps
 * [NEW-MAC] Added support for FullScreen (experimental)
