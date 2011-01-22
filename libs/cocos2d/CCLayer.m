@@ -437,22 +437,30 @@
 	endOpacity_		= end.a;
 	startOpacity_	= start.a;
 	vector_ = v;
-
+	
 	start.a	= 255;
-    return [self initWithColor:start];
+	compressInterpolation_ = YES;
+
+	return [super initWithColor:start];
 }
 
 - (void) updateColor
 {
     [super updateColor];
 
-	float h = sqrtf(vector_.x*vector_.x + vector_.y*vector_.y);
+	float h = ccpLength(vector_);
     if (h == 0)
 		return;
 
-    double c = sqrt(2);
+	double c = sqrt(2);
     CGPoint u = ccp(vector_.x / h, vector_.y / h);
 
+	// Compress Interpolation mode
+	if( compressInterpolation_ ) {
+		float h2 = 1 / ( fabsf(u.x) + fabsf(u.y) );
+		u = ccpMult(u, h2 * (float)c);
+	}
+	
 	float opacityf = (float)opacity_/255.0f;
 	
     ccColor4B S = {
@@ -469,26 +477,27 @@
 		endOpacity_*opacityf
 	};
 
+
     // (-1, -1)
-	squareColors_[0].r = E.r + (S.r - E.r) * ((c + u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[0].g = E.g + (S.g - E.g) * ((c + u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[0].b = E.b + (S.b - E.b) * ((c + u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[0].a = E.a + (S.a - E.a) * ((c + u.x * c + u.y * c) / (2.0f * c));
+	squareColors_[0].r = E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c));
+	squareColors_[0].g = E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c));
+	squareColors_[0].b = E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c));
+	squareColors_[0].a = E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c));
     // (1, -1)
-	squareColors_[1].r = E.r + (S.r - E.r) * ((c - u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[1].g = E.g + (S.g - E.g) * ((c - u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[1].b = E.b + (S.b - E.b) * ((c - u.x * c + u.y * c) / (2.0f * c));
-	squareColors_[1].a = E.a + (S.a - E.a) * ((c - u.x * c + u.y * c) / (2.0f * c));
+	squareColors_[1].r = E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c));
+	squareColors_[1].g = E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c));
+	squareColors_[1].b = E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c));
+	squareColors_[1].a = E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c));
 	// (-1, 1)
-	squareColors_[2].r = E.r + (S.r - E.r) * ((c + u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[2].g = E.g + (S.g - E.g) * ((c + u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[2].b = E.b + (S.b - E.b) * ((c + u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[2].a = E.a + (S.a - E.a) * ((c + u.x * c - u.y * c) / (2.0f * c));
+	squareColors_[2].r = E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c));
+	squareColors_[2].g = E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c));
+	squareColors_[2].b = E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c));
+	squareColors_[2].a = E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c));
 	// (1, 1)
-	squareColors_[3].r = E.r + (S.r - E.r) * ((c - u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[3].g = E.g + (S.g - E.g) * ((c - u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[3].b = E.b + (S.b - E.b) * ((c - u.x * c - u.y * c) / (2.0f * c));
-	squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x * c - u.y * c) / (2.0f * c));
+	squareColors_[3].r = E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c));
+	squareColors_[3].g = E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c));
+	squareColors_[3].b = E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c));
+	squareColors_[3].a = E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c));
 }
 
 -(ccColor3B) startColor
@@ -525,17 +534,22 @@
     [self updateColor];
 }
 
-//-(void) setContentSize:(CGSize)size
-//{
-//	[super setContentSize:size];
-//	[self updateColor];
-//}
+-(BOOL) compressInterpolation
+{
+	return compressInterpolation_;
+}
+
+-(void) setCompressInterpolation:(BOOL)compress
+{
+	compressInterpolation_ = compress;
+	[self updateColor];
+}
 @end
 
 #pragma mark -
 #pragma mark MultiplexLayer
 
-@implementation CCMultiplexLayer
+@implementation CCLayerMultiplex
 +(id) layerWithLayers: (CCLayer*) layer, ... 
 {
 	va_list args;
@@ -597,5 +611,8 @@
 	
 	[self addChild: [layers_ objectAtIndex:n]];		
 }
+@end
 
+// XXX Deprecated
+@implementation CCMultiplexLayer
 @end
