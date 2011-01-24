@@ -1955,7 +1955,7 @@
 				GCC_PREFIX_HEADER = "Resources-Mac/SapusTongue_Prefix.pch";
 				INFOPLIST_FILE = "Resources-Mac/SapusTongue-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = "Sapus Tongue";
+				PRODUCT_NAME = SapusTongue;
 			};
 			name = Release;
 		};
