@@ -48,10 +48,10 @@
                   backing:(NSBackingStoreType)bufferingType 
                     defer:(BOOL)flag {
 	
-	if (self = [super initWithContentRect:contentRect 
+	if ((self = [super initWithContentRect:contentRect 
 								styleMask:NSBorderlessWindowMask
 								  backing:bufferingType
-									defer:flag]) {
+									defer:flag])) {
 		parentView = nil;
 		// we are transparent and ignore mouse events
 		[self setBackgroundColor:[NSColor clearColor]];
@@ -143,10 +143,10 @@
                   backing:(NSBackingStoreType)bufferingType 
                     defer:(BOOL)flag {
 	
-	if (self = [super initWithContentRect:contentRect 
+	if ((self = [super initWithContentRect:contentRect 
 								styleMask:NSBorderlessWindowMask
 								  backing:bufferingType
-									defer:flag]) {
+									defer:flag])) {
 		parentView = nil;
 		// we are transparent and ignore mouse events
 		[self setBackgroundColor:[NSColor clearColor]];

@@ -263,10 +263,9 @@
 {
 	struct timeval t;
 	gettimeofday(&t, nil);
-	unsigned int i;
-	i = t.tv_sec;
+	NSUInteger i = t.tv_sec;
 	i += t.tv_usec;
-	srandom(i);	
+	srandom((unsigned int)i);
 }
 #pragma mark AppDelegate - Setup Director
 

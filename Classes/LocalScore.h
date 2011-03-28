@@ -13,16 +13,16 @@
 
 @interface LocalScore : NSObject {
     // Opaque reference to the underlying database.
-    sqlite3 *database;
+    sqlite3 *database_;
     // Primary key in the database.
-    NSInteger primaryKey;
+    NSInteger	primaryKey_;
 
     // Attributes.
-    NSString	*playername;
-	NSNumber	*score;
-	NSNumber	*playerType;
-	NSNumber	*angle;
-	NSNumber	*speed;
+    NSString	*playername_;
+	NSNumber	*score_;
+	NSNumber	*playerType_;
+	NSNumber	*angle_;
+	NSNumber	*speed_;
 }
 
 // Property exposure for primary key and other attributes. The primary key is 'assign' because it is not an object, 

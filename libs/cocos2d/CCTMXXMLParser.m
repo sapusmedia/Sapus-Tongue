@@ -296,11 +296,14 @@
 			
 			if( [compression isEqualToString:@"gzip"] )
 				layerAttribs |= TMXLayerAttribGzip;
-			
-			NSAssert( !compression || [compression isEqualToString:@"gzip"], @"TMX: unsupported compression method" );
+
+			else if( [compression isEqualToString:@"zlib"] )
+				layerAttribs |= TMXLayerAttribZlib;
+
+			NSAssert( !compression || [compression isEqualToString:@"gzip"] || [compression isEqualToString:@"zlib"], @"TMX: unsupported compression method" );
 		}
 		
-		NSAssert( layerAttribs != TMXLayerAttribNone, @"TMX tile map: Only base64 and/or gzip maps are supported" );
+		NSAssert( layerAttribs != TMXLayerAttribNone, @"TMX tile map: Only base64 and/or gzip/zlib maps are supported" );
 		
 	} else if([elementName isEqualToString:@"object"]) {
 	
@@ -387,13 +390,13 @@
 		CCTMXLayerInfo *layer = [layers_ lastObject];
 		
 		unsigned char *buffer;
-		len = base64Decode((unsigned char*)[currentString UTF8String], [currentString length], &buffer);
+		len = base64Decode((unsigned char*)[currentString UTF8String], (unsigned int) [currentString length], &buffer);
 		if( ! buffer ) {
 			CCLOG(@"cocos2d: TiledMap: decode data error");
 			return;
 		}
 		
-		if( layerAttribs & TMXLayerAttribGzip ) {
+		if( layerAttribs & (TMXLayerAttribGzip | TMXLayerAttribZlib) ) {
 			unsigned char *deflated;
 			ccInflateMemory(buffer, len, &deflated);
 			free( buffer );

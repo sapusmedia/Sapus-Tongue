@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-//#if NS_BLOCKS_AVAILABLE
-//#define Z_BLOCKS 1
-//#else
-//// set this to 1 if you are using PLBlocks
-//#define Z_BLOCKS 0
-//#endif
-
+#if NS_BLOCKS_AVAILABLE
+#define Z_BLOCKS 1
+#else
+// set this to 1 if you are using PLBlocks
+#define Z_BLOCKS 0
+#endif
 
 #if Z_BLOCKS
 enum {
