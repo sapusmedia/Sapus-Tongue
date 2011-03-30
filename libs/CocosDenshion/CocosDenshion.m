@@ -332,12 +332,12 @@ static BOOL _mixerRateSet = NO;
 
 -(void) defineSourceGroups:(NSArray*) sourceGroupDefinitions {
 	CDLOGINFO(@"Denshion::CDSoundEngine - source groups defined by NSArray.");
-	int totalDefs = (int)[sourceGroupDefinitions count];
+	int totalDefs = [sourceGroupDefinitions count];
 	int* defs = (int *)malloc( sizeof(int) * totalDefs);
 	int currentIndex = 0;
 	for (id currentDef in sourceGroupDefinitions) {
 		if ([currentDef isKindOfClass:[NSNumber class]]) {
-			defs[currentIndex] = (int)[(NSNumber*)currentDef integerValue];
+			defs[currentIndex] = [(NSNumber*)currentDef integerValue];
 			CDLOGINFO(@"Denshion::CDSoundEngine - found definition %i.",defs[currentIndex]);
 		} else {
 			CDLOG(@"Denshion::CDSoundEngine - warning, did not understand source definition.");
