@@ -3982,6 +3982,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = cocos2d;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -3998,6 +3999,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = cocos2d;
+				SKIP_INSTALL = YES;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -4012,6 +4014,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = cocos2d;
+				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
 		};
