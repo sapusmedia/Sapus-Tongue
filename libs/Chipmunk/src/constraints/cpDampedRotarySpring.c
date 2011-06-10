@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "chipmunk.h"
+#include "chipmunk_private.h"
 #include "constraints/util.h"
 
 static cpFloat
@@ -72,6 +72,7 @@ getImpulse(cpConstraint *constraint)
 	return 0.0f;
 }
 
+const cpConstraintClass * cpDampedRotarySpringGetClass();
 static const cpConstraintClass klass = {
 	(cpConstraintPreStepFunction)preStep,
 	(cpConstraintApplyImpulseFunction)applyImpulse,

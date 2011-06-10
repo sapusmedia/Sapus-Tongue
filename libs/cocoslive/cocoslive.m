@@ -25,10 +25,11 @@
 
 
 #import <UIKit/UIKit.h>
+#import "cocoslive.h"
 
 static NSString *version = @"cocoslive v0.3.2";
 
-NSString *cocosLiveVersion()
+NSString *cocosLiveVersion(void)
 {
 	return version;
 }

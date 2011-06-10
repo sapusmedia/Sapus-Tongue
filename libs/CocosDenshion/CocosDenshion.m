@@ -25,6 +25,7 @@
 #import "CocosDenshion.h"
 
 typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
+ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
 ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq)
 {
 	static	alBufferDataStaticProcPtr	proc = NULL;
@@ -40,6 +41,7 @@ ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALs
 }
 
 typedef ALvoid	AL_APIENTRY	(*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
+ALvoid  alcMacOSXMixerOutputRateProc(const ALdouble value);
 ALvoid  alcMacOSXMixerOutputRateProc(const ALdouble value)
 {
 	static	alcMacOSXMixerOutputRateProcPtr	proc = NULL;
@@ -332,12 +334,12 @@ static BOOL _mixerRateSet = NO;
 
 -(void) defineSourceGroups:(NSArray*) sourceGroupDefinitions {
 	CDLOGINFO(@"Denshion::CDSoundEngine - source groups defined by NSArray.");
-	int totalDefs = [sourceGroupDefinitions count];
+	int totalDefs = (int)[sourceGroupDefinitions count];
 	int* defs = (int *)malloc( sizeof(int) * totalDefs);
 	int currentIndex = 0;
 	for (id currentDef in sourceGroupDefinitions) {
 		if ([currentDef isKindOfClass:[NSNumber class]]) {
-			defs[currentIndex] = [(NSNumber*)currentDef integerValue];
+			defs[currentIndex] = (int)[(NSNumber*)currentDef integerValue];
 			CDLOGINFO(@"Denshion::CDSoundEngine - found definition %i.",defs[currentIndex]);
 		} else {
 			CDLOG(@"Denshion::CDSoundEngine - warning, did not understand source definition.");

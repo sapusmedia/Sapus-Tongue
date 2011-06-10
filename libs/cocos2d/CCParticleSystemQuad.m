@@ -1,8 +1,10 @@
 /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
- * Copyright (c) 2008-2010 Ricardo Quesada
  * Copyright (c) 2009 Leonardo Kasperavičius
+ *
+ * Copyright (c) 2008-2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,11 +94,10 @@
 	[super dealloc];
 }
 
-// rect is in Points coordinates.
+// pointRect is in Points coordinates.
 -(void) initTexCoordsWithRect:(CGRect)pointRect
 {
-	// convert to Tex coords
-	
+	// convert to pixels coords
 	CGRect rect = CGRectMake(
 							 pointRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
 							 pointRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
@@ -148,9 +149,8 @@
 
 -(void) setTexture:(CCTexture2D *)texture
 {
-	[self setTexture:texture withRect:CGRectMake(0,0, 
-												 [texture pixelsWide] / CC_CONTENT_SCALE_FACTOR(), 
-												 [texture pixelsHigh] / CC_CONTENT_SCALE_FACTOR() )];
+	CGSize s = [texture contentSize];
+	[self setTexture:texture withRect:CGRectMake(0,0, s.width, s.height)];
 }
 
 -(void) setDisplayFrame:(CCSpriteFrame *)spriteFrame

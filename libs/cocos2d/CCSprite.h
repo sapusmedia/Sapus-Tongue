@@ -2,6 +2,7 @@
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,9 +53,11 @@ typedef enum {
 	CC_HONOR_PARENT_TRANSFORM_ROTATE	=  1 << 1,
 	//! Scale with it's parent
 	CC_HONOR_PARENT_TRANSFORM_SCALE		=  1 << 2,
+	//! Skew with it's parent
+	CC_HONOR_PARENT_TRANSFORM_SKEW		=  1 << 3,
 
 	//! All possible transformation enabled. Default value.
-	CC_HONOR_PARENT_TRANSFORM_ALL		=  CC_HONOR_PARENT_TRANSFORM_TRANSLATE | CC_HONOR_PARENT_TRANSFORM_ROTATE | CC_HONOR_PARENT_TRANSFORM_SCALE,
+	CC_HONOR_PARENT_TRANSFORM_ALL		=  CC_HONOR_PARENT_TRANSFORM_TRANSLATE | CC_HONOR_PARENT_TRANSFORM_ROTATE | CC_HONOR_PARENT_TRANSFORM_SCALE | CC_HONOR_PARENT_TRANSFORM_SKEW,
 
 } ccHonorParentTransform;
 

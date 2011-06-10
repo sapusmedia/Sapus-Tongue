@@ -2,6 +2,7 @@
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +51,7 @@ struct transformValues_ {
 	CGPoint pos;		// position x and y
 	CGPoint	scale;		// scale x and y
 	float	rotation;
+	CGPoint skew;		// skew x and y
 	CGPoint ap;			// anchor point in pixels
 	BOOL	visible;
 };
@@ -104,6 +106,8 @@ struct transformValues_ {
 +(id)spriteWithSpriteFrameName:(NSString*)spriteFrameName
 {
 	CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:spriteFrameName];
+	
+	NSAssert1(frame!=nil, @"Invalid spriteFrameName: %@", spriteFrameName);
 	return [self spriteWithSpriteFrame:frame];
 }
 
@@ -472,10 +476,16 @@ struct transformValues_ {
 		float radians = -CC_DEGREES_TO_RADIANS(rotation_);
 		float c = cosf(radians);
 		float s = sinf(radians);
-		
+
 		matrix = CGAffineTransformMake( c * scaleX_,  s * scaleX_,
 									   -s * scaleY_, c * scaleY_,
 									   positionInPixels_.x, positionInPixels_.y);
+		if( skewX_ || skewY_ ) {
+			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(skewY_)),
+																 tanf(CC_DEGREES_TO_RADIANS(skewX_)), 1.0f,
+																 0.0f, 0.0f);
+			matrix = CGAffineTransformConcat(skewMatrix, matrix);
+		}
 		matrix = CGAffineTransformTranslate(matrix, -anchorPointInPixels_.x, -anchorPointInPixels_.y);		
 
 		
@@ -503,11 +513,16 @@ struct transformValues_ {
 			}
 			CGAffineTransform newMatrix = CGAffineTransformIdentity;
 			
-			// 2nd: Translate, Rotate, Scale
+			// 2nd: Translate, Skew, Rotate, Scale
 			if( prevHonor & CC_HONOR_PARENT_TRANSFORM_TRANSLATE )
 				newMatrix = CGAffineTransformTranslate(newMatrix, tv.pos.x, tv.pos.y);
 			if( prevHonor & CC_HONOR_PARENT_TRANSFORM_ROTATE )
 				newMatrix = CGAffineTransformRotate(newMatrix, -CC_DEGREES_TO_RADIANS(tv.rotation));
+			if ( prevHonor & CC_HONOR_PARENT_TRANSFORM_SKEW ) {
+				CGAffineTransform skew = CGAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(tv.skew.y)), tanf(CC_DEGREES_TO_RADIANS(tv.skew.x)), 1.0f, 0.0f, 0.0f);
+				// apply the skew to the transform
+				newMatrix = CGAffineTransformConcat(skew, newMatrix);
+			}
 			if( prevHonor & CC_HONOR_PARENT_TRANSFORM_SCALE ) {
 				newMatrix = CGAffineTransformScale(newMatrix, tv.scale.x, tv.scale.y);
 			}
@@ -570,6 +585,8 @@ struct transformValues_ {
 	tv->scale.x		= scaleX_;
 	tv->scale.y		= scaleY_;
 	tv->rotation	= rotation_;
+	tv->skew.x		= skewX_;
+	tv->skew.y		= skewY_;
 	tv->ap			= anchorPointInPixels_;
 	tv->visible		= visible_;
 }
@@ -725,6 +742,18 @@ struct transformValues_ {
 -(void)setRotation:(float)rot
 {
 	[super setRotation:rot];
+	SET_DIRTY_RECURSIVELY();
+}
+
+-(void)setSkewX:(float)sx
+{
+	[super setSkewX:sx];
+	SET_DIRTY_RECURSIVELY();
+}
+
+-(void)setSkewY:(float)sy
+{
+	[super setSkewY:sy];
 	SET_DIRTY_RECURSIVELY();
 }
 
@@ -926,8 +955,12 @@ struct transformValues_ {
 }
 
 -(CCSpriteFrame*) displayedFrame
-{
-	return [CCSpriteFrame frameWithTexture:self.texture rect:rect_];
+{	
+	return [CCSpriteFrame frameWithTexture:texture_
+							  rectInPixels:rectInPixels_
+								   rotated:rectRotated_
+									offset:unflippedOffsetPositionFromCenter_
+							  originalSize:contentSizeInPixels_];
 }
 
 -(void) addAnimation: (CCAnimation*) anim

@@ -87,7 +87,10 @@ static inline void ccArrayFree(ccArray *arr)
 static inline void ccArrayDoubleCapacity(ccArray *arr)
 {
 	arr->max *= 2;
-	arr->arr = (id*) realloc( arr->arr, arr->max * sizeof(id) );
+	id *newArr = (id *)realloc( arr->arr, arr->max * sizeof(id) );
+	// will fail when there's not enough memory
+    NSCAssert(newArr != NULL, @"ccArrayDoubleCapacity failed. Not enough memory");
+	arr->arr = newArr;
 }
 
 /** Increases array capacity such that max >= num + extra. */
@@ -96,6 +99,30 @@ static inline void ccArrayEnsureExtraCapacity(ccArray *arr, NSUInteger extra)
 	while (arr->max < arr->num + extra)
 		ccArrayDoubleCapacity(arr);
 }
+
+/** shrinks the array so the memory footprint corresponds with the number of items */
+static inline void ccArrayShrink(ccArray *arr)
+{
+    NSUInteger newSize;
+	
+	//only resize when necessary
+	if (arr->max > arr->num && !(arr->num==0 && arr->max==1))
+	{
+		if (arr->num!=0) 
+		{
+			newSize=arr->num;
+			arr->max=arr->num; 
+		}
+		else 
+		{//minimum capacity of 1, with 0 elements the array would be free'd by realloc
+			newSize=1;
+			arr->max=1;
+		}
+		
+		arr->arr = (id*) realloc(arr->arr,newSize * sizeof(id) );
+		NSCAssert(arr->arr!=NULL,@"could not reallocate the memory");
+	}
+} 
 
 /** Returns index of first occurence of object, NSNotFound if object not found. */
 static inline NSUInteger ccArrayGetIndexOfObject(ccArray *arr, id object)
@@ -312,7 +339,7 @@ static inline BOOL ccCArrayContainsValue(ccCArray *arr, void* value)
 /** Inserts a value at a certain position. Behaviour undefined if aray doesn't have enough capacity */
 static inline void ccCArrayInsertValueAtIndex( ccCArray *arr, void *value, NSUInteger index)
 {
-	assert( index < arr->max );
+	NSCAssert( index < arr->max, @"ccCArrayInsertValueAtIndex: invalid index");
 	
 	NSUInteger remaining = arr->num - index;
 	

@@ -2,6 +2,7 @@
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -127,8 +128,8 @@
         [fullScreenWindow_ setContentView:openGLView_];
         
         // Show the fullscreen window
-        [fullScreenWindow_ makeMainWindow];
         [fullScreenWindow_ makeKeyAndOrderFront:self];
+		[fullScreenWindow_ makeMainWindow];
         
     } else {
         
@@ -146,8 +147,8 @@
         [openGLView_ setFrame:originalWinRect_];
         
         // Show the window
-        [windowGLView_ makeMainWindow];
         [windowGLView_ makeKeyAndOrderFront:self];
+		[windowGLView_ makeMainWindow];
     }
     isFullScreen_ = fullscreen;
     

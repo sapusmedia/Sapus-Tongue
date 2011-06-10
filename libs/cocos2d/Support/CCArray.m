@@ -1,7 +1,7 @@
 /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
- * Copyright (c) 2010 ForzeFied Studios S.L. http://forzefield.com
+ * Copyright (c) 2010 ForzeField Studios S.L. http://forzefield.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -218,6 +218,26 @@
 	ccArraySwapObjectsAtIndexes(data, index1, index2);
 }
 
+- (void) reverseObjects
+{
+	if (data->num > 1)
+	{
+		//floor it since in case of a oneven number the number of swaps stays the same
+		int count = (int) floorf(data->num/2.f); 
+		NSUInteger maxIndex = data->num - 1;
+		
+		for (int i = 0; i < count ; i++)
+		{
+			ccArraySwapObjectsAtIndexes(data, i, maxIndex);
+			maxIndex--;
+		}
+	}
+}
+
+- (void) reduceMemoryFootprint
+{
+	ccArrayShrink(data);
+}
 
 #pragma mark Sending Messages to Elements
 

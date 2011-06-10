@@ -1,8 +1,10 @@
 /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
- * Copyright (c) 2009-2010 Ricardo Quesada
  * Copyright (C) 2009 Matt Oswald
+ *
+ * Copyright (c) 2009-2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -309,9 +311,9 @@ static 	SEL selUpdate = NULL;
 	// this is likely computationally expensive
 	NSUInteger quantity = (textureAtlas_.capacity + 1) * 4 / 3;
 	
-	CCLOG(@"cocos2d: CCSpriteBatchNode: resizing TextureAtlas capacity from [%u] to [%u].",
-		  (unsigned int)textureAtlas_.capacity,
-		  (unsigned int)quantity);
+	CCLOG(@"cocos2d: CCSpriteBatchNode: resizing TextureAtlas capacity from [%lu] to [%lu].",
+		  (long)textureAtlas_.capacity,
+		  (long)quantity);
 	
 	
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {

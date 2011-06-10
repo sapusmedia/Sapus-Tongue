@@ -2,6 +2,7 @@
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2009-2010 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +104,10 @@
 #pragma mark -
 #pragma mark CCTMXLayer
 
-@interface CCTMXLayer (Private)
+int compareInts (const void * a, const void * b);
+
+
+@interface CCTMXLayer ()
 -(CGPoint) positionForIsoAt:(CGPoint)pos;
 -(CGPoint) positionForOrthoAt:(CGPoint)pos;
 -(CGPoint) positionForHexAt:(CGPoint)pos;
@@ -119,12 +123,6 @@
 -(void) parseInternalProperties;
 
 -(NSInteger) vertexZForPos:(CGPoint)pos;
-
-// adding quad from sprite
--(void)addQuadFromSprite:(CCSprite*)sprite quadIndex:(NSUInteger)index;
-
-// adds an sprite without the quad
--(id)addSpriteWithoutQuad:(CCSprite*)child z:(NSInteger)z tag:(NSInteger)aTag;
 
 // index
 -(NSUInteger) atlasIndexForExistantZ:(NSUInteger)z;

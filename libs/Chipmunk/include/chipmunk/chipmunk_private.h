@@ -1,7 +1,4 @@
-/*
- * cocos2d for iPhone: http://www.cocos2d-iphone.org
- *
- * Copyright (c) 2008-2010 Ricardo Quesada
+/* Copyright (c) 2007 Scott Lembcke
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,26 +15,35 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
+#define CP_ALLOW_PRIVATE_ACCESS 1
+#include "chipmunk.h"
 
+void *cpSpaceGetPostStepData(cpSpace *space, void *obj);
 
-// 0x00 HI ME LO
-// 00   00 03 02
-#define COCOSLIVE_VERSION 0x00000302
+void cpSpaceActivateBody(cpSpace *space, cpBody *body);
 
-// to use localserver. DEBUG ONLY
-//#define USE_LOCAL_SERVER 1
+static inline void
+cpSpaceLock(cpSpace *space)
+{
+	space->locked++;
+}
 
-// all cocos live include files
-//
-#import "CLScoreServerPost.h"
-#import "CLScoreServerRequest.h"
-
-
-// free functions
-NSString * cocos2dVersion(void);
-NSString *cocosLiveVersion(void);
+static inline void
+cpSpaceUnlock(cpSpace *space)
+{
+	space->locked--;
+	cpAssert(space->locked >= 0, "Internal error:Space lock underflow.");
+	
+	if(!space->locked){
+		cpArray *waking = space->rousedBodies;
+		for(int i=0, count=waking->num; i<count; i++){
+			cpSpaceActivateBody(space, (cpBody *)waking->arr[i]);
+		}
+		
+		waking->num = 0;
+	}
+}

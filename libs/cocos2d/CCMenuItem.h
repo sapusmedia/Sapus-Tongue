@@ -2,6 +2,7 @@
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011 Zynga Inc.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +41,7 @@
  */
 @interface CCMenuItem : CCNode
 {
-	NSInvocation *invocation;
+	NSInvocation *invocation_;
 #if NS_BLOCKS_AVAILABLE
 	// used for menu items using a block
 	void (^block_)(id sender);
