@@ -29,7 +29,7 @@
 }
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
-@property (nonatomic, readonly) UIWindow *window;
+@property (nonatomic, readwrite, retain) UIWindow *window;
 @property (nonatomic, readwrite) BOOL isLandscapeLeft;
 @property (nonatomic, readwrite, retain) RootViewController *viewController;
 

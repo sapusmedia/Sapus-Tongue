@@ -210,6 +210,7 @@ static void drawEachShape( void *ptr, void *instace )
 }
 #endif // ST_DRAW_SHAPES
 
+int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data);
 
 int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 {
