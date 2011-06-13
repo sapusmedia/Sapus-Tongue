@@ -24,8 +24,11 @@
 
 #import "CocosDenshion.h"
 
-typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
 ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
+ALvoid  alcMacOSXMixerOutputRateProc(const ALdouble value);
+
+
+typedef ALvoid	AL_APIENTRY	(*alBufferDataStaticProcPtr) (const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq);
 ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALsizei size, ALsizei freq)
 {
 	static	alBufferDataStaticProcPtr	proc = NULL;
@@ -41,7 +44,6 @@ ALvoid  alBufferDataStaticProc(const ALint bid, ALenum format, ALvoid* data, ALs
 }
 
 typedef ALvoid	AL_APIENTRY	(*alcMacOSXMixerOutputRateProcPtr) (const ALdouble value);
-ALvoid  alcMacOSXMixerOutputRateProc(const ALdouble value);
 ALvoid  alcMacOSXMixerOutputRateProc(const ALdouble value)
 {
 	static	alcMacOSXMixerOutputRateProcPtr	proc = NULL;
@@ -72,7 +74,7 @@ float const kCD_GainDefault = 1.0f;
 -(void) _dumpSourceGroupsInfo;
 -(void) _getSourceIndexForSourceGroup;
 -(void) _freeSourceGroups;
--(BOOL) _setUpSourceGroups:(int[]) definitions total:(int) total; 
+-(BOOL) _setUpSourceGroups:(int[]) definitions total:(NSUInteger) total; 
 @end
 
 #pragma mark -
@@ -270,7 +272,7 @@ static BOOL _mixerRateSet = NO;
 	[super dealloc];
 }	
 
--(int) sourceGroupTotal {
+-(NSUInteger) sourceGroupTotal {
 	return _sourceGroupTotal;
 }	
 
@@ -288,7 +290,7 @@ static BOOL _mixerRateSet = NO;
 	}	
 }	
 
--(BOOL) _redefineSourceGroups:(int[]) definitions total:(int) total
+-(BOOL) _redefineSourceGroups:(int[]) definitions total:(NSUInteger) total
 {
 	if (_sourceGroups) {
 		//Stop all sounds
@@ -299,7 +301,7 @@ static BOOL _mixerRateSet = NO;
 	return [self _setUpSourceGroups:definitions total:total];
 }	
 
--(BOOL) _setUpSourceGroups:(int[]) definitions total:(int) total 
+-(BOOL) _setUpSourceGroups:(int[]) definitions total:(NSUInteger) total 
 {
 	_sourceGroups = (sourceGroup *)malloc( sizeof(_sourceGroups[0]) * total);
 	if(!_sourceGroups) {
@@ -328,13 +330,13 @@ static BOOL _mixerRateSet = NO;
 	return YES;
 }
 
--(void) defineSourceGroups:(int[]) sourceGroupDefinitions total:(int) total {
+-(void) defineSourceGroups:(int[]) sourceGroupDefinitions total:(NSUInteger) total {
 	[self _redefineSourceGroups:sourceGroupDefinitions total:total];
 }
 
 -(void) defineSourceGroups:(NSArray*) sourceGroupDefinitions {
 	CDLOGINFO(@"Denshion::CDSoundEngine - source groups defined by NSArray.");
-	int totalDefs = (int)[sourceGroupDefinitions count];
+	NSUInteger totalDefs = [sourceGroupDefinitions count];
 	int* defs = (int *)malloc( sizeof(int) * totalDefs);
 	int currentIndex = 0;
 	for (id currentDef in sourceGroupDefinitions) {

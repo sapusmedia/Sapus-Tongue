@@ -1,3 +1,8 @@
+Changes in 2011-06-13 (v3.5)
+* [FIX] Xcode: Added NS_BLOCK_ASSERTIONS to Release/Distribution macros
+* [FIX] Xcode: 
+* [3RD] cocos2d: uses v1.0.0-rc3 + fixes
+
 Changes in 2011-03-30 (v3.4)
 * [FIX] Resources: All PNG images use 72 DPI
 * [FIX] Resources: Plist. Removed extra space from Icon-lite-Small@2x.png entry
