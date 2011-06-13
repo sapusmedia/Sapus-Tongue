@@ -73,8 +73,8 @@
 		angleX_ = x;
 		deltaAngleX_ = dx;
 
-		radDeltaZ_ = (CGFloat)CC_DEGREES_TO_RADIANS(dz);
-		radDeltaX_ = (CGFloat)CC_DEGREES_TO_RADIANS(dx);
+		radDeltaZ_ = (float)CC_DEGREES_TO_RADIANS(dz);
+		radDeltaX_ = (float)CC_DEGREES_TO_RADIANS(dx);
 	}
 	
 	return self;
@@ -98,8 +98,8 @@
 		angleX_ = (CGFloat)CC_RADIANS_TO_DEGREES(azimuth);
 #endif
 
-	radZ_ = (CGFloat)CC_DEGREES_TO_RADIANS(angleZ_);
-	radX_ = (CGFloat)CC_DEGREES_TO_RADIANS(angleX_);
+	radZ_ = (float)CC_DEGREES_TO_RADIANS(angleZ_);
+	radX_ = (float)CC_DEGREES_TO_RADIANS(angleX_);
 }
 
 -(void) update: (ccTime) dt
