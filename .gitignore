@@ -6,6 +6,8 @@ build/*
 *~.nib/ 
 *.perspective 
 *.perspectivev3
+xcuserdata/
+contents.xcworkspacedata
 
 # old school
 .svn
