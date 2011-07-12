@@ -1,3 +1,7 @@
+Changes in 2011-07-xx (v3.6)
+* [3RD] cocos2d: uses v1.0.0
+* [3RD] Chipmunk: uses v5.3.5
+
 Changes in 2011-06-13 (v3.5)
 * [FIX] All: Compiles without warnings with Xcode 4.2 + llvm 3.0
 * [FIX] Xcode: Added NS_BLOCK_ASSERTIONS to Release/Distribution macros

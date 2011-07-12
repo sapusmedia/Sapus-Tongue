@@ -162,7 +162,6 @@
 -(void) applicationWillResignActive:(UIApplication *)application
 {
 	[[CCDirector sharedDirector] pause];
-	[CDAudioManager sharedManager];
 	[[CDAudioManager sharedManager] pauseBackgroundMusic];
 }
 
