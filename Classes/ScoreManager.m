@@ -60,7 +60,7 @@ static ScoreManager *sharedManager = nil;
 -(void) initScores
 {	
 	// scores used by CocosLive
-	self.globalScores = [[NSMutableArray alloc] initWithCapacity:50];
+	self.globalScores = [NSMutableArray arrayWithCapacity:50];
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	
