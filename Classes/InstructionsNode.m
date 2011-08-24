@@ -21,6 +21,7 @@
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <MediaPlayer/MediaPlayer.h>
+#import "RootViewController.h"
 #endif
 
 // local imports
@@ -531,14 +532,14 @@ eachShape(cpShape *shape, void* instance)
 		theMovie.controlStyle = MPMovieControlStyleFullscreen;
 
 
-		// Attach movie player to director
-		UIView *myView = [[CCDirector sharedDirector] openGLView];
+		// Attach movie player to the RootViewController
+		// Add the control to "cocos2d"... this is the only way to add them
+		SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+		UIViewController *viewController = [app viewController];
+		
+		UIView *myView = [viewController view];
 		UIView *movieView = [theMovie view];
-		
-#if ST_AUTOROTATE != kSTAutorotationUIViewController
-		movieView.transform = CGAffineTransformMakeRotation(CC_DEGREES_TO_RADIANS(90));
-#endif
-		
+
 		[movieView setFrame:[myView bounds]]; // fit the movie to the exact bounds of myView
 		[myView addSubview:movieView];
 

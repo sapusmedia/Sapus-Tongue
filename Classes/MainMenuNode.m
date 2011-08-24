@@ -102,7 +102,7 @@ static BOOL firstTime = YES;
 		CGSize s = [[CCDirector sharedDirector] winSize];
 
 	// background
-		CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:stConverToiPadOniPad(BACKGROUND_IMAGE)];
+		CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:BACKGROUND_IMAGE];
 		FastGrid *background = [FastGrid gridWithTexture:texture];
 
 		[background runAction: [CCSequence actions:

@@ -277,15 +277,16 @@
 {
 	[super onEnterTransitionDidFinish];
 
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UIViewController *ctl = [app viewController];		
+
 	// activity indicator
 	if( ! activityIndicator_ ) {
 		activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
-		activityIndicator_.frame = CGRectMake(s.width-40, s.height-40, 20, 20);
+//		CGSize s = [[CCDirector sharedDirector] winSize];
+		activityIndicator_.frame = CGRectMake(10, 10, 40, 40);
 		
-		SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-		UIViewController *ctl = [app viewController];		
 		[ctl.view addSubview: activityIndicator_];
 
 		activityIndicator_.hidesWhenStopped = YES;
@@ -295,7 +296,8 @@
 	// table
 	if( !myTableView_ )
 		myTableView_ = [self newTableView];
-	[[[CCDirector sharedDirector] openGLView] addSubview: myTableView_];	
+
+	[ctl.view addSubview: myTableView_];	
 }
 
 // menu callbacks

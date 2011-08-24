@@ -28,6 +28,7 @@
 #import "SelectCharNode.h"
 #import "HiScoresNode.h"
 #import "ScoreManager.h"
+#import "RootViewController.h"
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "cocoslive.h"
@@ -139,7 +140,7 @@ static NSString *_oldName = @"";
 	//  UIKit controls are "incompatible" with cocos2d Scenes,
 	//  they must be treaded independentely.
 	//  You can't add them to an Scene, Layer or Node.
-	//  The only way to display them inside cocos2d is to add them to the [[[CCDirector] openGLView] addSubview:]
+	//  The recommended way is to add them as a subView of the RootViewController
 	
 	state = kHUDRemoveMenu;
 	nameField_ = [self newTextField_Rounded];
@@ -154,13 +155,18 @@ static NSString *_oldName = @"";
 		nameField_.text = _oldName;
 	
 	// Add the control to "cocos2d"... this is the only way to add them
-	[[[CCDirector sharedDirector] openGLView] addSubview: nameField_];
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UIViewController *viewController = [app viewController];
+	
+	[viewController.view addSubview:nameField_];
+
 	[nameField_ becomeFirstResponder];
 	
 	// TIP:
 	//   Disable all cocos2d events when dealing ONLY with UIKit objects
 	//   eg: The "pause" button can't be touched now
 	[[CCTouchDispatcher sharedDispatcher] setDispatchEvents: NO];
+	
 	
 	//	[nameField release];
 	
@@ -209,8 +215,8 @@ static NSString *_oldName = @"";
 		toolbar_.frame = CGRectMake(0, s.height/2-12, s.width, toolbarHeight);
 	else 
 		toolbar_.frame = CGRectMake(0, s.height/2-34, s.width, toolbarHeight);
-
-	[[[CCDirector sharedDirector] openGLView] addSubview:toolbar_];
+	
+	[viewController.view addSubview:toolbar_];
 	
 #else // LITE_VERSION
 	switchCtl_ = nil;
