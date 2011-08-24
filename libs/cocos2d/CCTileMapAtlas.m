@@ -54,6 +54,8 @@
 
 	if( (self=[super initWithTileFile:tile tileWidth:w tileHeight:h itemsToRender: itemsToRender]) ) {
 
+		color_ = ccWHITE;
+
 		posToAtlasIndex = [[NSMutableDictionary dictionaryWithCapacity:itemsToRender] retain];
 
 		[self updateAtlasValues];
@@ -166,17 +168,21 @@
 	
 	float textureWide = [[textureAtlas_ texture] pixelsWide];
 	float textureHigh = [[textureAtlas_ texture] pixelsHigh];
+	
+	float itemWidthInPixels = itemWidth_ * CC_CONTENT_SCALE_FACTOR();
+    float itemHeightInPixels = itemHeight_ * CC_CONTENT_SCALE_FACTOR();
+
 
 #if CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
-	float left		= (2*row*itemWidth_+1)/(2*textureWide);
-	float right		= left+(itemWidth_*2-2)/(2*textureWide);
-	float top		= (2*col*itemHeight_+1)/(2*textureHigh);
-	float bottom	= top+(itemHeight_*2-2)/(2*textureHigh);
+	float left		= (2*row*itemWidthInPixels+1)/(2*textureWide);
+	float right		= left+(itemWidthInPixels*2-2)/(2*textureWide);
+	float top		= (2*col*itemHeightInPixels+1)/(2*textureHigh);
+	float bottom	= top+(itemHeightInPixels*2-2)/(2*textureHigh);
 #else
-	float left		= (row*itemWidth_)/textureWide;
-	float right		= left+itemWidth_/textureWide;
-	float top		= (col*itemHeight_)/textureHigh;
-	float bottom	= top+itemHeight_/textureHigh;
+	float left		= (row*itemWidthInPixels)/textureWide;
+	float right		= left+itemWidthInPixels/textureWide;
+	float top		= (col*itemHeightInPixels)/textureHigh;
+	float bottom	= top+itemHeightInPixels/textureHigh;
 #endif
 	
 
@@ -202,6 +208,11 @@
 	quad.tr.vertices.y = (int)(y * itemHeight_ + itemHeight_);
 	quad.tr.vertices.z = 0.0f;
 	
+	ccColor4B color = { color_.r, color_.g, color_.b, opacity_ };
+	quad.tr.colors = color;
+	quad.tl.colors = color;
+	quad.br.colors = color;
+	quad.bl.colors = color;
 	[textureAtlas_ updateQuad:&quad atIndex:idx];
 }
 

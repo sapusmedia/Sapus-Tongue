@@ -1,7 +1,7 @@
-Changes in 2011-07-xx (v3.6)
+Changes in 2011-08-24 (v4.0)
 * [FIX] ScoreManager: Fixed memory leak
-* [3RD] cocos2d: uses v1.0.0
-* [3RD] Chipmunk: uses v5.3.5
+* [3RD] cocos2d: uses v2.0-alpha
+* [3RD] Chipmunk: uses v6.0.1
 
 Changes in 2011-06-13 (v3.5)
 * [FIX] All: Compiles without warnings with Xcode 4.2 + llvm 3.0

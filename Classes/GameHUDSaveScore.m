@@ -146,18 +146,9 @@ static NSString *_oldName = @"";
 	
 	CGRect frame;
 
-#if ST_AUTOROTATE == kSTAutorotationUIViewController	
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	frame = CGRectMake(s.width/2-100, 80, 200, 36);
 	nameField_.frame = frame;
-	
-#else
-	frame = CGRectMake(130.0f, 230.0f, 200, 36);
-	nameField_.frame = frame;
-	
-	// Rotate the control 180 degrees... remember that they don't follow cocos2d transformations
-	nameField_.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
-#endif
 	
 	if( [_oldName length] > 0 )
 		nameField_.text = _oldName;
@@ -214,19 +205,11 @@ static NSString *_oldName = @"";
 	[toolbar_ sizeToFit];
 	CGFloat toolbarHeight = [toolbar_ frame].size.height;
 	
-#if ST_AUTOROTATE == kSTAutorotationUIViewController
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		toolbar_.frame = CGRectMake(0, s.height/2-12, s.width, toolbarHeight);
 	else 
 		toolbar_.frame = CGRectMake(0, s.height/2-34, s.width, toolbarHeight);
-	
-#else
-	CGSize s = [[CCDirector sharedDirector] winSize];
-	toolbar_.frame = CGRectMake(-62, 224, s.width, toolbarHeight);
-	toolbar_.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
-	
-#endif // ST_AUTOROTATE != UIViewController
-	
+
 	[[[CCDirector sharedDirector] openGLView] addSubview:toolbar_];
 	
 #else // LITE_VERSION

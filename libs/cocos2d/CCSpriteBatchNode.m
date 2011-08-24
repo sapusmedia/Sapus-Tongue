@@ -33,7 +33,15 @@
 #import "CCGrid.h"
 #import "CCDrawingPrimitives.h"
 #import "CCTextureCache.h"
+#import "CCShaderCache.h"
+#import "GLProgram.h"
+#import "ccGLState.h"
+#import "CCDirector.h"
 #import "Support/CGPointExtension.h"
+#import "Support/TransformUtils.h"
+
+// external
+#import "kazmath/GL/matrix.h"
 
 const NSUInteger defaultCapacity = 29;
 
@@ -66,18 +74,10 @@ static 	SEL selUpdate = NULL;
 {
 	return [[[self alloc] initWithTexture:tex capacity:defaultCapacity] autorelease];
 }
-+(id)spriteSheetWithTexture:(CCTexture2D *)tex // XXX DEPRECATED
-{
-	return [self batchNodeWithTexture:tex];
-}
 
 +(id)batchNodeWithTexture:(CCTexture2D *)tex capacity:(NSUInteger)capacity
 {
 	return [[[self alloc] initWithTexture:tex capacity:capacity] autorelease];
-}
-+(id)spriteSheetWithTexture:(CCTexture2D *)tex capacity:(NSUInteger)capacity // XXX DEPRECATED
-{
-	return [self batchNodeWithTexture:tex capacity:capacity];
 }
 
 /*
@@ -87,20 +87,11 @@ static 	SEL selUpdate = NULL;
 {
 	return [[[self alloc] initWithFile:fileImage capacity:capacity] autorelease];
 }
-+(id)spriteSheetWithFile:(NSString*)fileImage capacity:(NSUInteger)capacity // XXX DEPRECATED
-{
-	return [self batchNodeWithFile:fileImage capacity:capacity];
-}
 
 +(id)batchNodeWithFile:(NSString*) imageFile
 {
 	return [[[self alloc] initWithFile:imageFile capacity:defaultCapacity] autorelease];
 }
-+(id)spriteSheetWithFile:(NSString*) imageFile // XXX DEPRECATED
-{
-	return [self batchNodeWithFile:imageFile];
-}
-
 
 /*
  * init with CCTexture2D
@@ -118,6 +109,9 @@ static 	SEL selUpdate = NULL;
 		// no lazy alloc in this node
 		children_ = [[CCArray alloc] initWithCapacity:capacity];
 		descendants_ = [[CCArray alloc] initWithCapacity:capacity];
+		
+		
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTextureColor];
 	}
 	
 	return self;
@@ -151,7 +145,8 @@ static 	SEL selUpdate = NULL;
 // Don't call visit on it's children
 -(void) visit
 {
-	
+	NSAssert(parent_ != nil, @"CCSpriteBatchNode should NOT be root node");
+
 	// CAREFUL:
 	// This visit is almost identical to CocosNode#visit
 	// with the exception that it doesn't call visit on it's children
@@ -162,7 +157,7 @@ static 	SEL selUpdate = NULL;
 	if (!visible_)
 		return;
 	
-	glPushMatrix();
+	kmGLPushMatrix();
 	
 	if ( grid_ && grid_.active) {
 		[grid_ beforeDraw];
@@ -175,24 +170,8 @@ static 	SEL selUpdate = NULL;
 	
 	if ( grid_ && grid_.active)
 		[grid_ afterDraw:self];
-	
-	glPopMatrix();
-}
 
-// XXX deprecated
--(CCSprite*) createSpriteWithRect:(CGRect)rect
-{
-	CCSprite *sprite = [CCSprite spriteWithTexture:textureAtlas_.texture rect:rect];
-	[sprite useBatchNode:self];
-	
-	return sprite;
-}
-
-// XXX deprecated
--(void) initSprite:(CCSprite*)sprite rect:(CGRect)rect
-{
-	[sprite initWithTexture:textureAtlas_.texture rect:rect];
-	[sprite useBatchNode:self];
+	kmGLPopMatrix();
 }
 
 // override addChild:
@@ -292,17 +271,17 @@ static 	SEL selUpdate = NULL;
 		}
 	}
 	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
+	// Default Attribs & States: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
 	// Unneeded states: -
+
+	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
 	
-	BOOL newBlend = blendFunc_.src != CC_BLEND_SRC || blendFunc_.dst != CC_BLEND_DST;
-	if( newBlend )
-		glBlendFunc( blendFunc_.src, blendFunc_.dst );
+	ccGLUseProgram( shaderProgram_->program_ );	
+	ccGLUniformProjectionMatrix( shaderProgram_ );	
+	ccGLUniformModelViewMatrix( shaderProgram_ );
 	
 	[textureAtlas_ drawQuads];
-	if( newBlend )
-		glBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
 }
 
 #pragma mark CCSpriteBatchNode - private
@@ -321,7 +300,7 @@ static 	SEL selUpdate = NULL;
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
 		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
-		NSAssert(NO,@"XXX: SpriteSheet#increaseAtlasCapacity SHALL handle this assert");
+		NSAssert(NO,@"XXX: CCSpriteBatchNode#increaseAtlasCapacity SHALL handle this assert");
 	}	
 }
 

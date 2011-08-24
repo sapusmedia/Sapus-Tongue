@@ -170,10 +170,9 @@ void drawPolyShape(cpShape *shape)
 #endif // ST_DRAW_SHAPES
 
 static void
-eachShape(void *ptr, void* instance)
+eachShape(cpShape *shape, void* instance)
 {
 //	GameNode *self = (GameNode*) instance;
-	cpShape *shape = (cpShape*) ptr;
 	CCSprite *sprite = shape->data;
 	if( sprite ) {
 		cpVect c;
@@ -342,6 +341,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		
 		totalScore = 0;
 		
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTexture];
+		
 	}
 	
 	return self;
@@ -411,10 +412,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		
 	cpBody *staticBody = cpBodyNew(INFINITY, INFINITY);
 	space_ = cpSpaceNew();
-	cpSpaceResizeStaticHash(space_, kHashStaticDim, kHashStaticCount);
-	cpSpaceResizeActiveHash(space_, kHashActiveDim, kHashActiveCount);
-
-	space_->elasticIterations = space_->iterations = 10;
+	space_->iterations = 10;
 	space_->gravity = cpv(0, kGravityRoll);
 	
 	// pivot point. fly
@@ -668,7 +666,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	[sapusSprite_ release];
 	[tongue_ release];
 	
-	cpSpaceFreeChildren(space_);
+//	chipmunkFreeSpaceChildren(space_);
 	cpSpaceFree(space_);
 
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -796,8 +794,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 
 	// update sprite position
-	cpSpaceHashEach(space_->activeShapes, &eachShape, self);
-	cpSpaceHashEach(space_->staticShapes, &eachShape, self);
+	cpSpaceEachShape(space_, &eachShape, self);
 	
 	
 	CGPoint newPos = self.position;
@@ -916,24 +913,32 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	sapusV.x = sapusV.x + tongueLen*xs;
 	sapusV.y = sapusV.y + tongueLen*ys;	
 	
-	GLfloat	vertices[] = {	(sapusV.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
-							(sapusV.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
-							(pivotBody_->p.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f,
-							(pivotBody_->p.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f };		
+	GLfloat	vertices[] = {	(sapusV.x - x*1.5f),		(sapusV.y - y*1.5f),		0.0f,
+							(sapusV.x + x*1.5f),		(sapusV.y + y*1.5f),		0.0f,
+							(pivotBody_->p.x - x*1.5f),	(pivotBody_->p.y - y*1.5f),	0.0f,
+							(pivotBody_->p.x + x*1.5f),	(pivotBody_->p.y + y*1.5f),	0.0f };		
 	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
+	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
+	// Unneeded states: kCCAttribColor
 	
-	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableVertexAttribArray(kCCAttribColor);
+	
+	ccGLUseProgram( shaderProgram_->program_ );
+	ccGLUniformProjectionMatrix( shaderProgram_ );
+	ccGLUniformModelViewMatrix( shaderProgram_ );
 	
 	glBindTexture(GL_TEXTURE_2D, tongue_.name );
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	
+	glVertexAttribPointer(kCCAttribPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
+	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	// restore default GL states
-	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableVertexAttribArray(kCCAttribColor);
+	
+	CHECK_GL_ERROR_DEBUG();	
 }
 
 -(void) addJoint

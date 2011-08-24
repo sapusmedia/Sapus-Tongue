@@ -40,13 +40,17 @@
 #import "../../CCTextureCache.h"
 #import "../../ccMacros.h"
 #import "../../CCScene.h"
+#import "../../GLProgram.h"
+#import "../../ccGLState.h"
+#import "../../CCLayer.h"
 
 // support imports
-#import "glu.h"
 #import "../../Support/OpenGL_Internal.h"
 #import "../../Support/CGPointExtension.h"
+#import "../../Support/TransformUtils.h"
 
-#import "CCLayer.h"
+#import "kazmath/kazmath.h"
+#import "kazmath/GL/matrix.h"
 
 #if CC_ENABLE_PROFILERS
 #import "../../Support/CCProfiling.h"
@@ -59,7 +63,7 @@
 CGFloat	__ccContentScaleFactor = 1;
 
 #pragma mark -
-#pragma mark Director iOS
+#pragma mark Director
 
 @interface CCDirector ()
 -(void) setNextScene;
@@ -71,38 +75,8 @@ CGFloat	__ccContentScaleFactor = 1;
 
 +(Class) defaultDirector
 {
-	return [CCDirectorTimer class];
+	return [CCDirectorDisplayLink class];
 }
-
-+ (BOOL) setDirectorType:(ccDirectorType)type
-{
-	if( type == CCDirectorTypeDisplayLink ) {
-		NSString *reqSysVer = @"3.1";
-		NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-		
-		if([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending)
-			return NO;
-	}
-	switch (type) {
-		case CCDirectorTypeNSTimer:
-			[CCDirectorTimer sharedDirector];
-			break;
-		case CCDirectorTypeDisplayLink:
-			[CCDirectorDisplayLink sharedDirector];
-			break;
-		case CCDirectorTypeMainLoop:
-			[CCDirectorFast sharedDirector];
-			break;
-		case CCDirectorTypeThreadMainLoop:
-			[CCDirectorFastThreaded sharedDirector];
-			break;
-		default:
-			NSAssert(NO,@"Unknown director type");
-	}
-	
-	return YES;
-}
-
 @end
 
 
@@ -112,18 +86,13 @@ CGFloat	__ccContentScaleFactor = 1;
 
 @interface CCDirectorIOS ()
 -(void) updateContentScaleFactor;
-
 @end
 
 @implementation CCDirectorIOS
-
 - (id) init
 {  
 	if( (self=[super init]) ) {
 				
-		// portrait mode default
-		deviceOrientation_ = CCDeviceOrientationPortrait;
-		
 		__ccContentScaleFactor = 1;
 		isContentScaleSupported_ = NO;
 		
@@ -145,76 +114,89 @@ CGFloat	__ccContentScaleFactor = 1;
 - (void) drawScene
 {    
 	/* calculate "global" dt */
-	[self calculateDeltaTime];
-	
+	[self calculateDeltaTime];	
+
 	/* tick before glClear: issue #533 */
-	if( ! isPaused_ ) {
+	if( ! isPaused_ )
 		[[CCScheduler sharedScheduler] tick: dt];	
-	}
-	
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	/* to avoid flickr, nextScene MUST be here: after tick and before draw.
 	 XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
 	if( nextScene_ )
 		[self setNextScene];
-	
-	glPushMatrix();
-	
-	[self applyOrientation];
-	
+
+	kmGLPushMatrix();
+
 	// By default enable VertexArray, ColorArray, TextureCoordArray and Texture2D
 	CC_ENABLE_DEFAULT_GL_STATES();
-	
-	/* draw the scene */
+
 	[runningScene_ visit];
-	
-	/* draw the notification node */
+
 	[notificationNode_ visit];
 
 	if( displayFPS_ )
 		[self showFPS];
-	
+
+	CC_DISABLE_DEFAULT_GL_STATES();
+
 #if CC_ENABLE_PROFILERS
 	[self showProfilers];
 #endif
 	
-	CC_DISABLE_DEFAULT_GL_STATES();
-	
-	glPopMatrix();
-	
+	kmGLPopMatrix();
+
+	totalFrames_++;
+
 	[openGLView_ swapBuffers];
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
 {
 	CGSize size = winSizeInPixels_;
-	
+	CGSize sizePoint = winSizeInPoints_;
+
+	glViewport(0, 0, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
+
 	switch (projection) {
 		case kCCDirectorProjection2D:
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			ccglOrtho(0, size.width, 0, size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 1024 * CC_CONTENT_SCALE_FACTOR());
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			break;
 			
+			kmGLMatrixMode(KM_GL_PROJECTION);
+			kmGLLoadIdentity();
+
+			kmMat4 orthoMatrix;
+			kmMat4OrthographicProjection(&orthoMatrix, 0, size.width, 0, size.height, -1024, 1024 );
+			kmGLMultMatrix( &orthoMatrix );
+
+			kmGLMatrixMode(KM_GL_MODELVIEW);
+			kmGLLoadIdentity();
+			break;
+
 		case kCCDirectorProjection3D:
 		{
+			// reset the viewport if 3d proj & retina display
+			if( CC_CONTENT_SCALE_FACTOR() != 1 )
+				glViewport(-size.width/2, -size.height/2, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
+	
 			float zeye = [self getZEye];
 
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-//			gluPerspective(60, (GLfloat)size.width/size.height, zeye-size.height/2, zeye+size.height/2 );
-			gluPerspective(60, (GLfloat)size.width/size.height, 0.5f, 1500);
+			kmMat4 matrixPerspective, matrixLookup;
 
-			glMatrixMode(GL_MODELVIEW);	
-			glLoadIdentity();
-			gluLookAt( size.width/2, size.height/2, zeye,
-					  size.width/2, size.height/2, 0,
-					  0.0f, 1.0f, 0.0f);
+			kmGLMatrixMode(KM_GL_PROJECTION);
+			kmGLLoadIdentity();
+			
+			kmMat4PerspectiveProjection( &matrixPerspective, 60, (GLfloat)sizePoint.width/sizePoint.height, 0.5f, 1500.0f );
+			kmGLMultMatrix(&matrixPerspective);
+			
+			kmGLMatrixMode(KM_GL_MODELVIEW);
+			kmGLLoadIdentity();
+			kmVec3 eye, center, up;
+			kmVec3Fill( &eye, sizePoint.width/2, sizePoint.height/2, zeye );
+			kmVec3Fill( &center, sizePoint.width/2, sizePoint.height/2, 0 );
+			kmVec3Fill( &up, 0, 1, 0);
+			kmMat4LookAt(&matrixLookup, &eye, &center, &up);
+			kmGLMultMatrix(&matrixLookup);
 			break;
 		}
 			
@@ -222,13 +204,15 @@ CGFloat	__ccContentScaleFactor = 1;
 			if( projectionDelegate_ )
 				[projectionDelegate_ updateProjection];
 			break;
-			
+
 		default:
 			CCLOG(@"cocos2d: Director: unrecognized projecgtion");
 			break;
 	}
 	
 	projection_ = projection;
+	
+	ccSetProjectionMatrixDirty();
 }
 
 #pragma mark Director Integration with a UIKit view
@@ -307,6 +291,9 @@ CGFloat	__ccContentScaleFactor = 1;
 	float newScale = enabled ? 2 : 1;
 	[self setContentScaleFactor:newScale];
 	
+	// Load Hi-Res FPS label
+	[self createFPSLabel];
+	
 	return YES;
 }
 
@@ -325,135 +312,18 @@ CGFloat	__ccContentScaleFactor = 1;
 {
 	CGSize s = winSizeInPoints_;
 	float newY = s.height - uiPoint.y;
-	float newX = s.width - uiPoint.x;
 	
-	CGPoint ret = CGPointZero;
-	switch ( deviceOrientation_) {
-		case CCDeviceOrientationPortrait:
-			ret = ccp( uiPoint.x, newY );
-			break;
-		case CCDeviceOrientationPortraitUpsideDown:
-			ret = ccp(newX, uiPoint.y);
-			break;
-		case CCDeviceOrientationLandscapeLeft:
-			ret.x = uiPoint.y;
-			ret.y = uiPoint.x;
-			break;
-		case CCDeviceOrientationLandscapeRight:
-			ret.x = newY;
-			ret.y = newX;
-			break;
-	}
-	return ret;
+	return ccp( uiPoint.x, newY );
 }
 
 -(CGPoint)convertToUI:(CGPoint)glPoint
 {
 	CGSize winSize = winSizeInPoints_;
-	int oppositeX = winSize.width - glPoint.x;
 	int oppositeY = winSize.height - glPoint.y;
-	CGPoint uiPoint = CGPointZero;
-	switch ( deviceOrientation_) {
-		case CCDeviceOrientationPortrait:
-			uiPoint = ccp(glPoint.x, oppositeY);
-			break;
-		case CCDeviceOrientationPortraitUpsideDown:
-			uiPoint = ccp(oppositeX, glPoint.y);
-			break;
-		case CCDeviceOrientationLandscapeLeft:
-			uiPoint = ccp(glPoint.y, glPoint.x);
-			break;
-		case CCDeviceOrientationLandscapeRight:
-			// Can't use oppositeX/Y because x/y are flipped
-			uiPoint = ccp(winSize.width-glPoint.y, winSize.height-glPoint.x);
-			break;
-	}
-	return uiPoint;
-}
-
-// get the current size of the glview
--(CGSize) winSize
-{
-	CGSize s = winSizeInPoints_;
 	
-	if( deviceOrientation_ == CCDeviceOrientationLandscapeLeft || deviceOrientation_ == CCDeviceOrientationLandscapeRight ) {
-		// swap x,y in landscape mode
-		CGSize tmp = s;
-		s.width = tmp.height;
-		s.height = tmp.width;
-	}
-	return s;
+	return ccp(glPoint.x, oppositeY);
 }
 
--(CGSize) winSizeInPixels
-{
-	CGSize s = [self winSize];
-	
-	s.width *= CC_CONTENT_SCALE_FACTOR();
-	s.height *= CC_CONTENT_SCALE_FACTOR();
-	
-	return s;
-}
-
--(ccDeviceOrientation) deviceOrientation
-{
-	return deviceOrientation_;
-}
-
-- (void) setDeviceOrientation:(ccDeviceOrientation) orientation
-{
-	if( deviceOrientation_ != orientation ) {
-		deviceOrientation_ = orientation;
-		switch( deviceOrientation_) {
-			case CCDeviceOrientationPortrait:
-				[[UIApplication sharedApplication] setStatusBarOrientation: UIInterfaceOrientationPortrait animated:NO];
-				break;
-			case CCDeviceOrientationPortraitUpsideDown:
-				[[UIApplication sharedApplication] setStatusBarOrientation: UIInterfaceOrientationPortraitUpsideDown animated:NO];
-				break;
-			case CCDeviceOrientationLandscapeLeft:
-				[[UIApplication sharedApplication] setStatusBarOrientation: UIInterfaceOrientationLandscapeRight animated:NO];
-				break;
-			case CCDeviceOrientationLandscapeRight:
-				[[UIApplication sharedApplication] setStatusBarOrientation: UIInterfaceOrientationLandscapeLeft animated:NO];
-				break;
-			default:
-				NSLog(@"Director: Unknown device orientation");
-				break;
-		}
-	}
-}
-
--(void) applyOrientation
-{	
-	CGSize s = winSizeInPixels_;
-	float w = s.width / 2;
-	float h = s.height / 2;
-	
-	// XXX it's using hardcoded values.
-	// What if the the screen size changes in the future?
-	switch ( deviceOrientation_ ) {
-		case CCDeviceOrientationPortrait:
-			// nothing
-			break;
-		case CCDeviceOrientationPortraitUpsideDown:
-			// upside down
-			glTranslatef(w,h,0);
-			glRotatef(180,0,0,1);
-			glTranslatef(-w,-h,0);
-			break;
-		case CCDeviceOrientationLandscapeRight:
-			glTranslatef(w,h,0);
-			glRotatef(90,0,0,1);
-			glTranslatef(-h,-w,0);
-			break;
-		case CCDeviceOrientationLandscapeLeft:
-			glTranslatef(w,h,0);
-			glRotatef(-90,0,0,1);
-			glTranslatef(-h,-w,0);
-			break;
-	}	
-}
 
 -(void) end
 {
@@ -468,221 +338,7 @@ CGFloat	__ccContentScaleFactor = 1;
 
 
 #pragma mark -
-#pragma mark Director TimerDirector
-
-@implementation CCDirectorTimer
-- (void)startAnimation
-{
-	NSAssert( animationTimer == nil, @"animationTimer must be nil. Calling startAnimation twice?");
-	
-	if( gettimeofday( &lastUpdate_, NULL) != 0 ) {
-		CCLOG(@"cocos2d: Director: Error in gettimeofday");
-	}
-	
-	animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval_ target:self selector:@selector(mainLoop) userInfo:nil repeats:YES];
-	
-	//
-	//	If you want to attach the opengl view into UIScrollView
-	//  uncomment this line to prevent 'freezing'.
-	//	It doesn't work on with the Fast Director
-	//
-	//	[[NSRunLoop currentRunLoop] addTimer:animationTimer
-	//								 forMode:NSRunLoopCommonModes];
-}
-
--(void) mainLoop
-{
-	[self drawScene];
-}
-
-- (void)stopAnimation
-{
-	[animationTimer invalidate];
-	animationTimer = nil;
-}
-
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-	animationInterval_ = interval;
-	
-	if(animationTimer) {
-		[self stopAnimation];
-		[self startAnimation];
-	}
-}
-
--(void) dealloc
-{
-	[animationTimer release];
-	[super dealloc];
-}
-@end
-
-
-#pragma mark -
-#pragma mark Director DirectorFast
-
-@implementation CCDirectorFast
-
-- (id) init
-{
-	if(( self = [super init] )) {
-		
-#if CC_DIRECTOR_DISPATCH_FAST_EVENTS
-		CCLOG(@"cocos2d: Fast Events enabled");
-#else
-		CCLOG(@"cocos2d: Fast Events disabled");
-#endif		
-		isRunning = NO;
-		
-		// XXX:
-		// XXX: Don't create any autorelease object before calling "fast director"
-		// XXX: else it will be leaked
-		// XXX:
-		autoreleasePool = [NSAutoreleasePool new];
-	}
-
-	return self;
-}
-
-- (void) startAnimation
-{
-	NSAssert( isRunning == NO, @"isRunning must be NO. Calling startAnimation twice?");
-
-	// XXX:
-	// XXX: release autorelease objects created
-	// XXX: between "use fast director" and "runWithScene"
-	// XXX:
-	[autoreleasePool release];
-	autoreleasePool = nil;
-
-	if ( gettimeofday( &lastUpdate_, NULL) != 0 ) {
-		CCLOG(@"cocos2d: Director: Error in gettimeofday");
-	}
-	
-
-	isRunning = YES;
-
-	SEL selector = @selector(mainLoop);
-	NSMethodSignature* sig = [[[CCDirector sharedDirector] class]
-							  instanceMethodSignatureForSelector:selector];
-	NSInvocation* invocation = [NSInvocation
-								invocationWithMethodSignature:sig];
-	[invocation setTarget:[CCDirector sharedDirector]];
-	[invocation setSelector:selector];
-	[invocation performSelectorOnMainThread:@selector(invokeWithTarget:)
-								 withObject:[CCDirector sharedDirector] waitUntilDone:NO];
-	
-//	NSInvocationOperation *loopOperation = [[[NSInvocationOperation alloc]
-//											 initWithTarget:self selector:@selector(mainLoop) object:nil]
-//											autorelease];
-//	
-//	[loopOperation performSelectorOnMainThread:@selector(start) withObject:nil
-//								 waitUntilDone:NO];
-}
-
--(void) mainLoop
-{
-	while (isRunning) {
-	
-		NSAutoreleasePool *loopPool = [NSAutoreleasePool new];
-
-#if CC_DIRECTOR_DISPATCH_FAST_EVENTS
-		while( CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.004f, FALSE) == kCFRunLoopRunHandledSource);
-#else
-		while(CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, TRUE) == kCFRunLoopRunHandledSource);
-#endif
-
-		if (isPaused_) {
-			usleep(250000); // Sleep for a quarter of a second (250,000 microseconds) so that the framerate is 4 fps.
-		}
-		
-		[self drawScene];		
-
-#if CC_DIRECTOR_DISPATCH_FAST_EVENTS
-		while( CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.004f, FALSE) == kCFRunLoopRunHandledSource);
-#else
-		while(CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, TRUE) == kCFRunLoopRunHandledSource);
-#endif
-
-		[loopPool release];
-	}	
-}
-- (void) stopAnimation
-{
-	isRunning = NO;
-}
-
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-	NSLog(@"FastDirectory doesn't support setAnimationInterval, yet");
-}
-@end
-
-#pragma mark -
-#pragma mark Director DirectorThreadedFast
-
-@implementation CCDirectorFastThreaded
-
-- (id) init
-{
-	if(( self = [super init] )) {		
-		isRunning = NO;		
-	}
-	
-	return self;
-}
-
-- (void) startAnimation
-{
-	NSAssert( isRunning == NO, @"isRunning must be NO. Calling startAnimation twice?");
-
-	if ( gettimeofday( &lastUpdate_, NULL) != 0 ) {
-		CCLOG(@"cocos2d: ThreadedFastDirector: Error on gettimeofday");
-	}
-
-	isRunning = YES;
-
-	NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(mainLoop) object:nil];
-	[thread start];
-	[thread release];
-}
-
--(void) mainLoop
-{
-	while( ![[NSThread currentThread] isCancelled] ) {
-		if( isRunning )
-			[self performSelectorOnMainThread:@selector(drawScene) withObject:nil waitUntilDone:YES];
-				
-		if (isPaused_) {
-			usleep(250000); // Sleep for a quarter of a second (250,000 microseconds) so that the framerate is 4 fps.
-		} else {
-//			usleep(2000);
-		}
-	}	
-}
-- (void) stopAnimation
-{
-	isRunning = NO;
-}
-
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-	NSLog(@"FastDirector doesn't support setAnimationInterval, yet");
-}
-@end
-
-#pragma mark -
 #pragma mark DirectorDisplayLink
-
-// Allows building DisplayLinkDirector for pre-3.1 SDKS
-// without getting compiler warnings.
-@interface NSObject(CADisplayLink)
-+ (id) displayLinkWithTarget:(id)arg1 selector:(SEL)arg2;
-- (void) addToRunLoop:(id)arg1 forMode:(id)arg2;
-- (void) setFrameInterval:(int)interval;
-- (void) invalidate;
-@end
 
 @implementation CCDirectorDisplayLink
 
@@ -709,9 +365,9 @@ CGFloat	__ccContentScaleFactor = 1;
 	
 	CCLOG(@"cocos2d: Frame interval: %d", frameInterval);
 
-	displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(mainLoop:)];
+	displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(mainLoop:)];
 	[displayLink setFrameInterval:frameInterval];
-	[displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];	
 }
 
 -(void) mainLoop:(id)sender

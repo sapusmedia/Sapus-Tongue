@@ -30,7 +30,7 @@
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 
 #import <sys/time.h>
- 
+
 #import "CCDirectorMac.h"
 #import "CCEventDispatcher.h"
 #import "MacGLView.h"
@@ -38,6 +38,12 @@
 #import "../../CCNode.h"
 #import "../../CCScheduler.h"
 #import "../../ccMacros.h"
+#import "../../GLProgram.h"
+#import "../../ccGLState.h"
+
+// external
+#import "kazmath/kazmath.h"
+#import "kazmath/GL/matrix.h"
 
 #pragma mark -
 #pragma mark Director Mac extensions
@@ -103,7 +109,7 @@
     
     if( fullscreen ) {
         originalWinRect_ = [openGLView_ frame];
-
+		
         // Cache normal window and superview of openGLView
         if(!windowGLView_)
             windowGLView_ = [[openGLView_ window] retain];
@@ -111,7 +117,7 @@
         [superViewGLView_ release];
         superViewGLView_ = [[openGLView_ superview] retain];
         
-                              
+		
         // Get screen size
         NSRect displayRect = [[NSScreen mainScreen] frame];
         
@@ -185,9 +191,9 @@
 -(void) setResizeMode:(int)mode
 {
 	if( mode != resizeMode_ ) {
-
+		
 		resizeMode_ = mode;
-
+		
         [self setProjection:projection_];
         [openGLView_ setNeedsDisplay: YES];
 	}
@@ -205,7 +211,7 @@
 	if( resizeMode_ == kCCDirectorResize_AutoScale && ! CGSizeEqualToSize(originalWinSize_, CGSizeZero ) ) {
 		
 		size = originalWinSize_;
-
+		
 		float aspect = originalWinSize_.width / originalWinSize_.height;
 		widthAspect = winSizeInPixels_.width;
 		heightAspect = winSizeInPixels_.width / aspect;
@@ -219,34 +225,50 @@
 		winOffset_.y =  (winSizeInPixels_.height - heightAspect) / 2;
 		
 		offset = winOffset_;
-
+		
 	}
-
+	
 	switch (projection) {
 		case kCCDirectorProjection2D:
+			
 			glViewport(offset.x, offset.y, widthAspect, heightAspect);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			ccglOrtho(0, size.width, 0, size.height, -1024, 1024);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			break;
+			kmGLMatrixMode(KM_GL_PROJECTION);
+			kmGLLoadIdentity();
+			
+			kmMat4 orthoMatrix;
+			kmMat4OrthographicProjection(&orthoMatrix, 0, size.width, 0, size.height, -1024, 1024);			
+			kmGLMultMatrix( &orthoMatrix );
+			
+			kmGLMatrixMode(KM_GL_MODELVIEW);
+			kmGLLoadIdentity();
+			break;			
+			
 			
 		case kCCDirectorProjection3D:
-			glViewport(offset.x, offset.y, widthAspect, heightAspect);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluPerspective(60, (GLfloat)widthAspect/heightAspect, 0.1f, 1500.0f);
+		{
 			
-			glMatrixMode(GL_MODELVIEW);	
-			glLoadIdentity();
+			glViewport(offset.x, offset.y, widthAspect, heightAspect);
+			kmGLMatrixMode(KM_GL_PROJECTION);
+			kmGLLoadIdentity();
+			
+			kmMat4 matrixPerspective, matrixLookup;
+			kmMat4PerspectiveProjection( &matrixPerspective, 60, (GLfloat)widthAspect/heightAspect, 0.1f, 1500.0f);
+			kmGLMultMatrix(&matrixPerspective);
+			
+			
+			kmGLMatrixMode(KM_GL_MODELVIEW);	
+			kmGLLoadIdentity();
+			kmVec3 eye, center, up;
 			
 			float eyeZ = size.height * [self getZEye] / winSizeInPixels_.height;
-
-			gluLookAt( size.width/2, size.height/2, eyeZ,
-					  size.width/2, size.height/2, 0,
-					  0.0f, 1.0f, 0.0f);			
+			
+			kmVec3Fill( &eye, size.width/2, size.height/2, eyeZ );
+			kmVec3Fill( &center, size.width/2, size.height/2, 0 );
+			kmVec3Fill( &up, 0, 1, 0);
+			kmMat4LookAt(&matrixLookup, &eye, &center, &up);
+			kmGLMultMatrix(&matrixLookup);
 			break;
+		}
 			
 		case kCCDirectorProjectionCustom:
 			if( projectionDelegate_ )
@@ -259,7 +281,10 @@
 	}
 	
 	projection_ = projection;
+	
+	ccSetProjectionMatrixDirty();
 }
+
 
 // If scaling is supported, then it should always return the original size
 // otherwise it should return the "real" size.
@@ -284,7 +309,7 @@
 		ret = coords;
 	
 	else {
-	
+		
 		float x_diff = originalWinSize_.width / (winSizeInPixels_.width - winOffset_.x * 2);
 		float y_diff = originalWinSize_.height / (winSizeInPixels_.height - winOffset_.y * 2);
 		
@@ -312,14 +337,14 @@
 		runningThread_ = [NSThread currentThread];
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	
 	[self drawScene];
 	[[CCEventDispatcher sharedDispatcher] dispatchQueuedEvents];
 	
 	[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:nil];
 	
 	[pool release];
-
+	
 #else
 	[self performSelector:@selector(drawScene) onThread:runningThread_ withObject:nil waitUntilDone:YES];
 #endif
@@ -393,11 +418,11 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
 		[[NSRunLoop currentRunLoop] run];
-
+		
 		[pool release];
 	}
 }
-		
+
 //
 // Draw the Scene
 //
@@ -424,7 +449,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	if( nextScene_ )
 		[self setNextScene];
 	
-	glPushMatrix();
+	kmGLPushMatrix();
 	
 	
 	// By default enable VertexArray, ColorArray, TextureCoordArray and Texture2D
@@ -435,7 +460,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	
 	/* draw the notification node */
 	[notificationNode_ visit];
-
+	
 	if( displayFPS_ )
 		[self showFPS];
 	
@@ -445,10 +470,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	
 	CC_DISABLE_DEFAULT_GL_STATES();
 	
-	glPopMatrix();
-			
+	kmGLPopMatrix();
+	
+	totalFrames_++;
+
 	[[openGLView_ openGLContext] flushBuffer];	
-	CGLUnlockContext([[openGLView_ openGLContext] CGLContextObj]);
+	CGLUnlockContext([[openGLView_ openGLContext] CGLContextObj]);	
 }
 
 // set the event dispatcher
@@ -457,7 +484,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	if( view != openGLView_ ) {
 		
 		[super setOpenGLView:view];
-				
+		
 		CCEventDispatcher *eventDispatcher = [CCEventDispatcher sharedDispatcher];
 		[openGLView_ setEventDelegate: eventDispatcher];
 		[eventDispatcher setDispatchEvents: YES];
@@ -466,7 +493,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 		[view setAcceptsTouchEvents:NO];
 //		[view setAcceptsTouchEvents:YES];
 		
-
+		
 		// Synchronize buffer swaps with vertical refresh rate
 		[[view openGLContext] makeCurrentContext];
 		GLint swapInt = 1;

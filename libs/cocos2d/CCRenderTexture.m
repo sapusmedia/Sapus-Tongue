@@ -27,8 +27,13 @@
 #import "CCRenderTexture.h"
 #import "CCDirector.h"
 #import "ccMacros.h"
+#import "GLProgram.h"
+#import "ccGLState.h"
 #import "Support/ccUtils.h"
 #import "Support/CCFileUtils.h"
+
+// extern
+#import "kazmath/GL/matrix.h"
 
 @implementation CCRenderTexture
 
@@ -73,14 +78,14 @@
 		free( data );
     
 		// generate FBO
-		ccglGenFramebuffers(1, &fbo_);
-		ccglBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
+		ccGLGenFramebuffers(1, &fbo_);
+		ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
     
 		// associate texture with FBO
-		ccglFramebufferTexture2D(CC_GL_FRAMEBUFFER, CC_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_.name, 0);
+		ccGLFramebufferTexture2D(CC_GL_FRAMEBUFFER, CC_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_.name, 0);
     
 		// check if it worked (probably worth doing :) )
-		GLuint status = ccglCheckFramebufferStatus(CC_GL_FRAMEBUFFER);
+		GLuint status = ccGLCheckFramebufferStatus(CC_GL_FRAMEBUFFER);
 		if (status != CC_GL_FRAMEBUFFER_COMPLETE)
 		{
 			[NSException raise:@"Render Texture" format:@"Could not attach texture to framebuffer"];
@@ -96,39 +101,47 @@
 		// issue #937
 		[sprite_ setBlendFunc:(ccBlendFunc){GL_ONE, GL_ONE_MINUS_SRC_ALPHA}];
 
-		ccglBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
+		ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
 	}
 	return self;
 }
 
 -(void)dealloc
 {
-//	[self removeAllChildrenWithCleanup:YES];
-	ccglDeleteFramebuffers(1, &fbo_);
+	ccGLDeleteFramebuffers(1, &fbo_);
 	[super dealloc];
 }
 
 -(void)begin
-{
+{	
 	// Save the current matrix
-	glPushMatrix();
+	kmGLPushMatrix();
 	
 	CGSize texSize = [texture_ contentSizeInPixels];
 	
 	
 	// Calculate the adjustment ratios based on the old and new projections
-	CGSize size = [[CCDirector sharedDirector] displaySizeInPixels];
+	CCDirector *director = [CCDirector sharedDirector];
+	CGSize size = [director winSizeInPixels];
 	float widthRatio = size.width / texSize.width;
 	float heightRatio = size.height / texSize.height;
 	
 	
 	// Adjust the orthographic propjection and viewport
-	ccglOrtho((float)-1.0 / widthRatio,  (float)1.0 / widthRatio, (float)-1.0 / heightRatio, (float)1.0 / heightRatio, -1,1);
-	glViewport(0, 0, texSize.width, texSize.height);
+	kmMat4 orthoMatrix;
+	kmMat4OrthographicProjection(&orthoMatrix, (float)-1.0 / widthRatio,  (float)1.0 / widthRatio,
+								 (float)-1.0 / heightRatio, (float)1.0 / heightRatio, -1,1 );
+	kmGLMultMatrix(&orthoMatrix);
+	
+	glViewport(0, 0, texSize.width * CC_CONTENT_SCALE_FACTOR(), texSize.height * CC_CONTENT_SCALE_FACTOR() );
+	
+	// special viewport for 3d projection + retina display
+	if ( director.projection == kCCDirectorProjection3D && CC_CONTENT_SCALE_FACTOR() != 1 )
+		glViewport(-texSize.width/2, -texSize.height/2, texSize.width * CC_CONTENT_SCALE_FACTOR(), texSize.height * CC_CONTENT_SCALE_FACTOR() );
 	
 	
 	glGetIntegerv(CC_GL_FRAMEBUFFER_BINDING, &oldFBO_);
-	ccglBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);//Will direct drawing to the frame buffer created above
+	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
 	
 	// Issue #1145
 	// There is no need to enable the default GL states here
@@ -141,6 +154,36 @@
 	// and enable the gl states manually, in case you need them.
 	CC_ENABLE_DEFAULT_GL_STATES();
 }
+
+-(void)begin2
+{	
+	kmGLPushMatrix();
+
+//	CCDirector *director = [CCDirector sharedDirector];
+//	CGSize size = [director winSizeInPixels];
+//	
+//	glViewport(0, 0, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
+//	
+//	kmMat4 orthoMatrix;
+//	kmMat4OrthographicProjection(&orthoMatrix, 0, size.width, 0, size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 1024 * CC_CONTENT_SCALE_FACTOR() );
+//
+//	kmGLMultMatrix(&orthoMatrix);
+	
+	glGetIntegerv(CC_GL_FRAMEBUFFER_BINDING, &oldFBO_);
+	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
+	
+	// Issue #1145
+	// There is no need to enable the default GL states here
+	// but since CCRenderTexture is mostly used outside the "render" loop
+	// these states needs to be enabled.
+	// Since this bug was discovered in API-freeze (very close of 1.0 release)
+	// This bug won't be fixed to prevent incompatibilities with code.
+	// 
+	// If you understand the above mentioned message, then you can comment the following line
+	// and enable the gl states manually, in case you need them.
+	CC_ENABLE_DEFAULT_GL_STATES();
+}
+
 
 -(void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a
 {
@@ -159,11 +202,20 @@
 
 -(void)end
 {
-	ccglBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
-	// Restore the original matrix and viewport
-	glPopMatrix();
-	CGSize size = [[CCDirector sharedDirector] displaySizeInPixels];
-	glViewport(0, 0, size.width, size.height);
+	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
+
+	kmGLPopMatrix();
+
+	CCDirector *director = [CCDirector sharedDirector];
+
+	CGSize size = [director winSizeInPixels];
+
+	// restore viewport
+	glViewport(0, 0, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
+
+	// special viewport for 3d projection + retina display
+	if ( director.projection == kCCDirectorProjection3D && CC_CONTENT_SCALE_FACTOR() != 1 )
+		glViewport(-size.width/2, -size.height/2, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
 }
 
 -(void)clear:(float)r g:(float)g b:(float)b a:(float)a
@@ -204,24 +256,25 @@
 	int bytesPerRow					= bytesPerPixel * tx;
 	NSInteger myDataLength			= bytesPerRow * ty;
 	
-	NSMutableData *buffer	= [[NSMutableData alloc] initWithCapacity:myDataLength];
-	NSMutableData *pixels	= [[NSMutableData alloc] initWithCapacity:myDataLength];
+	GLubyte *buffer	= calloc(myDataLength,1);
+	GLubyte *pixels	= calloc(myDataLength,1);
+
 	
 	if( ! (buffer && pixels) ) {
 		CCLOG(@"cocos2d: CCRenderTexture#getUIImageFromBuffer: not enough memory");
-		[buffer release];
-		[pixels release];
+		free(buffer);
+		free(pixels);
 		return nil;
 	}
 	
 	[self begin];
-	glReadPixels(0,0,tx,ty,GL_RGBA,GL_UNSIGNED_BYTE, [buffer mutableBytes]);
+	glReadPixels(0,0,tx,ty,GL_RGBA,GL_UNSIGNED_BYTE, buffer);
 	[self end];
 	
 	// make data provider with data.
 	
 	CGBitmapInfo bitmapInfo	= kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
-	CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, [buffer mutableBytes], myDataLength, NULL);
+	CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, NULL);
 	CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	CGImageRef iref	= CGImageCreate(tx, ty,
 									bitsPerComponent, bitsPerPixel, bytesPerRow,
@@ -229,7 +282,7 @@
 									NULL, false,
 									kCGRenderingIntentDefault);
 	
-	CGContextRef context = CGBitmapContextCreate([pixels mutableBytes], tx,
+	CGContextRef context = CGBitmapContextCreate(pixels, tx,
 												 ty, CGImageGetBitsPerComponent(iref),
 												 CGImageGetBytesPerRow(iref), CGImageGetColorSpace(iref),
 												 bitmapInfo);
@@ -237,7 +290,7 @@
 	CGContextScaleCTM(context, 1.0f, -1.0f);
 	CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, tx, ty), iref);
 	CGImageRef outputRef = CGBitmapContextCreateImage(context);
-	UIImage* image	= [[UIImage alloc] initWithCGImage:outputRef];
+	UIImage* image	= [[UIImage alloc] initWithCGImage:outputRef scale:CC_CONTENT_SCALE_FACTOR() orientation:UIImageOrientationUp];
 	
 	CGImageRelease(iref);
 	CGContextRelease(context);
@@ -245,8 +298,8 @@
 	CGDataProviderRelease(provider);
 	CGImageRelease(outputRef);
 	
-	[pixels release];
-	[buffer release];
+	free(pixels);
+	free(buffer);
 	
 	return [image autorelease];
 }

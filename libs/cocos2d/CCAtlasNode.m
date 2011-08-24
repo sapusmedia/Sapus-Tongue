@@ -26,6 +26,14 @@
 
 #import "CCAtlasNode.h"
 #import "ccMacros.h"
+#import "GLProgram.h"
+#import "CCShaderCache.h"
+#import "ccGLState.h"
+#import "CCDirector.h"
+#import "Support/TransformUtils.h"
+
+// external
+#import "kazmath/GL/matrix.h"
 
 
 @interface CCAtlasNode ()
@@ -41,6 +49,12 @@
 @synthesize quadsToDraw = quadsToDraw_;
 
 #pragma mark CCAtlasNode - Creation & Init
+- (id) init
+{
+	NSAssert( NO, @"Not supported - Use initWtihTileFile instead");
+    return self;
+}
+
 +(id) atlasWithTileFile:(NSString*)tile tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c
 {
 	return [[[self alloc] initWithTileFile:tile tileWidth:w tileHeight:h itemsToRender:c] autorelease];
@@ -50,8 +64,8 @@
 {
 	if( (self=[super init]) ) {
 	
-		itemWidth_ = w * CC_CONTENT_SCALE_FACTOR();
-		itemHeight_ = h * CC_CONTENT_SCALE_FACTOR();
+		itemWidth_ = w;
+		itemHeight_ = h;
 
 		opacity_ = 255;
 		color_ = colorUnmodified_ = ccWHITE;
@@ -78,6 +92,9 @@
 		
 		self.quadsToDraw = c;
 		
+		// shader stuff
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTexture_uColor];
+		uniformColor_ = glGetUniformLocation( shaderProgram_->program_, "u_color");
 	}
 	return self;
 }
@@ -93,7 +110,7 @@
 
 -(void) calculateMaxItems
 {
-	CGSize s = [[textureAtlas_ texture] contentSizeInPixels];
+	CGSize s = [[textureAtlas_ texture] contentSize];
 	itemsPerColumn_ = s.height / itemHeight_;
 	itemsPerRow_ = s.width / itemWidth_;
 }
@@ -108,30 +125,25 @@
 {
 	[super draw];
 
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
-	glDisableClientState(GL_COLOR_ARRAY);
-
-	glColor4ub( color_.r, color_.g, color_.b, opacity_);
-
-	BOOL newBlend = blendFunc_.src != CC_BLEND_SRC || blendFunc_.dst != CC_BLEND_DST;
-	if( newBlend )
-		glBlendFunc( blendFunc_.src, blendFunc_.dst );
-		
-	[textureAtlas_ drawNumberOfQuads:quadsToDraw_ fromIndex:0];
-		
-	if( newBlend )
-		glBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
+	// Default Attribs & States: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, kCCAttribVertex, kCCAttribTexCoords
+	// Unneeded states: kCCAttribColor
 	
-	// is this chepear than saving/restoring color state ?
-	// XXX: There is no need to restore the color to (255,255,255,255). Objects should use the color
-	// XXX: that they need
-//	glColor4ub( 255, 255, 255, 255);
+	glDisableVertexAttribArray(kCCAttribColor);
 
-	// restore default GL state
-	glEnableClientState(GL_COLOR_ARRAY);
-
+	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
+	
+	ccGLUseProgram( shaderProgram_->program_ );
+	ccGLUniformProjectionMatrix( shaderProgram_ );
+	ccGLUniformModelViewMatrix( shaderProgram_ );	
+	
+	glUniform4f( uniformColor_, color_.r / 255.0f, color_.g / 255.0f, color_.b / 255.0f, opacity_ / 255.0f );
+	
+	[textureAtlas_ drawNumberOfQuads:quadsToDraw_ fromIndex:0];
+	
+	
+	// Restore state
+	glEnableVertexAttribArray(kCCAttribColor);
 }
 
 #pragma mark CCAtlasNode - RGBA protocol
@@ -166,7 +178,7 @@
 	
 	// special opacity for premultiplied textures
 	if( opacityModifyRGB_ )
-		[self setColor: colorUnmodified_];	
+		[self setColor: colorUnmodified_];
 }
 
 -(void) setOpacityModifyRGB:(BOOL)modify

@@ -73,10 +73,9 @@ enum {
 
 
 static void
-eachShape(void *ptr, void* instance)
+eachShape(cpShape *shape, void* instance)
 {
 //	InstructionsNode *self = (InstructionsNode*) instance;
-	cpShape *shape = (cpShape*) ptr;
 	CCSprite *sprite = shape->data;
 	if( sprite ) {
 		cpVect c;
@@ -133,10 +132,13 @@ eachShape(void *ptr, void* instance)
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 		self.isMouseEnabled = YES;
-#endif		
+#endif
+		
 		[self setupBackground];
 		[self setupChipmunk];
 		[self setupTongue];
+		
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTexture];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
 
@@ -200,10 +202,8 @@ eachShape(void *ptr, void* instance)
 	cpInitChipmunk();
 		
 	space_ = cpSpaceNew();
-	cpSpaceResizeStaticHash(space_, 100, 30);
-	cpSpaceResizeActiveHash(space_, 100, 100);
 
-	space_->elasticIterations = space_->iterations = 10;
+	space_->iterations = 10;
 	space_->gravity = cpv(0, kGravityRoll);
 	
 	cpShape *shape;
@@ -315,7 +315,7 @@ eachShape(void *ptr, void* instance)
 	[sapusSprite_ release];
 	[tongue_ release];
 	
-	cpSpaceFreeChildren(space_);
+//	chipmunkFreeSpaceChildren(space_);
 	cpSpaceFree(space_);
 	
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -357,8 +357,7 @@ eachShape(void *ptr, void* instance)
 		cpSpaceStep(space_, dt);
 	}
 	
-	cpSpaceHashEach(space_->activeShapes, &eachShape, self);
-	cpSpaceHashEach(space_->staticShapes, &eachShape, self);
+	cpSpaceEachShape(space_, &eachShape, self);
 }
 
 
@@ -367,7 +366,8 @@ eachShape(void *ptr, void* instance)
 	[self drawTongue];
 }
 
--(void) drawTongue {
+-(void) drawTongue
+{
 	
 	GLfloat	 coordinates[] = {  0,				tongue_.maxT,
 								tongue_.maxS,	tongue_.maxT,
@@ -387,24 +387,32 @@ eachShape(void *ptr, void* instance)
 	sapusV.x = sapusV.x + tongueLen*xs;
 	sapusV.y = sapusV.y + tongueLen*ys;	
 	
-	GLfloat	vertices[] = {	(sapusV.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
-							(sapusV.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),		(sapusV.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),		0.0f,
-							(pivotBody_->p.x - x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y - y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f,
-							(pivotBody_->p.x + x*1.5f) * CC_CONTENT_SCALE_FACTOR(),	(pivotBody_->p.y + y*1.5f) * CC_CONTENT_SCALE_FACTOR(),	0.0f };
+	GLfloat	vertices[] = {	(sapusV.x - x*1.5f),		(sapusV.y - y*1.5f),		0.0f,
+							(sapusV.x + x*1.5f),		(sapusV.y + y*1.5f) ,		0.0f,
+							(pivotBody_->p.x - x*1.5f),	(pivotBody_->p.y - y*1.5f),	0.0f,
+							(pivotBody_->p.x + x*1.5f),	(pivotBody_->p.y + y*1.5f),	0.0f };
 	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
+	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
+	// Unneeded states: kCCAttribColor
 	
-	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableVertexAttribArray(kCCAttribColor);
+	
+	ccGLUseProgram( shaderProgram_->program_ );
+	ccGLUniformProjectionMatrix( shaderProgram_ );
+	ccGLUniformModelViewMatrix( shaderProgram_ );
 	
 	glBindTexture(GL_TEXTURE_2D, tongue_.name );
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	
+	glVertexAttribPointer(kCCAttribPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	// restore default GL states
-	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableVertexAttribArray(kCCAttribColor);
+	
+	CHECK_GL_ERROR_DEBUG();	
 }
 
 -(void) addJoint

@@ -31,6 +31,24 @@
  cocos2d (cc) configuration file
 */
 
+/** @def CC_ENABLE_GL_STATE_CACHE
+ If enabled, cocos2d will maintain an OpenGL state cache internally to avoid unnecessary switches.
+ In order to use them, you have to use the following functions, insead of the the GL ones:
+	- ccGLUseProgram() instead of glUseProgram()
+	- ccGLDeleteProgram() instead of glDeleteProgram()
+	- ccGLBlendFunc() instead of glBlendFunc()
+ 
+ If this functionality is disabled, then ccGLUseProgram(), ccGLDeleteProgram(), ccGLBlendFunc() will call the GL ones, without using the cache.
+ 
+ It is recommened to enable whenever possible to improve speed.
+ If you are migrating your code from GL ES 1.1, then keep it disabled. Once all your code works as expected, turn it on.
+ 
+ @since v2.0.0
+ */
+#ifndef CC_ENABLE_GL_STATE_CACHE 
+#define CC_ENABLE_GL_STATE_CACHE 0
+#endif
+
 /** @def CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
  If enabled, the texture coordinates will be calculated by using this formula:
    - texCoord.left = (rect.origin.x*2+1) / (texture.wide*2);
@@ -42,9 +60,9 @@
  The "correct" way to prevent artifacts is by using the spritesheet-artifact-fixer.py or a similar tool.
  
  Affected nodes:
-	- CCSprite / CCSpriteBatchNode and subclasses: CCLabelBMFont, CCTMXTiledMap
+	- CCSprite / CCSpriteBatchNode and subclasses: CCLabelBMFont, CCTMXLayer
 	- CCLabelAtlas
-	- CCQuadParticleSystem
+	- CCParticleSystemQuad
 	- CCTileMap
  
  To enabled set it to 1. Disabled by default.
@@ -55,35 +73,6 @@
 #define CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL 0
 #endif
  
-
-/** @def CC_FONT_LABEL_SUPPORT
- If enabled, FontLabel will be used to render .ttf files.
- If the .ttf file is not found, then it will use the standard UIFont class
- If disabled, the standard UIFont class will be used.
- 
- To disable set it to 0. Enabled by default.
-
- Only valid for cocos2d-ios. Not supported on cocos2d-mac
- */
-#ifndef CC_FONT_LABEL_SUPPORT
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-#define CC_FONT_LABEL_SUPPORT	1
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
-#define CC_FONT_LABEL_SUPPORT	0
-#endif
-#endif
-
-/** @def CC_DIRECTOR_FAST_FPS
- If enabled, then the FPS will be drawn using CCLabelAtlas (fast rendering).
- You will need to add the fps_images.png to your project.
- If disabled, the FPS will be rendered using CCLabel (slow rendering)
- 
- To enable set it to a value different than 0. Enabled by default.
- */
-#ifndef CC_DIRECTOR_FAST_FPS
-#define CC_DIRECTOR_FAST_FPS	1
-#endif
-
 /** @def CC_DIRECTOR_FPS_INTERVAL
  Senconds between FPS updates.
  0.5 seconds, means that the FPS number will be updated every 0.5 seconds.
@@ -95,18 +84,13 @@
 #define CC_DIRECTOR_FPS_INTERVAL (0.1f)
 #endif
 
-/** @def CC_DIRECTOR_DISPATCH_FAST_EVENTS
- If enabled, and only when it is used with CCFastDirector, the main loop will wait 0.04 seconds to
- dispatch all the events, even if there are not events to dispatch.
- If your game uses lot's of events (eg: touches) it might be a good idea to enable this feature.
- Otherwise, it is safe to leave it disabled.
+/** @def CC_DIRECTOR_FPS_POSITION
+ Position of the FPS
  
- To enable set it to 1. Disabled by default.
- 
- @warning This feature is experimental
+ Default: 0,0 (bottom-left corner)
  */
-#ifndef CC_DIRECTOR_DISPATCH_FAST_EVENTS
-#define CC_DIRECTOR_DISPATCH_FAST_EVENTS 0
+#ifndef CC_DIRECTOR_FPS_POSITION
+#define CC_DIRECTOR_FPS_POSITION ccp(0,0)
 #endif
 
 /** @def CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
@@ -161,22 +145,6 @@
 #endif
 #endif
 
-/** @def CC_NODE_TRANSFORM_USING_AFFINE_MATRIX
- If enabled, CCNode will transform the nodes using a cached Affine matrix.
- If disabled, the node will be transformed using glTranslate,glRotate,glScale.
- Using the affine matrix only requires 2 GL calls.
- Using the translate/rotate/scale requires 5 GL calls.
- But computing the Affine matrix is relative expensive.
- But according to performance tests, Affine matrix performs better.
- This parameter doesn't affect CCSpriteBatchNode nodes.
- 
- To enable set it to a value different than 0. Enabled by default.
-
- */
-#ifndef CC_NODE_TRANSFORM_USING_AFFINE_MATRIX
-#define CC_NODE_TRANSFORM_USING_AFFINE_MATRIX 1
-#endif
-
 /** @def CC_OPTIMIZE_BLEND_FUNC_FOR_PREMULTIPLIED_ALPHA
  If most of your imamges have pre-multiplied alpha, set it to 1 (if you are going to use .PNG/.JPG file images).
  Only set to 0 if ALL your images by-pass Apple UIImage loading system (eg: if you use libpng or PVR images)
@@ -200,64 +168,18 @@
 #define CC_TEXTURE_ATLAS_USE_TRIANGLE_STRIP 0
 #endif
 
-/** @def CC_TEXTURE_NPOT_SUPPORT
- If enabled, NPOT textures will be used where available. Only 3rd gen (and newer) devices support NPOT textures.
- NPOT textures have the following limitations:
-	- They can't have mipmaps
-	- They only accept GL_CLAMP_TO_EDGE in GL_TEXTURE_WRAP_{S,T}
- 
- To enable set it to a value different than 0. Disabled by default.
 
- This value governs only the PNG, GIF, BMP, images.
- This value DOES NOT govern the PVR (PVR.GZ, PVR.CCZ) files. If NPOT PVR is loaded, then it will create an NPOT texture ignoring this value.
+/** @def CC_USE_LA88_LABELS
+ If enabled, it will use LA88 (Luminance Alpha 16-bit textures) for CCLabelTTF objects.
+ If it is disabled, it will use A8 (Alpha 8-bit textures).
+ LA88 textures are 6% faster than A8 textures, but they will consume 2x memory.
  
- @deprecated This value will be removed in 1.1 and NPOT textures will be loaded by default if the device supports it.
-
- @since v0.99.2
- */
-#ifndef CC_TEXTURE_NPOT_SUPPORT
-#define CC_TEXTURE_NPOT_SUPPORT 0
-#endif
-
-/** @def CC_RETINA_DISPLAY_SUPPORT
- If enabled, cocos2d supports retina display. 
- For performance reasons, it's recommended disable it in games without retina display support, like iPad only games.
- 
- To enable set it to 1. Use 0 to disable it. Enabled by default.
- 
+ This feature is enabled by default.
+  
  @since v0.99.5
  */
-#ifndef CC_RETINA_DISPLAY_SUPPORT
-#define CC_RETINA_DISPLAY_SUPPORT 1
-#endif
-
-/** @def CC_RETINA_DISPLAY_FILENAME_SUFFIX
- It's the suffix that will be appended to the files in order to load "retina display" images.
-
- On an iPhone4 with Retina Display support enabled, the file @"sprite-hd.png" will be loaded instead of @"sprite.png".
- If the file doesn't exist it will use the non-retina display image.
- 
- Platforms: Only used on Retina Display devices like iPhone 4.
- 
- @since v0.99.5
- */ 
-#ifndef CC_RETINA_DISPLAY_FILENAME_SUFFIX
-#define CC_RETINA_DISPLAY_FILENAME_SUFFIX @"-hd"
-#endif
-
-/** @def CC_USE_LA88_LABELS_ON_NEON_ARCH
- If enabled, it will use LA88 (16-bit textures) on Neon devices for CCLabelTTF objects.
- If it is disabled, or if it is used on another architecture it will use A8 (8-bit textures).
- On Neon devices, LA88 textures are 6% faster than A8 textures, but then will consume 2x memory.
- 
- This feature is disabled by default.
- 
- Platforms: Only used on ARM Neon architectures like iPhone 3GS or newer and iPad.
-
- @since v0.99.5
- */
-#ifndef CC_USE_LA88_LABELS_ON_NEON_ARCH
-#define CC_USE_LA88_LABELS_ON_NEON_ARCH 0
+#ifndef CC_USE_LA88_LABELS
+#define CC_USE_LA88_LABELS 1
 #endif
 
 /** @def CC_SPRITE_DEBUG_DRAW
@@ -293,7 +215,7 @@
 #define CC_LABELBMFONT_DEBUG_DRAW 0
 #endif
 
-/** @def CC_LABELBMFONT_DEBUG_DRAW
+/** @def CC_LABELATLAS_DEBUG_DRAW
  If enabled, all subclasses of CCLabeltAtlas will draw a bounding box
  Useful for debugging purposes only. It is recommened to leave it disabled.
  
@@ -313,22 +235,3 @@
 #ifndef CC_ENABLE_PROFILERS
 #define CC_ENABLE_PROFILERS 0
 #endif
-
-//
-// DON'T edit this macro.
-//
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-
-#if CC_RETINA_DISPLAY_SUPPORT
-#define CC_IS_RETINA_DISPLAY_SUPPORTED 1
-#else
-#define CC_IS_RETINA_DISPLAY_SUPPORTED 0
-#endif
-
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
-
-#define CC_IS_RETINA_DISPLAY_SUPPORTED 0
-
-#endif
-
-

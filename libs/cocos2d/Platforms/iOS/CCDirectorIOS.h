@@ -30,97 +30,11 @@
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 #import "../../CCDirector.h"
-
-/** @typedef ccDeviceOrientation
- Possible device orientations
- */
-typedef enum {
-	/// Device oriented vertically, home button on the bottom
-	kCCDeviceOrientationPortrait = UIDeviceOrientationPortrait,	
-	/// Device oriented vertically, home button on the top
-    kCCDeviceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
-	/// Device oriented horizontally, home button on the right
-    kCCDeviceOrientationLandscapeLeft = UIDeviceOrientationLandscapeLeft,
-	/// Device oriented horizontally, home button on the left
-    kCCDeviceOrientationLandscapeRight = UIDeviceOrientationLandscapeRight,
-	
-	// Backward compatibility stuff
-	CCDeviceOrientationPortrait = kCCDeviceOrientationPortrait,
-	CCDeviceOrientationPortraitUpsideDown = kCCDeviceOrientationPortraitUpsideDown,
-	CCDeviceOrientationLandscapeLeft = kCCDeviceOrientationLandscapeLeft,
-	CCDeviceOrientationLandscapeRight = kCCDeviceOrientationLandscapeRight,
-} ccDeviceOrientation;
-
-/** @typedef ccDirectorType
- Possible Director Types.
- @since v0.8.2
- */
-typedef enum {
-	/** Will use a Director that triggers the main loop from an NSTimer object
-	 *
-	 * Features and Limitations:
-	 * - Integrates OK with UIKit objects
-	 * - It the slowest director
-	 * - The invertal update is customizable from 1 to 60
-	 */
-	kCCDirectorTypeNSTimer,
-	
-	/** will use a Director that triggers the main loop from a custom main loop.
-	 *
-	 * Features and Limitations:
-	 * - Faster than NSTimer Director
-	 * - It doesn't integrate well with UIKit objecgts
-	 * - The interval update can't be customizable
-	 */
-	kCCDirectorTypeMainLoop,
-	
-	/** Will use a Director that triggers the main loop from a thread, but the main loop will be executed on the main thread.
-	 *
-	 * Features and Limitations:
-	 * - Faster than NSTimer Director
-	 * - It doesn't integrate well with UIKit objecgts
-	 * - The interval update can't be customizable
-	 */
-	kCCDirectorTypeThreadMainLoop,
-	
-	/** Will use a Director that synchronizes timers with the refresh rate of the display.
-	 *
-	 * Features and Limitations:
-	 * - Faster than NSTimer Director
-	 * - Only available on 3.1+
-	 * - Scheduled timers & drawing are synchronizes with the refresh rate of the display
-	 * - Integrates OK with UIKit objects
-	 * - The interval update can be 1/60, 1/30, 1/15
-	 */	
-	kCCDirectorTypeDisplayLink,
-	
-	/** Default director is the NSTimer directory */
-	kCCDirectorTypeDefault = kCCDirectorTypeNSTimer,
-	
-	// backward compatibility stuff
-	CCDirectorTypeNSTimer = kCCDirectorTypeNSTimer,
-	CCDirectorTypeMainLoop = kCCDirectorTypeMainLoop,
-	CCDirectorTypeThreadMainLoop = kCCDirectorTypeThreadMainLoop,
-	CCDirectorTypeDisplayLink = kCCDirectorTypeDisplayLink,
-	CCDirectorTypeDefault = kCCDirectorTypeDefault,
-	
-	
-} ccDirectorType;
+#import "kazmath/mat4.h"
 
 /** CCDirector extensions for iPhone
  */
 @interface CCDirector (iOSExtension)
-
-// rotates the screen if an orientation differnent than Portrait is used
--(void) applyOrientation;
-
-/** Sets the device orientation.
- If the orientation is going to be controlled by an UIViewController, then the orientation should be Portrait
- */
--(void) setDeviceOrientation:(ccDeviceOrientation)orientation;
-
-/** returns the device orientation */
--(ccDeviceOrientation) deviceOrientation;
 
 /** The size in pixels of the surface. It could be different than the screen size.
  High-res devices might have a higher surface size than the screen size.
@@ -139,31 +53,11 @@ typedef enum {
  This is the recommened way to enable Retina Display.
  @since v0.99.5
  */
--(BOOL) enableRetinaDisplay:(BOOL)yes;
+-(BOOL) enableRetinaDisplay:(BOOL)enableRetina;
 
 
 /** returns the content scale factor */
 -(CGFloat) contentScaleFactor;
-@end
-
-@interface CCDirector (iOSExtensionClassMethods)
-
-/** There are 4 types of Director.
- - kCCDirectorTypeNSTimer (default)
- - kCCDirectorTypeMainLoop
- - kCCDirectorTypeThreadMainLoop
- - kCCDirectorTypeDisplayLink
- 
- Each Director has it's own benefits, limitations.
- If you are using SDK 3.1 or newer it is recommed to use the DisplayLink director
- 
- This method should be called before any other call to the director.
- 
- It will return NO if the director type is kCCDirectorTypeDisplayLink and the running SDK is < 3.1. Otherwise it will return YES.
- 
- @since v0.8.2
- */
-+(BOOL) setDirectorType:(ccDirectorType) directorType;
 @end
 
 #pragma mark -
@@ -174,45 +68,9 @@ typedef enum {
  */
 @interface CCDirectorIOS : CCDirector
 {
-	/* orientation */
-	ccDeviceOrientation	deviceOrientation_;
-	
 	/* contentScaleFactor could be simulated */
-	BOOL	isContentScaleSupported_;
-	
+	BOOL	isContentScaleSupported_;	
 }
-@end
-
-/** FastDirector is a Director that triggers the main loop as fast as possible.
- *
- * Features and Limitations:
- *  - Faster than "normal" director
- *  - Consumes more battery than the "normal" director
- *  - It has some issues while using UIKit objects
- */
-@interface CCDirectorFast : CCDirectorIOS
-{
-	BOOL isRunning;
-	
-	NSAutoreleasePool	*autoreleasePool;
-}
--(void) mainLoop;
-@end
-
-/** ThreadedFastDirector is a Director that triggers the main loop from a thread.
- *
- * Features and Limitations:
- *  - Faster than "normal" director
- *  - Consumes more battery than the "normal" director
- *  - It can be used with UIKit objects
- *
- * @since v0.8.2
- */
-@interface CCDirectorFastThreaded : CCDirectorIOS
-{
-	BOOL isRunning;	
-}
--(void) mainLoop;
 @end
 
 /** DisplayLinkDirector is a Director that synchronizes timers with the refresh rate of the display.
@@ -231,22 +89,6 @@ typedef enum {
 	id displayLink;
 }
 -(void) mainLoop:(id)sender;
-@end
-
-/** TimerDirector is a Director that calls the main loop from an NSTimer object
- *
- * Features and Limitations:
- * - Integrates OK with UIKit objects
- * - It the slowest director
- * - The invertal update is customizable from 1 to 60
- *
- * It is the default Director.
- */
-@interface CCDirectorTimer : CCDirectorIOS
-{
-	NSTimer *animationTimer;
-}
--(void) mainLoop;
 @end
 
 // optimization. Should only be used to read it. Never to write it.

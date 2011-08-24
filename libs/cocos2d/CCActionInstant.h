@@ -156,8 +156,6 @@ typedef void (*CC_CALLBACK_ND)(id, SEL, id, void *);
 
 #pragma mark Blocks Support
 
-#if NS_BLOCKS_AVAILABLE
-
 /** Executes a callback using a block.
  */
 @interface CCCallBlock : CCActionInstant<NSCopying>
@@ -202,4 +200,28 @@ typedef void (*CC_CALLBACK_ND)(id, SEL, id, void *);
 -(void) execute;
 @end
 
-#endif
+/** Executes a callback using a block with a single NSObject parameter.
+ @since v2.0
+ */
+@interface CCCallBlockO : CCActionInstant<NSCopying>
+{
+	void (^block_)(id object);
+	id object_;
+}
+
+/** object to be passed to the block */
+@property (nonatomic,retain) id object;
+
+/** creates the action with the specified block, to be used as a callback.
+ The block will be "copied".
+ */
++(id) actionWithBlock:(void(^)(id object))block object:(id)object;
+
+/** initialized the action with the specified block, to be used as a callback.
+ The block will be "copied".
+ */
+-(id) initWithBlock:(void(^)(id object))block object:(id)object;
+
+/** executes the callback */
+-(void) execute;
+@end

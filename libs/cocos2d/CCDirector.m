@@ -44,6 +44,8 @@
 #import "CCTexture2D.h"
 #import "CCLabelBMFont.h"
 #import "CCLayer.h"
+#import "ccGLState.h"
+#import "CCShaderCache.h"
 
 // support imports
 #import "Platforms/CCGL.h"
@@ -54,7 +56,7 @@
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "Platforms/iOS/CCDirectorIOS.h"
-#define CC_DIRECTOR_DEFAULT CCDirectorTimer
+#define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 #import "Platforms/Mac/CCDirectorMac.h"
 #define CC_DIRECTOR_DEFAULT CCDirectorDisplayLink
@@ -65,7 +67,6 @@
 #define kDefaultFPS		60.0	// 60 frames per second
 
 extern NSString * cocos2dVersion(void);
-
 
 @interface CCDirector (Private)
 -(void) setNextScene;
@@ -86,7 +87,7 @@ extern NSString * cocos2dVersion(void);
 @synthesize runningThread = runningThread_;
 @synthesize notificationNode = notificationNode_;
 @synthesize projectionDelegate = projectionDelegate_;
-@synthesize frames = frames_;
+@synthesize totalFrames = totalFrames_;
 //
 // singleton stuff
 //
@@ -139,7 +140,7 @@ static CCDirector *_sharedDirector = nil;
 
 		// FPS
 		displayFPS_ = NO;
-		frames_ = 0;
+		totalFrames_ = frames_ = 0;
 		
 		// paused ?
 		isPaused_ = NO;
@@ -157,9 +158,7 @@ static CCDirector *_sharedDirector = nil;
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 
-#if CC_DIRECTOR_FAST_FPS
 	[FPSLabel_ release];
-#endif
 	[runningScene_ release];
 	[notificationNode_ release];
 	[scenesStack_ release];
@@ -182,15 +181,6 @@ static CCDirector *_sharedDirector = nil;
 	
 	// set other opengl default values
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	
-#if CC_DIRECTOR_FAST_FPS
-    if (!FPSLabel_) {
-		CCTexture2DPixelFormat currentFormat = [CCTexture2D defaultAlphaPixelFormat];
-		[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-		FPSLabel_ = [[CCLabelAtlas labelWithString:@"00.0" charMapFile:@"fps_images.png" itemWidth:16 itemHeight:24 startCharMap:'.'] retain];
-		[CCTexture2D setDefaultAlphaPixelFormat:currentFormat];		
-	}
-#endif	// CC_DIRECTOR_FAST_FPS
 }
 
 //
@@ -234,7 +224,7 @@ static CCDirector *_sharedDirector = nil;
 -(void) purgeCachedData
 {
 	[CCLabelBMFont purgeCachedData];	
-	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
+	[[CCTextureCache sharedTextureCache] removeUnusedTextures];
 }
 
 #pragma mark Director - Scene OpenGL Helper
@@ -258,21 +248,26 @@ static CCDirector *_sharedDirector = nil;
 {
 	if (on) {
 		glEnable(GL_BLEND);
-		glBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
+		ccGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
 		
 	} else
 		glDisable(GL_BLEND);
+	
+	CHECK_GL_ERROR_DEBUG();
 }
 
 - (void) setDepthTest: (BOOL) on
 {
 	if (on) {
-		ccglClearDepth(1.0f);
+		ccGLClearDepth(1.0f);
+
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 //		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	} else
 		glDisable( GL_DEPTH_TEST );
+
+	CHECK_GL_ERROR_DEBUG();
 }
 
 #pragma mark Director Integration with a UIKit view
@@ -294,7 +289,10 @@ static CCDirector *_sharedDirector = nil;
 		winSizeInPixels_ = winSizeInPoints_ = CCNSSizeToCGSize( [view bounds].size );
 
 		[self setGLDefaultValues];
+		[self createFPSLabel];
 	}
+	
+	CHECK_GL_ERROR_DEBUG();
 }
 
 #pragma mark Director Scene Landscape
@@ -317,11 +315,6 @@ static CCDirector *_sharedDirector = nil;
 }
 
 -(CGSize)winSizeInPixels
-{
-	return winSizeInPixels_;
-}
-
--(CGSize)displaySizeInPixels
 {
 	return winSizeInPixels_;
 }
@@ -394,10 +387,8 @@ static CCDirector *_sharedDirector = nil;
 	
 	[self stopAnimation];
 	
-#if CC_DIRECTOR_FAST_FPS
 	[FPSLabel_ release];
 	FPSLabel_ = nil;
-#endif	
 
 	[projectionDelegate_ release];
 	projectionDelegate_ = nil;
@@ -405,13 +396,13 @@ static CCDirector *_sharedDirector = nil;
 	// Purge bitmap cache
 	[CCLabelBMFont purgeCachedData];
 
-	// Purge all managers
+	// Purge all managers / caches
 	[CCAnimationCache purgeSharedAnimationCache];
 	[CCSpriteFrameCache purgeSharedSpriteFrameCache];
 	[CCScheduler purgeSharedScheduler];
 	[CCActionManager purgeSharedManager];
 	[CCTextureCache purgeSharedTextureCache];
-	
+	[CCShaderCache purgeSharedShaderCache];
 	
 	// OpenGL view
 	
@@ -420,7 +411,9 @@ static CCDirector *_sharedDirector = nil;
 //	[openGLView_ removeFromSuperview];
 
 	[openGLView_ release];
-	openGLView_ = nil;	
+	openGLView_ = nil;
+	
+	CHECK_GL_ERROR();
 }
 
 -(void) setNextScene
@@ -492,7 +485,6 @@ static CCDirector *_sharedDirector = nil;
 	CCLOG(@"cocos2d: Director#setAnimationInterval. Override me");
 }
 
-#if CC_DIRECTOR_FAST_FPS
 
 // display the FPS using a LabelAtlas
 // updates the FPS every frame
@@ -513,43 +505,8 @@ static CCDirector *_sharedDirector = nil;
 		[FPSLabel_ setString:str];
 		[str release];
 	}
-
-	[FPSLabel_ draw];
+	[FPSLabel_ visit];
 }
-#else
-// display the FPS using a manually generated Texture (very slow)
-// updates the FPS 3 times per second aprox.
--(void) showFPS
-{
-	frames_++;
-	accumDt_ += dt;
-	
-	if ( accumDt_ > CC_DIRECTOR_FPS_INTERVAL)  {
-		frameRate_ = frames_/accumDt_;
-		frames_ = 0;
-		accumDt_ = 0;
-	}
-	
-	NSString *str = [NSString stringWithFormat:@"%.2f",frameRate_];
-	CCTexture2D *texture = [[CCTexture2D alloc] initWithString:str dimensions:CGSizeMake(100,30) alignment:CCTextAlignmentLeft fontName:@"Arial" fontSize:24];
-
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
-	glDisableClientState(GL_COLOR_ARRAY);
-	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glColor4ub(224,224,244,200);
-	[texture drawAtPoint: ccp(5,2)];
-	[texture release];
-	
-	glBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);
-	
-	// restore default GL state
-	glEnableClientState(GL_COLOR_ARRAY);
-}
-#endif
 
 - (void) showProfilers {
 #if CC_ENABLE_PROFILERS
@@ -559,6 +516,26 @@ static CCDirector *_sharedDirector = nil;
 		[[CCProfiler sharedProfiler] displayTimers];
 	}
 #endif // CC_ENABLE_PROFILERS
+}
+
+#pragma mark Director - Helper
+
+-(void) createFPSLabel
+{
+	if( FPSLabel_ ) {
+		CCTexture2D *texture = [FPSLabel_ texture];
+
+		[FPSLabel_ release];
+		[[CCTextureCache sharedTextureCache ] removeTexture:texture];
+		FPSLabel_ = nil;
+	}
+
+	CCTexture2DPixelFormat currentFormat = [CCTexture2D defaultAlphaPixelFormat];
+	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+	FPSLabel_ = [[CCLabelAtlas alloc]  initWithString:@"00.0" charMapFile:@"fps_images.png" itemWidth:16 itemHeight:24 startCharMap:'.'];
+	[CCTexture2D setDefaultAlphaPixelFormat:currentFormat];
+	
+	[FPSLabel_ setPosition: CC_DIRECTOR_FPS_POSITION];
 }
 
 @end

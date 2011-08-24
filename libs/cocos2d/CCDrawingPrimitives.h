@@ -30,6 +30,8 @@
 #import <Availability.h>
 #import <Foundation/Foundation.h>
 
+#import "ccTypes.h"
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <CoreGraphics/CGGeometry.h>	// for CGPoint
 #endif
@@ -84,6 +86,16 @@ void ccDrawQuadBezier(CGPoint origin, CGPoint control, CGPoint destination, NSUI
  @since v0.8
  */
 void ccDrawCubicBezier(CGPoint origin, CGPoint control1, CGPoint control2, CGPoint destination, NSUInteger segments);
+
+/** set the drawing color with 4 unsigned bytes
+ @since v2.0
+ */
+void ccDrawColor4B( GLubyte r, GLubyte g, GLubyte b, GLubyte a );
+
+/** set the drawing color with 4 floats
+ @since v2.0
+ */
+void ccDrawColor4f( GLubyte r, GLubyte g, GLubyte b, GLubyte a );
 
 #ifdef __cplusplus
 }

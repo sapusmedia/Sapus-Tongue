@@ -45,6 +45,7 @@ enum {
 	kCCiOSVersion_4_3_1 = 0x04030100,
 	kCCiOSVersion_4_3_2 = 0x04030200,
 	kCCiOSVersion_4_3_3 = 0x04030300,
+	kCCiOSVersion_5_0_0 = 0x05000000,
 
 	kCCMacVersion_10_5  = 0x0a050000,
 	kCCMacVersion_10_6  = 0x0a060000,
@@ -73,10 +74,8 @@ enum {
 /** OpenGL Max Modelview Stack Depth. */
 @property (nonatomic, readonly) GLint maxModelviewStackDepth;
 
-/** Whether or not the GPU supports NPOT (Non Power Of Two) textures.
- NPOT textures have the following limitations:
- - They can't have mipmaps
- - They only accept GL_CLAMP_TO_EDGE in GL_TEXTURE_WRAP_{S,T}
+/** Whether or not the GPU supports NPOT (Non Power Of Two) textures. 
+ OpenGL ES 2.0 already supports NPOT (iOS).
  
  @since v0.99.2
  */

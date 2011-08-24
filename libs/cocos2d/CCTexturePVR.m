@@ -64,6 +64,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "CCTexturePVR.h"
 #import "ccMacros.h"
 #import "CCConfiguration.h"
+#import "ccGLState.h"
 #import "Support/ccUtils.h"
 #import "Support/CCFileUtils.h"
 #import "Support/ZipUtils.h"
@@ -294,11 +295,12 @@ typedef struct _PVRTexHeader
 	if (numberOfMipmaps_ > 0)
 	{
 		if (name_ != 0)
-			glDeleteTextures(1, &name_);
+			glDeleteTextures( 1, &name_);
 		
 		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 		glGenTextures(1, &name_);
-		glBindTexture(GL_TEXTURE_2D, name_);
+		glBindTexture( GL_TEXTURE_2D, name_ );
+
 	}
 
 	CHECK_GL_ERROR(); // clean possible GL error
@@ -419,7 +421,7 @@ typedef struct _PVRTexHeader
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
 	
 	if (name_ != 0 && ! retainName_ )
-		glDeleteTextures(1, &name_);
+		glDeleteTextures( 1, &name_);
 	
 	[super dealloc];
 }

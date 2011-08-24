@@ -286,10 +286,7 @@
 -(void) setPosition:(CGPoint)pos
 {
 	if( ! CGPointEqualToPoint(pos, position_) ) {
-		position_ = pos;
-		positionInPixels_.x = pos.x * CC_CONTENT_SCALE_FACTOR();
-		positionInPixels_.y = pos.y * CC_CONTENT_SCALE_FACTOR();
-		
+		position_ = pos;		
 		dirty_ = YES;
 	}
 }
@@ -310,7 +307,7 @@
 			for( j = 0; j < gridSize_.y+1; j++ )
 			{
 				ccVertex3F	v = [self originalVertex:ccg(i,j)];
-				CGPoint vect = ccpSub(positionInPixels_, ccp(v.x,v.y));
+				CGPoint vect = ccpSub(position_, ccp(v.x,v.y));
 				CGFloat r = ccpLength(vect);
 				
 				if ( r < radius_ )
@@ -376,8 +373,6 @@
 -(void) setPosition:(CGPoint)pos
 {
 	position_ = pos;
-	positionInPixels_.x = pos.x * CC_CONTENT_SCALE_FACTOR();
-	positionInPixels_.y = pos.y * CC_CONTENT_SCALE_FACTOR();
 }
 
 -(id) copyWithZone: (NSZone*) zone
@@ -396,7 +391,7 @@
 		for( j = 0; j < (gridSize_.y+1); j++ )
 		{
 			ccVertex3F	v = [self originalVertex:ccg(i,j)];
-			CGPoint vect = ccpSub(positionInPixels_, ccp(v.x,v.y));
+			CGPoint vect = ccpSub(position_, ccp(v.x,v.y));
 			CGFloat r = ccpLength(vect);
 			
 			if ( r < radius_ )
@@ -603,8 +598,6 @@
 -(void) setPosition:(CGPoint)pos
 {
 	position_ = pos;
-	positionInPixels_.x = pos.x * CC_CONTENT_SCALE_FACTOR();
-	positionInPixels_.y = pos.y * CC_CONTENT_SCALE_FACTOR();
 }
 
 -(CGPoint) position
@@ -615,7 +608,7 @@
 -(void)update:(ccTime)time
 {
 	int i, j;
-	CGPoint	c = positionInPixels_;
+	CGPoint	c = position_;
 	
 	for( i = 0; i < (gridSize_.x+1); i++ )
 	{

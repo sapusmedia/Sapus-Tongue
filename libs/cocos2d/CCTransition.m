@@ -28,6 +28,7 @@
 
 #import "CCTransition.h"
 #import "CCNode.h"
+#import "CCSprite.h"
 #import "CCDirector.h"
 #import "CCActionInterval.h"
 #import "CCActionInstant.h"
@@ -46,7 +47,7 @@
 #import "Platforms/Mac/CCEventDispatcher.h"
 #endif
 
-const uint32_t kSceneFade = 0xFADEFADE;
+const NSInteger kSceneFade = 0xFADEFADE;
 
 
 @interface CCTransitionScene (Private)

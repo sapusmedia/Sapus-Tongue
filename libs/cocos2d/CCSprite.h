@@ -90,30 +90,30 @@ typedef enum {
 	NSUInteger				atlasIndex_;			// Absolute (real) Index on the batch node
 	CCSpriteBatchNode		*batchNode_;			// Used batch node (weak reference)
 	ccHonorParentTransform	honorParentTransform_;	// whether or not to transform according to its parent transformations
-	BOOL					dirty_;					// Sprite needs to be updated
-	BOOL					recursiveDirty_;		// Subchildren needs to be updated
-	BOOL					hasChildren_;			// optimization to check if it contain children
+	BOOL					dirty_:1;				// Sprite needs to be updated
+	BOOL					recursiveDirty_:1;		// Subchildren needs to be updated
+	BOOL					hasChildren_:1;			// optimization to check if it contain children
 	
 	//
 	// Data used when the sprite is self-rendered
 	//
 	ccBlendFunc				blendFunc_;				// Needed for the texture protocol
 	CCTexture2D				*texture_;				// Texture used to render the sprite
-
+	
 	//
 	// Shared data
 	//
 
-	// whether or not it's parent is a CCSpriteBatchNode
-	BOOL	usesBatchNode_;
-
 	// texture
 	CGRect	rect_;
 	CGRect	rectInPixels_;
-	BOOL	rectRotated_;
+	BOOL	rectRotated_:1;
+
+	// whether or not it's parent is a CCSpriteBatchNode
+	BOOL	usesBatchNode_:1;
 	
 	// Offset Position (used by Zwoptex)
-	CGPoint	offsetPositionInPixels_;
+	CGPoint	offsetPosition_;
 	CGPoint unflippedOffsetPositionFromCenter_;
 
 	// vertex coords, texture coords and color info
@@ -123,15 +123,11 @@ typedef enum {
 	GLubyte		opacity_;
 	ccColor3B	color_;
 	ccColor3B	colorUnmodified_;
-	BOOL		opacityModifyRGB_;
+	BOOL		opacityModifyRGB_:1;
 	
 	// image is flipped
-	BOOL	flipX_;
-	BOOL	flipY_;
-	
-	
-	// Animations that belong to the sprite
-	NSMutableDictionary *animations_;
+	BOOL	flipX_:1;
+	BOOL	flipY_:1;
 
 @public
 	// used internally.
@@ -183,7 +179,7 @@ typedef enum {
 /** offset position in pixels of the sprite in points. Calculated automatically by editors like Zwoptex.
  @since v0.99.0
  */
-@property (nonatomic,readonly) CGPoint	offsetPositionInPixels;
+@property (nonatomic,readonly) CGPoint	offsetPosition;
 /** conforms to CCTextureProtocol protocol */
 @property (nonatomic,readwrite) ccBlendFunc blendFunc;
 
@@ -235,7 +231,6 @@ typedef enum {
  */
 +(id) spriteWithBatchNode:(CCSpriteBatchNode*)batchNode rect:(CGRect)rect;
 
-
 /** Initializes an sprite with a texture.
  The rect used will be the size of the texture.
  The offset will be (0,0).
@@ -244,6 +239,7 @@ typedef enum {
 
 /** Initializes an sprite with a texture and a rect in points.
  The offset will be (0,0).
+ IMPORTANT: This is the designated initializer.
  */
 -(id) initWithTexture:(CCTexture2D*)texture rect:(CGRect)rect;
 
@@ -325,27 +321,10 @@ typedef enum {
 
 #pragma mark CCSprite - Animation
 
-/** changes the display frame based on an animation and an index.
- @deprecated Will be removed in 1.0.1. Use setDisplayFrameWithAnimationName:index instead
- */
--(void) setDisplayFrame: (NSString*) animationName index:(int) frameIndex DEPRECATED_ATTRIBUTE;
-
 /** changes the display frame with animation name and index.
  The animation name will be get from the CCAnimationCache
  @since v0.99.5
  */
 -(void) setDisplayFrameWithAnimationName:(NSString*)animationName index:(int) frameIndex;
-
-/** returns an Animation given it's name.
- 
- @deprecated Use CCAnimationCache instead. Will be removed in 1.0.1
- */
--(CCAnimation*)animationByName: (NSString*) animationName DEPRECATED_ATTRIBUTE;
-
-/** adds an Animation to the Sprite.
- 
- @deprecated Use CCAnimationCache instead. Will be removed in 1.0.1
- */
--(void) addAnimation: (CCAnimation*) animation DEPRECATED_ATTRIBUTE;
 
 @end

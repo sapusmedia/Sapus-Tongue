@@ -53,47 +53,20 @@
 {
 	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];	
 
-	// Don't autorotate if is not configured to autorotate.
-#if ST_AUTOROTATE == kSTAutorotationNone
-	return ( interfaceOrientation == UIInterfaceOrientationPortrait );
-#endif
-	
 	// Don't rotate the device if it is playing
 	if( ! appDelegate.isPlaying ) {
 		
-		//
-		// TIP:
-		// There are 2 ways to support auto-rotation:
-		//  - The OpenGL / cocos2d way
-		//     - Faster, but doesn't rotate the UIKit objects
-		//  - The ViewController way
-		//    - A bit slower, but the UiKit objects are rotatated placed in the right place
-
-#if ST_AUTOROTATE == kSTAutorotationCCDirector
-		if( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
-			[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeRight];
-			appDelegate.isLandscapeLeft = NO;
-		} else if( interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-			[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeLeft];
-			appDelegate.isLandscapeLeft = YES;
-		}
-		
-		return NO;
-	
-#elif ST_AUTOROTATE == kSTAutorotationUIViewController
 		if( UIInterfaceOrientationIsLandscape( interfaceOrientation ) ) {			
 			appDelegate.isLandscapeLeft = (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 			return YES;
 		}
 		return NO;
-#endif
 	}
 
 	//
 	return NO;
 }
 
-#if ST_AUTOROTATE == kSTAutorotationUIViewController
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	//
@@ -119,8 +92,6 @@
 	}
 	glView.frame = rect;
 }
-#endif // ST_AUTOROTATE == kSTAutorotationUIViewController
-
 
 - (void)didReceiveMemoryWarning
 {

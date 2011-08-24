@@ -26,6 +26,8 @@
 	if( (self = [super init]) ) {
 		floorTex_ = [[CCTextureCache sharedTextureCache] addImage:@"floor.png"];
 		[floorTex_ retain];
+		
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTexture];
 	}
 
 	return self;
@@ -37,19 +39,27 @@
 	[super dealloc];
 }
 
--(void) draw {
-
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
+-(void) draw
+{	
+	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
+	// Unneeded states: kCCAttribColor
 	
-	glDisableClientState(GL_COLOR_ARRAY);
-
+	glDisableVertexAttribArray(kCCAttribColor);
+	
+	ccGLUseProgram( shaderProgram_->program_ );
+	ccGLUniformProjectionMatrix( shaderProgram_ );
+	ccGLUniformModelViewMatrix( shaderProgram_ );
+	
 	CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
 	
 	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8 * CC_CONTENT_SCALE_FACTOR())];
 	
-	glEnableClientState(GL_COLOR_ARRAY);
+	// restore default GL states
+	glEnableVertexAttribArray(kCCAttribColor);
+	
+	CHECK_GL_ERROR_DEBUG();	
+
 }
 
 @end

@@ -69,7 +69,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <QuartzCore/QuartzCore.h>
 
 #import "EAGLView.h"
-#import "ES1Renderer.h"
+#import "ES2Renderer.h"
 #import "../../CCDirector.h"
 #import "../../ccMacros.h"
 #import "../../CCConfiguration.h"
@@ -140,6 +140,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 			[self release];
 			return nil;
 		}
+
+		CHECK_GL_ERROR_DEBUG();
 	}
 
 	return self;
@@ -161,6 +163,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 			[self release];
 			return nil;
 		}
+
+		CHECK_GL_ERROR_DEBUG();
     }
 	
     return self;
@@ -175,12 +179,15 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 									[NSNumber numberWithBool:preserveBackbuffer_], kEAGLDrawablePropertyRetainedBacking,
 									pixelformat_, kEAGLDrawablePropertyColorFormat, nil];
 	
-	
-	renderer_ = [[ES1Renderer alloc] initWithDepthFormat:depthFormat_
+	// Try ES2 renderer first
+	renderer_ = [[ES2Renderer alloc] initWithDepthFormat:depthFormat_
 										 withPixelFormat:[self convertPixelFormat:pixelformat_]
 										  withSharegroup:sharegroup
 									   withMultiSampling:multiSampling_
 									 withNumberOfSamples:requestedSamples_];
+	
+	NSAssert( renderer_, @"OpenGL ES 2.0 is required");
+
 	if (!renderer_)
 		return NO;
 	
@@ -188,6 +195,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	[context_ renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:eaglLayer];
 
 	discardFramebufferSupported_ = [[CCConfiguration sharedConfiguration] supportsDiscardFramebuffer];
+	
+	CHECK_GL_ERROR_DEBUG();
 	
 	return YES;
 }
@@ -203,17 +212,17 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void) layoutSubviews
 {
-	size_ = [renderer_ backingSize];
-
 	[renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
+	size_ = [renderer_ backingSize];
 
 	// Issue #914 #924
 	CCDirector *director = [CCDirector sharedDirector];
 	[director reshapeProjection:size_];
-	
+
 	// Avoid flicker. Issue #350
-	[director performSelectorOnMainThread:@selector(drawScene) withObject:nil waitUntilDone:YES];
-}	
+	NSThread *thread = [director runningThread];
+	[director performSelector:@selector(drawScene) onThread:thread withObject:nil waitUntilDone:YES];		
+}
 
 - (void) swapBuffers
 {
@@ -222,8 +231,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	//	-> context_ MUST be the OpenGL context
 	//	-> renderbuffer_ must be the the RENDER BUFFER
 
-#ifdef __IPHONE_4_0
-	
 	if (multiSampling_)
 	{
 		/* Resolve from msaaFramebuffer to resolveFramebuffer */
@@ -259,14 +266,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		}
 	}
 	
-#endif // __IPHONE_4_0
-	
 	if(![context_ presentRenderbuffer:GL_RENDERBUFFER_OES])
 		CCLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
 
-#if COCOS2D_DEBUG
-	CHECK_GL_ERROR();
-#endif
+	CHECK_GL_ERROR_DEBUG();
 	
 	// We can safely re-bind the framebuffer here, since this will be the
 	// 1st instruction of the new main loop

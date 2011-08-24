@@ -72,7 +72,6 @@
 	//
 	// Uncomment the following code if you Application only supports landscape mode
 	//
-#if ST_AUTOROTATE == kSTAutorotationUIViewController
 	
 	CC_ENABLE_DEFAULT_GL_STATES();
 	CCDirector *director = [CCDirector sharedDirector];
@@ -86,9 +85,7 @@
 	sprite.rotation = -90;
 	[sprite visit];
 	[[director openGLView] swapBuffers];
-	CC_ENABLE_DEFAULT_GL_STATES();
-	
-#endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
+	CC_ENABLE_DEFAULT_GL_STATES();	
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED
 
@@ -275,12 +272,6 @@
 	// Init the window
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
-	// Try to use CADisplayLink director
-	// if it fails (SDK < 3.1) use the default director
-	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
-		[CCDirector setDirectorType:kCCDirectorTypeDefault];
-	
-	
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	// Init the View Controller
@@ -299,17 +290,6 @@
 	if( ! [director enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
 
-	//
-	// VERY IMPORTANT:
-	// If the rotation is going to be controlled by a UIViewController
-	// then the device orientation should be "Portrait".
-	//
-#if ST_AUTOROTATE == kSTAutorotationUIViewController
-	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
-#else
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
-#endif
-	
 	[director setAnimationInterval:1.0/60];
 	
 //	[director setDisplayFPS:YES];

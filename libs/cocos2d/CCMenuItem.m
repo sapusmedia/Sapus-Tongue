@@ -30,14 +30,15 @@
 #import "CCActionInterval.h"
 #import "CCSprite.h"
 #import "Support/CGPointExtension.h"
+#import "CCBlockSupport.h"
 
-	static NSUInteger _fontSize = kCCItemSize;
+static NSUInteger _fontSize = kCCItemSize;
 static NSString *_fontName = @"Marker Felt";
 static BOOL _fontNameRelease = NO;
 
 
-const uint32_t	kCurrentItem = 0xc0c05001;
-const uint32_t	kZoomActionTag = 0xc0c05002;
+const NSInteger	kCurrentItem = 0xc0c05001;
+const NSInteger	kZoomActionTag = 0xc0c05002;
 
 
 #pragma mark -
@@ -72,10 +73,8 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 			invocation_ = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation_ setTarget:rec];
 			[invocation_ setSelector:cb];
-#if NS_BLOCKS_AVAILABLE
 			if ([sig numberOfArguments] == 3) 
-#endif
-			[invocation_ setArgument:&self atIndex:2];
+				[invocation_ setArgument:&self atIndex:2];
 			
 			[invocation_ retain];
 		}
@@ -87,8 +86,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return self;
 }
 
-#if NS_BLOCKS_AVAILABLE
-
 +(id) itemWithBlock:(void(^)(id sender))block {
 	return [[[self alloc] initWithBlock:block] autorelease];
 }
@@ -98,15 +95,11 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return [self initWithTarget:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
 
-#endif // NS_BLOCKS_AVAILABLE
-
 -(void) dealloc
 {
 	[invocation_ release];
 
-#if NS_BLOCKS_AVAILABLE
 	[block_ release];
-#endif
 	
 	[super dealloc];
 }
@@ -176,8 +169,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return self;
 }
 
-#if NS_BLOCKS_AVAILABLE
-
 +(id) itemWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol>*)label block:(void(^)(id sender))block {
 	return [[[self alloc] initWithLabel:label block:block] autorelease];
 }
@@ -186,8 +177,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	block_ = [block copy];
 	return [self initWithLabel:label target:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
-
-#endif // NS_BLOCKS_AVAILABLE
 
 -(CCNode<CCLabelProtocol, CCRGBAProtocol>*) label
 {
@@ -313,7 +302,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return self;
 }
 
-#if NS_BLOCKS_AVAILABLE
 +(id) itemFromString:(NSString*)value charMapFile:(NSString*)charMapFile itemWidth:(int)itemWidth itemHeight:(int)itemHeight startCharMap:(char)startCharMap block:(void(^)(id sender))block {
 	return [[[self alloc] initFromString:value charMapFile:charMapFile itemWidth:itemWidth itemHeight:itemHeight startCharMap:startCharMap block:block] autorelease];
 }
@@ -322,7 +310,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	block_ = [block copy];
 	return [self initFromString:value charMapFile:charMapFile itemWidth:itemWidth itemHeight:itemHeight startCharMap:startCharMap target:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
-#endif // NS_BLOCKS_AVAILABLE
 
 -(void) dealloc
 {
@@ -386,6 +373,11 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return self;
 }
 
++(id) itemFromString: (NSString*) value block:(void(^)(id sender))block
+{
+	return [[[self alloc] initFromString:value block:block] autorelease];
+}
+
 -(void) recreateLabel
 {
 	CCLabelTTF *label = [CCLabelTTF labelWithString:[label_ string] fontName:fontName_ fontSize:fontSize_];
@@ -417,18 +409,11 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return fontName_;
 }
 
-#if NS_BLOCKS_AVAILABLE
-+(id) itemFromString: (NSString*) value block:(void(^)(id sender))block
-{
-	return [[[self alloc] initFromString:value block:block] autorelease];
-}
-
 -(id) initFromString: (NSString*) value block:(void(^)(id sender))block
 {
 	block_ = [block copy];
 	return [self initFromString:value target:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
-#endif // NS_BLOCKS_AVAILABLE
 
 @end
 
@@ -463,7 +448,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return self;	
 }
 
-#if NS_BLOCKS_AVAILABLE
 +(id) itemFromNormalSprite:(CCNode<CCRGBAProtocol>*)normalSprite selectedSprite:(CCNode<CCRGBAProtocol>*)selectedSprite block:(void(^)(id sender))block {
 	return [self itemFromNormalSprite:normalSprite selectedSprite:selectedSprite disabledSprite:nil block:block];
 }
@@ -476,8 +460,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	block_ = [block copy];
 	return [self initFromNormalSprite:normalSprite selectedSprite:selectedSprite disabledSprite:disabledSprite target:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
-#endif // NS_BLOCKS_AVAILABLE
-
 
 -(void) setNormalImage:(CCNode <CCRGBAProtocol>*)image
 {
@@ -631,8 +613,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	return [self initFromNormalSprite:normalImage selectedSprite:selectedImage disabledSprite:disabledImage target:t selector:sel];
 }
 
-#if NS_BLOCKS_AVAILABLE
-
 +(id) itemFromNormalImage: (NSString*)value selectedImage:(NSString*) value2 block:(void(^)(id sender))block {
 	return [self itemFromNormalImage:value selectedImage:value2 disabledImage:nil block:block];
 }
@@ -645,8 +625,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	block_ = [block copy];
 	return [self initFromNormalImage:value selectedImage:value2 disabledImage:value3 target:block_ selector:@selector(ccCallbackBlockWithSender:)];
 }
-
-#endif // NS_BLOCKS_AVAILABLE
 
 @end
 
@@ -692,8 +670,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	
 	return self;
 }
-
-#if NS_BLOCKS_AVAILABLE
 								  
 +(id) itemWithBlock:(void(^)(id sender))block items:(CCMenuItem*)item, ... {
 	va_list args;
@@ -709,8 +685,6 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 	block_ = [block copy];
 	return [self initWithTarget:block_ selector:@selector(ccCallbackBlockWithSender:) items:item vaList:args];
 }
-
-#endif // NS_BLOCKS_AVAILABLE
 
 -(void) dealloc
 {

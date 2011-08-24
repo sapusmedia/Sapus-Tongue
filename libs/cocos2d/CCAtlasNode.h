@@ -47,7 +47,7 @@
 	NSUInteger		itemsPerRow_;
 	// chars per column
 	NSUInteger		itemsPerColumn_;
-		
+	
 	// width of each char
 	NSUInteger		itemWidth_;
 	// height of each char
@@ -64,6 +64,9 @@
 	ccColor3B	color_;
 	ccColor3B	colorUnmodified_;
 	BOOL opacityModifyRGB_;
+	
+	// color uniform
+	GLint	uniformColor_;
 }
 
 /** conforms to CCTextureProtocol protocol */
@@ -78,7 +81,7 @@
 @property (nonatomic,readwrite) ccColor3B color;
 
 /** how many quads to draw */
-@property (atomic,readwrite) NSUInteger quadsToDraw;
+@property (nonatomic,readwrite) NSUInteger quadsToDraw;
 
 /** creates a CCAtlasNode  with an Atlas file the width and height of each item measured in points and the quantity of items to render*/
 +(id) atlasWithTileFile:(NSString*)tile tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c;

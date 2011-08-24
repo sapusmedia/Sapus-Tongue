@@ -260,18 +260,8 @@
 	tv.dataSource = self;
 	
 	tv.opaque = YES;
-	
-#if ST_AUTOROTATE == kSTAutorotationUIViewController
 	tv.frame = CGRectMake( s.width/2-234, s.height/2-86, 380, 210 );
-	
-#else
-	// TIP
-	// All UIKit objects need to be rotated manually if the EAGLView is rotated
-	// using the director
-	tv.transform = CGAffineTransformMakeRotation((float)M_PI / 2.0f); // 180 degrees
-	tv.frame = CGRectMake( s.height/2-120, s.width/2-234, 210, 380);
-#endif
-	
+		
 	return tv;
 }
 
@@ -291,11 +281,7 @@
 		activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
-#if ST_AUTOROTATE_WITH_DIRECTOR
-		activityIndicator_.frame = CGRectMake(s.height-40, s.width-40 , 20, 20);
-#else
 		activityIndicator_.frame = CGRectMake(s.width-40, s.height-40, 20, 20);
-#endif
 		[[[CCDirector sharedDirector] openGLView] addSubview:activityIndicator_];
 		activityIndicator_.hidesWhenStopped = YES;
 		activityIndicator_.opaque = YES;

@@ -30,9 +30,17 @@
 #import "CCLabelTTF.h"
 #import "Support/CGPointExtension.h"
 #import "ccMacros.h"
+#import "CCShaderCache.h"
+#import "GLProgram.h"
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "Platforms/iOS/CCDirectorIOS.h"
+#endif
+
+#if CC_USE_LA88_LABELS
+#define SHADER_PROGRAM kCCShader_PositionTextureColor
+#else
+#define SHADER_PROGRAM kCCShader_PositionTextureA8Color
 #endif
 
 @implementation CCLabelTTF
@@ -64,10 +72,13 @@
 {
 	if( (self=[super init]) ) {
 
-		dimensions_ = CGSizeMake( dimensions.width * CC_CONTENT_SCALE_FACTOR(), dimensions.height * CC_CONTENT_SCALE_FACTOR() );
+		// shader program
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:SHADER_PROGRAM];
+		
+		dimensions_ = CGSizeMake( dimensions.width, dimensions.height );
 		alignment_ = alignment;
 		fontName_ = [name retain];
-		fontSize_ = size * CC_CONTENT_SCALE_FACTOR();
+		fontSize_ = size;
 		lineBreakMode_ = lineBreakMode;
 		
 		[self setString:str];
@@ -84,9 +95,12 @@
 {
 	if( (self=[super init]) ) {
 		
+		// shader program
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:SHADER_PROGRAM];
+		
 		dimensions_ = CGSizeZero;
 		fontName_ = [name retain];
-		fontSize_ = size * CC_CONTENT_SCALE_FACTOR();
+		fontSize_ = size;
 		
 		[self setString:str];
 	}
@@ -102,14 +116,21 @@
 	if( CGSizeEqualToSize( dimensions_, CGSizeZero ) )
 		tex = [[CCTexture2D alloc] initWithString:str
 										 fontName:fontName_
-										 fontSize:fontSize_];
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
 	else
 		tex = [[CCTexture2D alloc] initWithString:str
-									   dimensions:dimensions_
+									   dimensions:CC_SIZE_POINTS_TO_PIXELS(dimensions_)
 										alignment:alignment_
 									lineBreakMode:lineBreakMode_
 										 fontName:fontName_
-										 fontSize:fontSize_];
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	if( CC_CONTENT_SCALE_FACTOR() == 2 )
+		[tex setResolutionType:kCCResolutionRetinaDisplay];
+	else
+		[tex setResolutionType:kCCResolutionStandard];
+#endif
 
 	[self setTexture:tex];
 	[tex release];
@@ -128,11 +149,14 @@
 {
 	[string_ release];
 	[fontName_ release];
+
 	[super dealloc];
 }
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Label = %@, FontName = %@, FontSize = %.1f>", [self class], self, string_, fontName_, fontSize_];
+	// XXX: string_, fontName_ can't be displayed here, since they might be already released
+
+	return [NSString stringWithFormat:@"<%@ = %08X | FontSize = %.1f>", [self class], self, fontSize_];
 }
 @end

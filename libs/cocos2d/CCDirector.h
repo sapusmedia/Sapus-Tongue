@@ -27,9 +27,9 @@
 #import "ccConfig.h"
 #import "ccTypes.h"
 
-// OpenGL related
-#import "Platforms/CCGL.h"
 #import "CCProtocols.h"
+#import "Platforms/CCGL.h"
+#import "kazmath/mat4.h"
 
 /** @typedef ccDirectorProjection
  Possible OpenGL projections used by director
@@ -66,7 +66,6 @@ and when to execute the Scenes.
   - setting the OpenGL pixel format (default on is RGB565)
   - setting the OpenGL buffer depth (default one is 0-bit)
   - setting the projection (default one is 3D)
-  - setting the orientation (default one is Protrait)
  
  Since the CCDirector is a singleton, the standard way to use it is by calling:
   - [[CCDirector sharedDirector] methodName];
@@ -89,11 +88,11 @@ and when to execute the Scenes.
 	BOOL displayFPS_;
 
 	NSUInteger frames_;
+	NSUInteger totalFrames_;
+
 	ccTime accumDt_;
 	ccTime frameRate_;
-#if	CC_DIRECTOR_FAST_FPS
 	CCLabelAtlas *FPSLabel_;
-#endif
 	
 	/* is the running scene paused */
 	BOOL isPaused_;
@@ -165,7 +164,7 @@ and when to execute the Scenes.
  */
 @property (nonatomic,readwrite) ccDirectorProjection projection;
 /** How many frames were called since the director started */
-@property (atomic,readonly) NSUInteger	frames;
+@property (nonatomic,readonly) NSUInteger	totalFrames;
 
 /** Whether or not the replaced scene will receive the cleanup message.
  If the new scene is pushed, then the old scene won't receive the "cleanup" message.
@@ -193,20 +192,14 @@ and when to execute the Scenes.
 
 // Window size
 
-/** returns the size of the OpenGL view in points.
- It takes into account any possible rotation (device orientation) of the window
- */
+/** returns the size of the OpenGL view in points */
 - (CGSize) winSize;
 
 /** returns the size of the OpenGL view in pixels.
- It takes into account any possible rotation (device orientation) of the window.
  On Mac winSize and winSizeInPixels return the same value.
  */
 - (CGSize) winSizeInPixels;
-/** returns the display size of the OpenGL view in pixels.
- It doesn't take into account any possible rotation of the window.
- */
--(CGSize) displaySizeInPixels;
+
 /** changes the projection size */
 -(void) reshapeProjection:(CGSize)newWindowSize;
 
@@ -295,7 +288,6 @@ and when to execute the Scenes.
 
 /** sets the OpenGL default values */
 -(void) setGLDefaultValues;
-
 /** enables/disables OpenGL alpha blending */
 - (void) setAlphaBlending: (BOOL) on;
 /** enables/disables OpenGL depth test */
@@ -304,4 +296,9 @@ and when to execute the Scenes.
 // Profiler
 -(void) showProfilers;
 
+// helper
+/** creates the FPS label */
+-(void) createFPSLabel;
+
 @end
+

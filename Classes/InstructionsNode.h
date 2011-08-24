@@ -22,13 +22,12 @@
 @interface InstructionsNode : CCLayer
 #endif
 {
-	
 	CCSprite		*sapusSprite_;
 	
 	ccTime			flyingDeltaAccum_;
 	CCTexture2D		*tongue_;
 	
-	NSURL *mMovieURL;
+	NSURL			*mMovieURL;
 	
 	BOOL			newMVPlayer_;
 	

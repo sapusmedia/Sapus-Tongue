@@ -93,7 +93,7 @@ static char * glExtensions;
 		NSString *OSVer = [self getMacVersion];
 #endif
 		NSArray *arr = [OSVer componentsSeparatedByString:@"."];		
-		int idx=0x01000000;
+		int idx = 0x01000000;
 		for( NSString *str in arr ) {
 			int value = [str intValue];
 			OSVersion_ += value * idx;
@@ -108,7 +108,7 @@ static char * glExtensions;
 		glExtensions = (char*) glGetString(GL_EXTENSIONS);
 		
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize_);
-		glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH, &maxModelviewStackDepth_);
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		if( OSVersion_ >= kCCiOSVersion_4_0 )
 			glGetIntegerv(GL_MAX_SAMPLES_APPLE, &maxSamplesAllowed_);
@@ -120,7 +120,7 @@ static char * glExtensions;
 		
 		supportsPVRTC_ = [self checkForGLExtension:@"GL_IMG_texture_compression_pvrtc"];
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-		supportsNPOT_ = [self checkForGLExtension:@"GL_APPLE_texture_2D_limited_npot"];
+		supportsNPOT_ = YES;
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 		supportsNPOT_ = [self checkForGLExtension:@"GL_ARB_texture_non_power_of_two"];
 #endif
@@ -138,19 +138,12 @@ static char * glExtensions;
 		supportsDiscardFramebuffer_ = [self checkForGLExtension:@"GL_EXT_discard_framebuffer"];
 
 		CCLOG(@"cocos2d: GL_MAX_TEXTURE_SIZE: %d", maxTextureSize_);
-		CCLOG(@"cocos2d: GL_MAX_MODELVIEW_STACK_DEPTH: %d",maxModelviewStackDepth_);
+//		CCLOG(@"cocos2d: GL_MAX_MODELVIEW_STACK_DEPTH: %d",maxModelviewStackDepth_);
 		CCLOG(@"cocos2d: GL_MAX_SAMPLES: %d", maxSamplesAllowed_);
 		CCLOG(@"cocos2d: GL supports PVRTC: %s", (supportsPVRTC_ ? "YES" : "NO") );
 		CCLOG(@"cocos2d: GL supports BGRA8888 textures: %s", (supportsBGRA8888_ ? "YES" : "NO") );
 		CCLOG(@"cocos2d: GL supports NPOT textures: %s", (supportsNPOT_ ? "YES" : "NO") );
 		CCLOG(@"cocos2d: GL supports discard_framebuffer: %s", (supportsDiscardFramebuffer_ ? "YES" : "NO") );
-		CCLOG(@"cocos2d: compiled with NPOT support: %s",
-#if CC_TEXTURE_NPOT_SUPPORT
-				"YES"
-#else
-				"NO"
-#endif
-			  );
 		CCLOG(@"cocos2d: compiled with VBO support in TextureAtlas : %s",
 #if CC_USES_VBO
 			  "YES"
@@ -159,13 +152,6 @@ static char * glExtensions;
 #endif
 			  );
 
-		CCLOG(@"cocos2d: compiled with Affine Matrix transformation in CCNode : %s",
-#if CC_NODE_TRANSFORM_USING_AFFINE_MATRIX
-			  "YES"
-#else
-			  "NO"
-#endif
-			  );
 		
 		CCLOG(@"cocos2d: compiled with Profiling Support: %s",
 #if CC_ENABLE_PROFILERS
@@ -176,9 +162,16 @@ static char * glExtensions;
 #endif
 			  );
 		
-		CHECK_GL_ERROR();
 	}
+
+#if CC_ENABLE_GL_STATE_CACHE == 0
+	printf("\n");
+	NSLog(@"cocos2d: **** WARNING **** CC_ENABLE_GL_STATE_CACHE is disabled. To improve performance, enable it by editing ccConfig.h"); 
+	printf("\n");
+#endif
 	
+	CHECK_GL_ERROR_DEBUG();
+
 	return self;
 }
 

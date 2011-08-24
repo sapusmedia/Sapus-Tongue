@@ -110,7 +110,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 	//fsaa addition
 	BOOL					multisampling_;
-	unsigned int			requestedSamples_;
+	unsigned int			requestedSamples_;	
 }
 
 /** creates an initializes an EAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer. */

@@ -26,6 +26,7 @@
 
 
 #import "CCNode.h"
+#import "kazmath/mat4.h"
 
 /** 
     A CCCamera is used in every CCNode.
@@ -65,6 +66,8 @@
     float upZ_;
 	
 	BOOL dirty_;
+	
+	kmMat4	lookupMatrix_;
 }
 
 /** whether of not the camera is dirty */

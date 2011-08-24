@@ -42,10 +42,8 @@
 @interface CCMenuItem : CCNode
 {
 	NSInvocation *invocation_;
-#if NS_BLOCKS_AVAILABLE
 	// used for menu items using a block
 	void (^block_)(id sender);
-#endif
 	
 	BOOL isEnabled_;
 	BOOL isSelected_;
@@ -62,7 +60,6 @@
 /** Initializes a CCMenuItem with a target/selector */
 -(id) initWithTarget:(id)target selector:(SEL)selector;
 
-#if NS_BLOCKS_AVAILABLE
 /** Creates a CCMenuItem with the specified block.
  The block will be "copied".
  */
@@ -72,7 +69,6 @@
  The block will be "copied".
 */
 -(id) initWithBlock:(void(^)(id sender))block;
-#endif
 
 /** Returns the outside box in points */
 -(CGRect) rect;
@@ -125,7 +121,6 @@
 /** initializes a CCMenuItemLabel with a Label, target and selector */
 -(id) initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol>*)label target:(id)target selector:(SEL)selector;
 
-#if NS_BLOCKS_AVAILABLE
 /** creates a CCMenuItemLabel with a Label and a block to execute.
  The block will be "copied".
  */
@@ -135,7 +130,6 @@
  The block will be "copied".
  */
 -(id) initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol>*)label block:(void(^)(id sender))block;
-#endif
 
 /** sets a new string to the inner label */
 -(void) setString:(NSString*)label;
@@ -165,7 +159,6 @@
 /** initializes a menu item from a string and atlas with a target/selector */
 -(id) initFromString: (NSString*) value charMapFile:(NSString*) charMapFile itemWidth:(int)itemWidth itemHeight:(int)itemHeight startCharMap:(char)startCharMap target:(id) rec selector:(SEL) cb;
 
-#if NS_BLOCKS_AVAILABLE
 /** creates a menu item from a string and atlas. Use it with MenuItemToggle.
  The block will be "copied".
  */
@@ -175,7 +168,6 @@
  The block will be "copied".
  */
 -(id) initFromString: (NSString*) value charMapFile:(NSString*) charMapFile itemWidth:(int)itemWidth itemHeight:(int)itemHeight startCharMap:(char)startCharMap block:(void(^)(id sender))block;
-#endif
 
 @end
 
@@ -223,7 +215,6 @@
 /** get the font name */
 -(NSString*) fontName;
 
-#if NS_BLOCKS_AVAILABLE
 /** creates a menu item from a string with the specified block.
  The block will be "copied".
  */
@@ -233,7 +224,7 @@
  The block will be "copied".
  */
 -(id) initFromString: (NSString*) value block:(void(^)(id sender))block;
-#endif
+
 @end
 
 #pragma mark -
@@ -270,7 +261,6 @@
 /** initializes a menu item with a normal, selected  and disabled image with target/selector */
 -(id) initFromNormalSprite:(CCNode<CCRGBAProtocol>*)normalSprite selectedSprite:(CCNode<CCRGBAProtocol>*)selectedSprite disabledSprite:(CCNode<CCRGBAProtocol>*)disabledSprite target:(id)target selector:(SEL)selector;
 
-#if NS_BLOCKS_AVAILABLE
 /** creates a menu item with a normal and selected image with a block.
  The block will be "copied".
  */
@@ -283,7 +273,6 @@
  The block will be "copied".
  */
 -(id) initFromNormalSprite:(CCNode<CCRGBAProtocol>*)normalSprite selectedSprite:(CCNode<CCRGBAProtocol>*)selectedSprite disabledSprite:(CCNode<CCRGBAProtocol>*)disabledSprite block:(void(^)(id sender))block;
-#endif
 
 @end
 
@@ -310,7 +299,6 @@
 +(id) itemFromNormalImage: (NSString*)value selectedImage:(NSString*) value2 disabledImage:(NSString*) value3 target:(id) r selector:(SEL) s;
 /** initializes a menu item with a normal, selected  and disabled image with target/selector */
 -(id) initFromNormalImage: (NSString*) value selectedImage:(NSString*)value2 disabledImage:(NSString*) value3 target:(id) r selector:(SEL) s;
-#if NS_BLOCKS_AVAILABLE
 /** creates a menu item with a normal and selected image with a block.
  The block will be "copied".
  */
@@ -323,7 +311,6 @@
  The block will be "copied".
 */
 -(id) initFromNormalImage: (NSString*) value selectedImage:(NSString*)value2 disabledImage:(NSString*) value3 block:(void(^)(id sender))block;
-#endif
 @end
 
 #pragma mark -
@@ -359,7 +346,6 @@
 /** initializes a menu item from a list of items with a target selector */
 -(id) initWithTarget:(id)t selector:(SEL)s items:(CCMenuItem*) item vaList:(va_list) args;
 
-#if NS_BLOCKS_AVAILABLE
 /** creates a menu item from a list of items and executes the given block when the item is selected.
  The block will be "copied".
  */
@@ -369,7 +355,6 @@
  The block will be "copied".
  */
 -(id) initWithBlock:(void (^)(id))block items:(CCMenuItem*)item vaList:(va_list)args;
-#endif
 
 /** return the selected item */
 -(CCMenuItem*) selectedItem;

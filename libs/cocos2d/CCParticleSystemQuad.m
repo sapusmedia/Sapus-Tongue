@@ -36,10 +36,18 @@
 #import "CCTextureCache.h"
 #import "ccMacros.h"
 #import "CCSpriteFrame.h"
+#import "CCDirector.h"
+#import "CCShaderCache.h"
+#import "ccGLState.h"
+#import "GLProgram.h"
 
 // support
 #import "Support/OpenGL_Internal.h"
 #import "Support/CGPointExtension.h"
+#import "Support/TransformUtils.h"
+
+// extern
+#import "kazmath/GL/matrix.h"
 
 @implementation CCParticleSystemQuad
 
@@ -77,7 +85,9 @@
 		glBindBuffer(GL_ARRAY_BUFFER, quadsID_);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quads_[0])*totalParticles, quads_,GL_DYNAMIC_DRAW);	
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-#endif
+#endif // CC_USES_VBO
+		
+		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTextureColor];
 	}
 		
 	return self;
@@ -97,7 +107,8 @@
 // pointRect is in Points coordinates.
 -(void) initTexCoordsWithRect:(CGRect)pointRect
 {
-	// convert to pixels coords
+    // convert to Tex coords
+	
 	CGRect rect = CGRectMake(
 							 pointRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
 							 pointRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
@@ -122,7 +133,7 @@
 	// Important. Texture in cocos2d are inverted, so the Y component should be inverted
 	CC_SWAP( top, bottom);
 	
-	for(NSUInteger i=0; i<totalParticles; i++) {
+	for(NSUInteger i = 0; i < totalParticles; i++) {
 		// bottom-left vertex:
 		quads_[i].bl.texCoords.u = left;
 		quads_[i].bl.texCoords.v = bottom;
@@ -165,7 +176,7 @@
 
 -(void) initIndices
 {
-	for( NSUInteger i=0;i< totalParticles;i++) {
+	for( NSUInteger i = 0; i < totalParticles; i++) {
 		const NSUInteger i6 = i*6;
 		const NSUInteger i4 = i*4;
 		indices_[i6+0] = (GLushort) i4+0;
@@ -260,59 +271,56 @@
 {	
 	[super draw];
 
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
+	// Default Attribs & States: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
+	// Needed states: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
 	// Unneeded states: -
-
-	glBindTexture(GL_TEXTURE_2D, [texture_ name]);
+	
+	glBindTexture( GL_TEXTURE_2D, [texture_ name] );
 
 #define kQuadSize sizeof(quads_[0].bl)
 
 #if CC_USES_VBO
 	glBindBuffer(GL_ARRAY_BUFFER, quadsID_);
-
-	glVertexPointer(2,GL_FLOAT, kQuadSize, 0);
-
-	glColorPointer(4, GL_UNSIGNED_BYTE, kQuadSize, (GLvoid*) offsetof(ccV2F_C4B_T2F,colors) );
 	
-	glTexCoordPointer(2, GL_FLOAT, kQuadSize, (GLvoid*) offsetof(ccV2F_C4B_T2F,texCoords) );
+	// vertices
+	glVertexAttribPointer(kCCAttribPosition, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV2F_C4B_T2F, vertices));
+	
+	// colors
+	glVertexAttribPointer(kCCAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (GLvoid*) offsetof( ccV2F_C4B_T2F, colors));
+	
+	// tex coords
+	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV2F_C4B_T2F, texCoords));
+		
 #else // vertex array list
 
 	NSUInteger offset = (NSUInteger) quads_;
-
+	
 	// vertex
-	NSUInteger diff = offsetof( ccV2F_C4B_T2F, vertices);
-	glVertexPointer(2,GL_FLOAT, kQuadSize, (GLvoid*) (offset+diff) );
+	NSInteger diff = offsetof( ccV2F_C4B_T2F, vertices);
+	glVertexAttribPointer(kCCAttribPosition, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) (offset + diff));
 	
 	// color
 	diff = offsetof( ccV2F_C4B_T2F, colors);
-	glColorPointer(4, GL_UNSIGNED_BYTE, kQuadSize, (GLvoid*)(offset + diff));
+	glVertexAttribPointer(kCCAttribColor, 4, GL_UNSIGNED_BYTE, GL_FALSE, kQuadSize, (GLvoid*)(offset + diff));
 	
-	// tex coords
+	// texCoods
 	diff = offsetof( ccV2F_C4B_T2F, texCoords);
-	glTexCoordPointer(2, GL_FLOAT, kQuadSize, (GLvoid*)(offset + diff));		
+	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*)(offset + diff));	
 
 #endif // ! CC_USES_VBO
 	
-	BOOL newBlend = blendFunc_.src != CC_BLEND_SRC || blendFunc_.dst != CC_BLEND_DST;
-	if( newBlend )
-		glBlendFunc( blendFunc_.src, blendFunc_.dst );
+	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
+	
+	ccGLUseProgram( shaderProgram_->program_ );	
+	ccGLUniformProjectionMatrix( shaderProgram_ );
+	ccGLUniformModelViewMatrix( shaderProgram_ );
 	
 	NSAssert( particleIdx == particleCount, @"Abnormal error in particle quad");
 	glDrawElements(GL_TRIANGLES, (GLsizei) particleIdx*6, GL_UNSIGNED_SHORT, indices_);
-	
-	// restore blend state
-	if( newBlend )
-		glBlendFunc( CC_BLEND_SRC, CC_BLEND_DST );
 
 #if CC_USES_VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-#endif
-
-	// restore GL default state
-	// -
+#endif	
 }
 
 @end
-
-

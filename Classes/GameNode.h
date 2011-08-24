@@ -32,7 +32,6 @@ typedef enum {
 @interface GameNode : CCLayer
 #endif
 {
-	
 	ccTime		flyingDeltaAccum_;
 	CCTexture2D	*tongue_;
 	
