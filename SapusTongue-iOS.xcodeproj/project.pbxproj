@@ -918,6 +918,8 @@
 		A0BE675814057C1C00DAA336 /* vec2.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BE673F14057C1C00DAA336 /* vec2.c */; };
 		A0BE675914057C1C00DAA336 /* vec3.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BE674014057C1C00DAA336 /* vec3.c */; };
 		A0BE675A14057C1C00DAA336 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BE674114057C1C00DAA336 /* vec4.c */; };
+		A0BE67731405AE0600DAA336 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BE67721405AE0600DAA336 /* fps_images-hd.png */; };
+		A0BE67741405AE0600DAA336 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BE67721405AE0600DAA336 /* fps_images-hd.png */; };
 		E02858A512958142002E2303 /* stiPadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E02858A412958142002E2303 /* stiPadHelper.m */; };
 		E02858A612958142002E2303 /* stiPadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E02858A412958142002E2303 /* stiPadHelper.m */; };
 		E0285920129583A9002E2303 /* SapusChoosePlayer-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */; };
@@ -1689,6 +1691,7 @@
 		A0BE673F14057C1C00DAA336 /* vec2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec2.c; sourceTree = "<group>"; };
 		A0BE674014057C1C00DAA336 /* vec3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec3.c; sourceTree = "<group>"; };
 		A0BE674114057C1C00DAA336 /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec4.c; sourceTree = "<group>"; };
+		A0BE67721405AE0600DAA336 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		E02858A312958142002E2303 /* stiPadHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stiPadHelper.h; sourceTree = "<group>"; };
 		E02858A412958142002E2303 /* stiPadHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stiPadHelper.m; sourceTree = "<group>"; };
 		E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-ipad.png"; sourceTree = "<group>"; };
@@ -1974,6 +1977,7 @@
 				501E7390114041F800BE00B5 /* fire.png */,
 				501E7484114041F800BE00B5 /* floor.png */,
 				501E7486114041F800BE00B5 /* fps_images.png */,
+				A0BE67721405AE0600DAA336 /* fps_images-hd.png */,
 				501E748C114041F800BE00B5 /* loading_bar.png */,
 				501E7490114041F800BE00B5 /* MonusHead.png */,
 				501E7493114041F800BE00B5 /* mountains1.png */,
@@ -3500,6 +3504,7 @@
 				E029290712E8D108009CD87B /* SapusChoosePlayer-hd.png in Resources */,
 				E02929F112E9EDD1009CD87B /* mountains1-hd.png in Resources */,
 				E02929F212E9EDD1009CD87B /* mountains2-hd.png in Resources */,
+				A0BE67731405AE0600DAA336 /* fps_images-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3849,6 +3854,7 @@
 				E02929F312E9EDD1009CD87B /* mountains1-hd.png in Resources */,
 				E02929F412E9EDD1009CD87B /* mountains2-hd.png in Resources */,
 				E0292A0512E9F19E009CD87B /* SapusBuy-hd.png in Resources */,
+				A0BE67741405AE0600DAA336 /* fps_images-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
