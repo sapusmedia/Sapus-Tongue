@@ -292,7 +292,7 @@
 
 	[director setAnimationInterval:1.0/60];
 	
-//	[director setDisplayFPS:YES];
+	[director setDisplayFPS:YES];
 	
 	// make the OpenGLView a child of the view controller
 //	[viewController_ setView:glView];
@@ -302,6 +302,11 @@
 	[window_ addSubview: viewController_.view];
 	
 	[window_ makeKeyAndVisible];	
+	
+	// When in iPad / RetinaDisplay mode, CCFileUtils will append the "-ipad" / "-hd" to all loaded files
+	// If the -ipad  / -hdfile is not found, it will load the non-suffixed version
+	[CCFileUtils setiPadSuffix:@"-ipad"];			// Default on iPad is "" (empty string)
+	[CCFileUtils setRetinaDisplaySuffix:@"-hd"];	// Default on RetinaDisplay is "-hd"
 }
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)

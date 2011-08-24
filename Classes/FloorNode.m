@@ -51,9 +51,9 @@
 	ccGLUniformProjectionMatrix( shaderProgram_ );
 	ccGLUniformModelViewMatrix( shaderProgram_ );
 	
-	CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
+	CGSize size = [[CCDirector sharedDirector] winSize];
 	
-	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8 * CC_CONTENT_SCALE_FACTOR())];
+	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8) ];
 	
 	// restore default GL states
 	glEnableVertexAttribArray(kCCAttribColor);

@@ -32,6 +32,7 @@
 #import "cocoslive.h"
 #import "GameCenterManager.h"
 #import "GameCenterViewController.h"
+#import "RootViewController.h"
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 #import "BDSKOverlayWindow.h"
 #endif
@@ -282,7 +283,11 @@
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		activityIndicator_.frame = CGRectMake(s.width-40, s.height-40, 20, 20);
-		[[[CCDirector sharedDirector] openGLView] addSubview:activityIndicator_];
+		
+		SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+		UIViewController *ctl = [app viewController];		
+		[ctl.view addSubview: activityIndicator_];
+
 		activityIndicator_.hidesWhenStopped = YES;
 		activityIndicator_.opaque = YES;
 	}
