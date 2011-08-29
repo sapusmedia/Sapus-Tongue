@@ -28,10 +28,10 @@
 #import "SelectCharNode.h"
 #import "HiScoresNode.h"
 #import "ScoreManager.h"
-#import "RootViewController.h"
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "cocoslive.h"
+#import "RootViewController.h"
 #endif
 
 

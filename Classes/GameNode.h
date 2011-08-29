@@ -50,6 +50,7 @@ typedef enum {
 @public
 	CCSprite		*sapusSprite_;
 	
+	// Physics: Hero
 	cpSpace			*space_;
 	cpConstraint	*joint_;
 	cpBody			*pivotBody_;
@@ -57,6 +58,9 @@ typedef enum {
 	cpVect			force_;
 	BOOL			jointAdded_;
 	
+	// Physics: Wall
+	cpShape			*wallLeft_, *wallBottom_, *wallRight_;
+		
 	float			throwAngle_;
 	float			throwVelocity_;
 	BOOL			maxHeightAchievementTriggered_;

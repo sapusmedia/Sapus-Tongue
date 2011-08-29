@@ -640,6 +640,8 @@
 		50F4338D11AD51BB00A23662 /* tilemap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 50F4338B11AD51BB00A23662 /* tilemap.tmx */; };
 		50F4338F11AD51BB00A23662 /* tilemap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 50F4338B11AD51BB00A23662 /* tilemap.tmx */; };
 		50F433FE11AD56E500A23662 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D2194D0F278A5C00E8A303 /* CoreLocation.framework */; };
+		A09F4257140C519800DE33D7 /* ChipmunkHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = A09F4256140C519800DE33D7 /* ChipmunkHelper.c */; };
+		A09F4258140C519800DE33D7 /* ChipmunkHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = A09F4256140C519800DE33D7 /* ChipmunkHelper.c */; };
 		A0BE656714057B5000DAA336 /* chipmunk.h in Headers */ = {isa = PBXBuildFile; fileRef = A0BE652614057B5000DAA336 /* chipmunk.h */; };
 		A0BE656814057B5000DAA336 /* chipmunk_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = A0BE652714057B5000DAA336 /* chipmunk_ffi.h */; };
 		A0BE656914057B5000DAA336 /* chipmunk_private.h in Headers */ = {isa = PBXBuildFile; fileRef = A0BE652814057B5000DAA336 /* chipmunk_private.h */; };
@@ -920,8 +922,6 @@
 		A0BE675A14057C1C00DAA336 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BE674114057C1C00DAA336 /* vec4.c */; };
 		A0BE67731405AE0600DAA336 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BE67721405AE0600DAA336 /* fps_images-hd.png */; };
 		A0BE67741405AE0600DAA336 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BE67721405AE0600DAA336 /* fps_images-hd.png */; };
-		E02858A512958142002E2303 /* stiPadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E02858A412958142002E2303 /* stiPadHelper.m */; };
-		E02858A612958142002E2303 /* stiPadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E02858A412958142002E2303 /* stiPadHelper.m */; };
 		E0285920129583A9002E2303 /* SapusChoosePlayer-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */; };
 		E0285921129583A9002E2303 /* SapusChoosePlayer-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */; };
 		E028593F1295848D002E2303 /* SapusMenu-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028593D1295848D002E2303 /* SapusMenu-ipad.png */; };
@@ -1421,6 +1421,8 @@
 		50D217E60F27820600E8A303 /* libcocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D2194D0F278A5C00E8A303 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		50F4338B11AD51BB00A23662 /* tilemap.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tilemap.tmx; sourceTree = "<group>"; };
+		A09F4256140C519800DE33D7 /* ChipmunkHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChipmunkHelper.c; sourceTree = "<group>"; };
+		A09F4259140C51C100DE33D7 /* ChipmunkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkHelper.h; sourceTree = "<group>"; };
 		A0BE652614057B5000DAA336 /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
 		A0BE652714057B5000DAA336 /* chipmunk_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_ffi.h; sourceTree = "<group>"; };
 		A0BE652814057B5000DAA336 /* chipmunk_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_private.h; sourceTree = "<group>"; };
@@ -1692,8 +1694,6 @@
 		A0BE674014057C1C00DAA336 /* vec3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec3.c; sourceTree = "<group>"; };
 		A0BE674114057C1C00DAA336 /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec4.c; sourceTree = "<group>"; };
 		A0BE67721405AE0600DAA336 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
-		E02858A312958142002E2303 /* stiPadHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stiPadHelper.h; sourceTree = "<group>"; };
-		E02858A412958142002E2303 /* stiPadHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stiPadHelper.m; sourceTree = "<group>"; };
 		E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-ipad.png"; sourceTree = "<group>"; };
 		E028593D1295848D002E2303 /* SapusMenu-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusMenu-ipad.png"; sourceTree = "<group>"; };
 		E028595212958582002E2303 /* SapusScores-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusScores-ipad.png"; sourceTree = "<group>"; };
@@ -1859,8 +1859,6 @@
 				50609A7B11403502002447DB /* SapusTongueAppDelegate.h */,
 				50609A7C11403502002447DB /* SapusTongueAppDelegate.m */,
 				E04BBAA812006E0100445B60 /* SapusConfig.h */,
-				E02858A312958142002E2303 /* stiPadHelper.h */,
-				E02858A412958142002E2303 /* stiPadHelper.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -2818,6 +2816,8 @@
 				50609A7211403502002447DB /* LoadingBarNode.m */,
 				50609A7F11403502002447DB /* SoundMenuItem.h */,
 				50609A8011403502002447DB /* SoundMenuItem.m */,
+				A09F4256140C519800DE33D7 /* ChipmunkHelper.c */,
+				A09F4259140C51C100DE33D7 /* ChipmunkHelper.h */,
 			);
 			name = "Helper Nodes";
 			sourceTree = "<group>";
@@ -3888,7 +3888,7 @@
 				E042CD82125E4B21006D81AB /* GameCenterManager.m in Sources */,
 				E0B1EE6D1264AAFE00ACD961 /* ScoreManager.m in Sources */,
 				E0B1EF131264C29200ACD961 /* GameCenterViewController.m in Sources */,
-				E02858A612958142002E2303 /* stiPadHelper.m in Sources */,
+				A09F4257140C519800DE33D7 /* ChipmunkHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3919,7 +3919,7 @@
 				E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */,
 				E0B1EE6C1264AAFE00ACD961 /* ScoreManager.m in Sources */,
 				E0B1EF121264C29200ACD961 /* GameCenterViewController.m in Sources */,
-				E02858A512958142002E2303 /* stiPadHelper.m in Sources */,
+				A09F4258140C519800DE33D7 /* ChipmunkHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -68,7 +68,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 -(void) initBackground
 {
 	// background
-	CCSprite *back = [CCSprite spriteWithFile:stConverToiPadOniPad(@"SapusChoosePlayer.png")];
+	CCSprite *back = [CCSprite spriteWithFile:@"SapusChoosePlayer.png"];
 	back.anchorPoint = CGPointZero;
 	[self addChild:back z:-1];
 }
@@ -78,7 +78,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	// TIP:
 	// When possible try to put all your images in 1 single big image
 	// It reduces loading times and memory consuption. And if you render them using SpriteSheet, it also improves the performance
-	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:stConverToiPadOniPad(@"sapus-monus-selection.plist")];
+	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-monus-selection.plist"];
 	
 	
 	// TIP:
@@ -90,7 +90,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	// In order to use an CCSpriteBatchNode, both the CCSpriteBatchNode and the CCSprite SHOULD share the same texture id
 		
 	// CCSpriteBatchNode: Loading  it with the image "sapus-monus-selection.png"
-	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:stConverToiPadOniPad(@"sapus-monus-selection.png") capacity:2];
+	CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"sapus-monus-selection.png" capacity:2];
 	[self addChild:batch z:0 tag:kTagBatchNode];
 
 	
@@ -157,7 +157,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	
 	[startButton_ release];
 	
-	[[CCSpriteFrameCache sharedSpriteFrameCache] removeSpriteFramesFromFile:stConverToiPadOniPad(@"sapus-monus-selection.plist")];
+	[[CCSpriteFrameCache sharedSpriteFrameCache] removeSpriteFramesFromFile:@"sapus-monus-selection.plist"];
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];
 
 	[super dealloc];	

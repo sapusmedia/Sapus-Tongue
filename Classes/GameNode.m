@@ -22,6 +22,7 @@
 // cocos2d imports
 #import "cocos2d.h"
 #import "chipmunk.h"
+#import "ChipmunkHelper.h"
 
 // local imports
 #import "SapusConfig.h"
@@ -187,12 +188,11 @@ eachShape(cpShape *shape, void* instance)
 }
 
 #if ST_DRAW_SHAPES
-static void drawEachShape( void *ptr, void *instace )
+static void drawEachShape( cpShape *shape, void *instace )
 {
-	cpShape *shape = (cpShape*) ptr;
 	if( shape )		
 	{
-		switch(shape->klass->type){
+		switch(shape->CP_PRIVATE(klass)->type){
 			case CP_CIRCLE_SHAPE:
 				drawCircleShape(shape);
 				break;
@@ -410,7 +410,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 {	
 	cpInitChipmunk();
 		
-	cpBody *staticBody = cpBodyNew(INFINITY, INFINITY);
 	space_ = cpSpaceNew();
 	space_->iterations = 10;
 	space_->gravity = cpv(0, kGravityRoll);
@@ -441,23 +440,23 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	GLfloat wallWidth = 1;
 
 	// floor
-	shape = cpSegmentShapeNew(staticBody, cpv(-wallWidth,-wallWidth+1), cpv(kWallLength,-wallWidth), wallWidth+1);
-	shape->e = 0.5f;
-	shape->u = 0.9f;
-	shape->collision_type = kCollTypeFloor;
-	cpSpaceAddStaticShape(space_, shape);
+	wallBottom_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth+1), cpv(kWallLength,-wallWidth), wallWidth+1);
+	wallBottom_->e = 0.5f;
+	wallBottom_->u = 0.9f;
+	wallBottom_->collision_type = kCollTypeFloor;
+	cpSpaceAddStaticShape(space_, wallBottom_);
 		
 	// left
-	shape = cpSegmentShapeNew(staticBody, cpv(-wallWidth,-wallWidth), cpv(-wallWidth,kWallHeight), wallWidth);
-	shape->e = 0.2f;
-	shape->u = 1.0f;
-	cpSpaceAddStaticShape(space_, shape);
+	wallLeft_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth), cpv(-wallWidth,kWallHeight), wallWidth);
+	wallLeft_->e = 0.2f;
+	wallLeft_->u = 1.0f;
+	cpSpaceAddStaticShape(space_, wallLeft_);
 	
 	// right
-	shape = cpSegmentShapeNew(staticBody, cpv(kWallLength,-wallWidth), cpv(kWallLength,kWallHeight), wallWidth);
-	shape->e = 0.0f;
-	shape->u = 1.5f;
-	cpSpaceAddStaticShape(space_, shape);
+	wallRight_ = cpSegmentShapeNew(space_->staticBody, cpv(kWallLength,-wallWidth), cpv(kWallLength,kWallHeight), wallWidth);
+	wallRight_->e = 0.0f;
+	wallRight_->u = 1.5f;
+	cpSpaceAddStaticShape(space_, wallRight_);
 		
 	[self setupSapus];
 	[self setupJoint];
@@ -666,7 +665,14 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	[sapusSprite_ release];
 	[tongue_ release];
 	
-//	chipmunkFreeSpaceChildren(space_);
+	// TIP:
+	// Remember: static (rogue) shapes needs to be freed manually
+	//
+//	cpShapeFree(wallLeft_);
+//	cpShapeFree(wallRight_);
+//	cpShapeFree(wallBottom_);
+	
+	ChipmunkFreeSpaceChildren(space_);
 	cpSpaceFree(space_);
 
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -876,8 +882,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 	// draw shapes
 #if ST_DRAW_SHAPES
-	cpSpaceHashEach(space_->activeShapes, &drawEachShape, self);
-	cpSpaceHashEach(space_->staticShapes, &drawEachShape, self);
+	cpSpaceEachShape(space_, &drawEachShape, self);
 #endif
 
 }

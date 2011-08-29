@@ -105,12 +105,10 @@ static BOOL firstTime = YES;
 		CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:BACKGROUND_IMAGE];
 		FastGrid *background = [FastGrid gridWithTexture:texture];
 
-		[background runAction: [CCSequence actions:
-								[CCLiquid actionWithWaves:80 amplitude:2 grid:ccg(20,15) duration:200],
-//								[CCWaves3D actionWithWaves:4 amplitude:15 grid:ccg(20,15) duration:10],
-//								[CCShakyTiles3D actionWithRange:5 shakeZ:YES grid:ccg(16,12) duration:10],
-								[CCStopGrid action],
-								nil] ];
+//		[background runAction: [CCSequence actions:
+//								[CCLiquid actionWithWaves:80 amplitude:2 grid:ccg(20,15) duration:200],
+//								[CCStopGrid action],
+//								nil] ];
 
 		background.anchorPoint = CGPointZero;
 		[self addChild:background z:-1];

@@ -18,6 +18,7 @@
 // cocos2d imports
 #import "cocos2d.h"
 #import "chipmunk.h"
+#import "ChipmunkHelper.h"
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <MediaPlayer/MediaPlayer.h>
@@ -193,7 +194,7 @@ eachShape(cpShape *shape, void* instance)
 	[self addChild: g z:-10];		
 	
 	CGSize s = [[CCDirector sharedDirector] winSize];
-	CCSprite *tree = [CCSprite spriteWithFile:stConverToiPadOniPad(@"SapusInstructions.png")];
+	CCSprite *tree = [CCSprite spriteWithFile:@"SapusInstructions.png"];
 	tree.position = ccp( s.width/2, s.height/2);
 	[self addChild:tree z:-1];
 }
@@ -316,7 +317,7 @@ eachShape(cpShape *shape, void* instance)
 	[sapusSprite_ release];
 	[tongue_ release];
 	
-//	chipmunkFreeSpaceChildren(space_);
+	ChipmunkFreeSpaceChildren(space_);
 	cpSpaceFree(space_);
 	
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	

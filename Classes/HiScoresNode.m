@@ -65,7 +65,7 @@
 	
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
-		CCSprite *back = [CCSprite spriteWithFile:stConverToiPadOniPad(@"SapusScores.png")];
+		CCSprite *back = [CCSprite spriteWithFile:@"SapusScores.png"];
 		back.anchorPoint = ccp(0.5f, 0.5f);
 		back.position = ccp(s.width/2, s.height/2);
 		[self addChild:back z:0];
@@ -221,7 +221,9 @@
 	SapusTongueAppDelegate *delegate = [NSApp delegate];
 	[[delegate overlayWindow] remove];
 #endif
-	[[CCDirector sharedDirector] replaceScene: [CCTransitionSplitRows transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
+//	[[CCDirector sharedDirector] replaceScene: [CCTransitionSplitRows transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
+	[[CCDirector sharedDirector] replaceScene: [CCTransitionRadialCW transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
+
 }
 
 -(void) playAgainCB:(id) sender
