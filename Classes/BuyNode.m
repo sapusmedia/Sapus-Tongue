@@ -16,7 +16,6 @@
 #import "MainMenuNode.h"
 #import "SimpleAudioEngine.h"
 #import "SoundMenuItem.h"
-#import "stiPadHelper.h"
 
 @interface BuyNode ()
 -(void) setupBackground;
