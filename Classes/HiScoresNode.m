@@ -26,7 +26,6 @@
 #import "FloorNode.h"
 #import "MountainNode.h"
 #import "ScoreManager.h"
-#import "stiPadHelper.h"
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "cocoslive.h"

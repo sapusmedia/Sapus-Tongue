@@ -29,7 +29,6 @@
 #import "FastGrid.h"
 #import "InstructionsNode.h"
 #import "HiScoresNode.h"
-#import "stiPadHelper.h"
 
 //
 // Only in Sapus Tongue Lite

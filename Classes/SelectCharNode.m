@@ -17,7 +17,6 @@
 #import "LoadingBarNode.h"
 #import "SoundMenuItem.h"
 #import "GameNode.h"
-#import "stiPadHelper.h"
 
 // CocosDenshion
 #import "SimpleAudioEngine.h"

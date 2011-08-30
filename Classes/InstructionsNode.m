@@ -34,7 +34,6 @@
 #import "SapusTongueAppDelegate.h"
 #import "FloorNode.h"
 #import "MountainNode.h"
-#import "stiPadHelper.h"
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #define kJointX 142

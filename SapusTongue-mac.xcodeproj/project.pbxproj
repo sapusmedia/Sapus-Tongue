@@ -145,12 +145,12 @@
 		A0575FE4140BFE6E00978759 /* PositionTextureA8Color.vsh in Resources */ = {isa = PBXBuildFile; fileRef = A0575FD8140BFE6E00978759 /* PositionTextureA8Color.vsh */; };
 		A0575FE5140BFE6E00978759 /* PositionTextureColor.fsh in Resources */ = {isa = PBXBuildFile; fileRef = A0575FD9140BFE6E00978759 /* PositionTextureColor.fsh */; };
 		A0575FE6140BFE6E00978759 /* PositionTextureColor.vsh in Resources */ = {isa = PBXBuildFile; fileRef = A0575FDA140BFE6E00978759 /* PositionTextureColor.vsh */; };
+		A09F425F140C680700DE33D7 /* ChipmunkHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = A09F425D140C680700DE33D7 /* ChipmunkHelper.c */; };
 		E0292AED12EA0376009CD87B /* font_grinched_21.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292AE712EA0376009CD87B /* font_grinched_21.png */; };
 		E0292AEE12EA0376009CD87B /* font_grinched_42.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292AE812EA0376009CD87B /* font_grinched_42.png */; };
 		E0292AF112EA0376009CD87B /* sapus-monus-ufo-hud.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0292AEB12EA0376009CD87B /* sapus-monus-ufo-hud.plist */; };
 		E0292AF212EA0376009CD87B /* sapus-monus-ufo-hud.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292AEC12EA0376009CD87B /* sapus-monus-ufo-hud.png */; };
 		E0292B1012EA0482009CD87B /* SapusTongue.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292B0F12EA0482009CD87B /* SapusTongue.png */; };
-		E02B11681296F813003AB46C /* stiPadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E02B11671296F813003AB46C /* stiPadHelper.m */; };
 		E02B11881296F8D5003AB46C /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = E02B116E1296F8D5003AB46C /* fire.png */; };
 		E02B11891296F8D5003AB46C /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = E02B116F1296F8D5003AB46C /* floor.png */; };
 		E02B118B1296F8D5003AB46C /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = E02B11711296F8D5003AB46C /* fps_images.png */; };
@@ -587,13 +587,13 @@
 		A0575FD8140BFE6E00978759 /* PositionTextureA8Color.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PositionTextureA8Color.vsh; sourceTree = "<group>"; };
 		A0575FD9140BFE6E00978759 /* PositionTextureColor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PositionTextureColor.fsh; sourceTree = "<group>"; };
 		A0575FDA140BFE6E00978759 /* PositionTextureColor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PositionTextureColor.vsh; sourceTree = "<group>"; };
+		A09F425D140C680700DE33D7 /* ChipmunkHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChipmunkHelper.c; sourceTree = "<group>"; };
+		A09F425E140C680700DE33D7 /* ChipmunkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkHelper.h; sourceTree = "<group>"; };
 		E0292AE712EA0376009CD87B /* font_grinched_21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = font_grinched_21.png; path = Resources/Images/font_grinched_21.png; sourceTree = "<group>"; };
 		E0292AE812EA0376009CD87B /* font_grinched_42.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = font_grinched_42.png; path = Resources/Images/font_grinched_42.png; sourceTree = "<group>"; };
 		E0292AEB12EA0376009CD87B /* sapus-monus-ufo-hud.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "sapus-monus-ufo-hud.plist"; path = "Resources/Images/sapus-monus-ufo-hud.plist"; sourceTree = "<group>"; };
 		E0292AEC12EA0376009CD87B /* sapus-monus-ufo-hud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sapus-monus-ufo-hud.png"; path = "Resources/Images/sapus-monus-ufo-hud.png"; sourceTree = "<group>"; };
 		E0292B0F12EA0482009CD87B /* SapusTongue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SapusTongue.png; path = Resources/Images/SapusTongue.png; sourceTree = "<group>"; };
-		E02B11661296F813003AB46C /* stiPadHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stiPadHelper.h; sourceTree = "<group>"; };
-		E02B11671296F813003AB46C /* stiPadHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stiPadHelper.m; sourceTree = "<group>"; };
 		E02B116E1296F8D5003AB46C /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fire.png; path = Resources/Images/fire.png; sourceTree = "<group>"; };
 		E02B116F1296F8D5003AB46C /* floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = floor.png; path = Resources/Images/floor.png; sourceTree = "<group>"; };
 		E02B11711296F8D5003AB46C /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fps_images.png; path = Resources/Images/fps_images.png; sourceTree = "<group>"; };
@@ -1310,6 +1310,8 @@
 		E04D94A0122C129C00BBA55B /* Helper Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				A09F425D140C680700DE33D7 /* ChipmunkHelper.c */,
+				A09F425E140C680700DE33D7 /* ChipmunkHelper.h */,
 				E054F8D61228318700263E36 /* FastGrid.h */,
 				E054F8D71228318700263E36 /* FastGrid.m */,
 				E054F8D81228318700263E36 /* FloorNode.h */,
@@ -1468,8 +1470,6 @@
 				E054F8EE1228318700263E36 /* SapusConfig.h */,
 				E054F8F11228318700263E36 /* SapusTongueAppDelegate.h */,
 				E054F8F21228318700263E36 /* SapusTongueAppDelegate.m */,
-				E02B11661296F813003AB46C /* stiPadHelper.h */,
-				E02B11671296F813003AB46C /* stiPadHelper.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1819,7 +1819,6 @@
 				E04D9412122C0B6C00BBA55B /* HiScoresNode.m in Sources */,
 				E04D949A122C124100BBA55B /* BDSKOverlayWindow.m in Sources */,
 				E0B1EE9E1264B55100ACD961 /* ScoreManager.m in Sources */,
-				E02B11681296F813003AB46C /* stiPadHelper.m in Sources */,
 				A0575F50140BFCEB00978759 /* chipmunk.c in Sources */,
 				A0575F52140BFCEB00978759 /* cpConstraint.c in Sources */,
 				A0575F53140BFCEB00978759 /* cpDampedRotarySpring.c in Sources */,
@@ -1940,6 +1939,7 @@
 				A0575FC8140BFCEB00978759 /* vec2.c in Sources */,
 				A0575FC9140BFCEB00978759 /* vec3.c in Sources */,
 				A0575FCA140BFCEB00978759 /* vec4.c in Sources */,
+				A09F425F140C680700DE33D7 /* ChipmunkHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
