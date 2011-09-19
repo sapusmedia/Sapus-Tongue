@@ -50,9 +50,8 @@
 {
 	ccV2F_C4B_T2F_Quad	*quads_;		// quads to be rendered
 	GLushort			*indices_;		// indices
-#if CC_USES_VBO
-	GLuint				quadsID_;		// VBO id
-#endif
+	GLuint				VAOname_;
+	GLuint				buffersVBO_[2]; //0: vertex  1: indices
 }
 
 /** initialices the indices for the vertices */

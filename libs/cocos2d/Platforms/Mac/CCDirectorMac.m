@@ -452,9 +452,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	kmGLPushMatrix();
 	
 	
-	// By default enable VertexArray, ColorArray, TextureCoordArray and Texture2D
-	CC_ENABLE_DEFAULT_GL_STATES();
-	
 	/* draw the scene */
 	[runningScene_ visit];
 	
@@ -463,12 +460,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	
 	if( displayFPS_ )
 		[self showFPS];
-	
-#if CC_ENABLE_PROFILERS
-	[self showProfilers];
-#endif
-	
-	CC_DISABLE_DEFAULT_GL_STATES();
 	
 	kmGLPopMatrix();
 	

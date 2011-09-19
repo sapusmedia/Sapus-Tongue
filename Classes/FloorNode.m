@@ -41,23 +41,15 @@
 
 -(void) draw
 {	
-	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
-	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
-	// Unneeded states: kCCAttribColor
-	
-	glDisableVertexAttribArray(kCCAttribColor);
+	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 	
 	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformProjectionMatrix( shaderProgram_ );
-	ccGLUniformModelViewMatrix( shaderProgram_ );
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 	
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	
 	[floorTex_ drawInRect:CGRectMake(0, 0, size.width, 8) ];
-	
-	// restore default GL states
-	glEnableVertexAttribArray(kCCAttribColor);
-	
+
 	CHECK_GL_ERROR_DEBUG();	
 
 }

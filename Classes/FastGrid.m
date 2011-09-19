@@ -51,7 +51,7 @@
 {
 	if( fastGrid_ && fastGrid_.active ) {
 
-		glBindTexture(GL_TEXTURE_2D, [texture_ name]);
+		ccGLBindTexture2D( [texture_ name]);
 		
 		[fastGrid_ blit];
 

@@ -119,7 +119,7 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 	if((self = [super init])) {
 		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 		glGenTextures(1, &name_);
-		glBindTexture( GL_TEXTURE_2D, name_ );
+		ccGLBindTexture2D( name_ );
 
 		[self setAntiAliasTexParameters];
 		
@@ -187,11 +187,11 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 
 	if( name_ ) {
 
-		GLuint tName = name_;
+		GLuint name = name_;
 
 		//It is very likely dealloc will get called from the texture cache's dictionary thread but this must be run from the main thread.
-		dispatch_async(dispatch_get_main_queue(), ^(void){
-				glDeleteTextures( 1, &tName);
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			ccGLDeleteTexture( name );
 		});
 	}
 	
@@ -667,25 +667,18 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 								point.x,			height  + point.y,
 		width + point.x,	height  + point.y };
 	
+	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformProjectionMatrix( shaderProgram_ );
-	ccGLUniformModelViewMatrix( shaderProgram_ );
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 
-	glBindTexture( GL_TEXTURE_2D, name_ );
+	ccGLBindTexture2D( name_ );
 
-	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
-	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
-	// Unneeded states: kCCAttribColor
-	glDisableVertexAttribArray(kCCAttribColor);
 
-	glVertexAttribPointer(kCCAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
+	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
 
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	// Restore GL state
-	glEnableVertexAttribArray(kCCAttribColor);
 }
 
 
@@ -701,25 +694,17 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 		rect.origin.x + rect.size.width,						rect.origin.y + rect.size.height };
 	
 
+	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformProjectionMatrix( shaderProgram_ );
-	ccGLUniformModelViewMatrix( shaderProgram_ );
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 
-	glBindTexture( GL_TEXTURE_2D, name_ );
+	ccGLBindTexture2D( name_ );
 	
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Unneeded states: GL_COLOR_ARRAY
-	glDisableVertexAttribArray(kCCAttribColor);
-
-	glVertexAttribPointer(kCCAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
+	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
 	
 	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	
-	// restore state
-	glEnableVertexAttribArray(kCCAttribColor);
 }
 
 @end
@@ -736,8 +721,8 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 -(void) generateMipmap
 {
 	NSAssert( width_ == ccNextPOT(width_) && height_ == ccNextPOT(height_), @"Mimpap texture only works in POT textures");
-	glBindTexture( GL_TEXTURE_2D, name_ );
-	ccGLGenerateMipmap(GL_TEXTURE_2D);
+	ccGLBindTexture2D( name_ );
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 -(void) setTexParameters: (ccTexParams*) texParams
@@ -746,7 +731,7 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 			 (texParams->wrapS == GL_CLAMP_TO_EDGE && texParams->wrapT == GL_CLAMP_TO_EDGE),
 			 @"GL_CLAMP_TO_EDGE should be used in NPOT textures");
 
-	glBindTexture( GL_TEXTURE_2D, name_ );
+	ccGLBindTexture2D( name_ );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texParams->minFilter );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texParams->magFilter );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texParams->wrapS );

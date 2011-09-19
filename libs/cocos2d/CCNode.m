@@ -48,7 +48,7 @@
 #endif
 
 
-#if CC_COCOSNODE_RENDER_SUBPIXEL
+#if CC_NODE_RENDER_SUBPIXEL
 #define RENDER_IN_SUBPIXEL
 #else
 #define RENDER_IN_SUBPIXEL (NSInteger)
@@ -110,7 +110,7 @@
 		// "whole screen" objects. like Scenes and Layers, should set isRelativeAnchorPoint to NO
 		isRelativeAnchorPoint_ = YES; 
 		
-		isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+		isTransformDirty_ = isInverseDirty_ = YES;
 		
 		vertexZ_ = 0;
 		
@@ -133,8 +133,6 @@
 
 		//initialize parent to nil
 		parent_ = nil;
-		
-		kmMat4Identity( &transformMV_ );
 		
 		shaderProgram_ = nil;
 	}
@@ -184,43 +182,43 @@
 -(void) setRotation: (float)newRotation
 {
 	rotation_ = newRotation;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setScaleX: (float)newScaleX
 {
 	scaleX_ = newScaleX;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setScaleY: (float)newScaleY
 {
 	scaleY_ = newScaleY;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setSkewX:(float)newSkewX
 {
 	skewX_ = newSkewX;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setSkewY:(float)newSkewY
 {
 	skewY_ = newSkewY;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setPosition: (CGPoint)newPosition
 {
 	position_ = newPosition;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setIsRelativeAnchorPoint: (BOOL)newValue
 {
 	isRelativeAnchorPoint_ = newValue;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setAnchorPoint:(CGPoint)point
@@ -228,7 +226,7 @@
 	if( ! CGPointEqualToPoint(point, anchorPoint_) ) {
 		anchorPoint_ = point;
 		anchorPointInPoints_ = ccp( contentSize_.width * anchorPoint_.x, contentSize_.height * anchorPoint_.y );
-		isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+		isTransformDirty_ = isInverseDirty_ = YES;
 	}
 }
 
@@ -238,7 +236,7 @@
 		contentSize_ = size;
         
 		anchorPointInPoints_ = ccp( contentSize_.width * anchorPoint_.x, contentSize_.height * anchorPoint_.y );
-		isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+		isTransformDirty_ = isInverseDirty_ = YES;
 	}
 }
 
@@ -251,7 +249,6 @@
 -(void) setVertexZ:(float)vertexZ
 {
 	vertexZ_ = vertexZ;
-	isTransformMVDirty_ = YES;
 }
 
 -(float) scale
@@ -263,7 +260,7 @@
 -(void) setScale:(float) s
 {
 	scaleX_ = scaleY_ = s;
-	isTransformDirty_ = isInverseDirty_ = isTransformMVDirty_ = YES;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 #pragma mark CCNode Composition
@@ -462,7 +459,7 @@
 
 -(void) visit
 {
-	// quick return if not visible
+	// quick return if not visible. children won't be drawn.
 	if (!visible_)
 		return;
 
@@ -516,21 +513,18 @@
 
 -(void) transform
 {
-	if( isTransformMVDirty_ ) {
-		
-		// Convert 3x3 into 4x4 matrix
-		CGAffineTransform tmpAffine = [self nodeToParentTransform];
-		CGAffineToGL(&tmpAffine, transformMV_.mat);
-		
-		// Update Z vertex manually
-		transformMV_.mat[14] = vertexZ_;
-		
-		isTransformMVDirty_ = NO;
-	}
+	kmMat4 transfrom4x4;
 	
-	kmGLMultMatrix( &transformMV_ );
+	// Convert 3x3 into 4x4 matrix
+	CGAffineTransform tmpAffine = [self nodeToParentTransform];
+	CGAffineToGL(&tmpAffine, transfrom4x4.mat);
+		
+	// Update Z vertex manually
+	transfrom4x4.mat[14] = vertexZ_;
 
-	
+	kmGLMultMatrix( &transfrom4x4 );
+
+
 	// XXX: Expensive calls. Camera should be integrated into the cached affine matrix
 	if ( camera_ && !(grid_ && grid_.active) )
 	{	
@@ -666,31 +660,53 @@
 - (CGAffineTransform)nodeToParentTransform
 {
 	if ( isTransformDirty_ ) {
+
+		// Translate values
+		float x = position_.x;
+		float y = position_.y;
 		
-		transform_ = CGAffineTransformIdentity;
-		
-		if ( !isRelativeAnchorPoint_ && !CGPointEqualToPoint(anchorPointInPoints_, CGPointZero) )
-			transform_ = CGAffineTransformTranslate(transform_, anchorPointInPoints_.x, anchorPointInPoints_.y);
-		
-		if( ! CGPointEqualToPoint(position_, CGPointZero) )
-			transform_ = CGAffineTransformTranslate(transform_, position_.x, position_.y);
-		
-		if( rotation_ != 0 )
-			transform_ = CGAffineTransformRotate(transform_, -CC_DEGREES_TO_RADIANS(rotation_));
-		
-		if( skewX_ != 0 || skewY_ != 0 ) {
-			// create a skewed coordinate system
-			CGAffineTransform skew = CGAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(skewY_)), tanf(CC_DEGREES_TO_RADIANS(skewX_)), 1.0f, 0.0f, 0.0f);
-			// apply the skew to the transform
-			transform_ = CGAffineTransformConcat(skew, transform_);
+		if ( !isRelativeAnchorPoint_ ) {
+			x += anchorPointInPoints_.x;
+			y += anchorPointInPoints_.y;
+		}
+
+		// Rotation values
+		float c = 1, s = 0;
+		if( rotation_ ) {
+			float radians = -CC_DEGREES_TO_RADIANS(rotation_);
+			c = cosf(radians);
+			s = sinf(radians);
 		}
 		
-		if( ! (scaleX_ == 1 && scaleY_ == 1) ) 
-			transform_ = CGAffineTransformScale(transform_, scaleX_, scaleY_);
+		BOOL needsSkewMatrix = ( skewX_ || skewY_ );
+
 		
-		if( ! CGPointEqualToPoint(anchorPointInPoints_, CGPointZero) )
-			transform_ = CGAffineTransformTranslate(transform_, -anchorPointInPoints_.x, -anchorPointInPoints_.y);
+		// optimization:
+		// inline anchor point calculation if skew is not needed
+		if( !needsSkewMatrix && !CGPointEqualToPoint(anchorPointInPoints_, CGPointZero) ) {
+			x += c * -anchorPointInPoints_.x * scaleX_ + -s * -anchorPointInPoints_.y * scaleY_;
+			y += s * -anchorPointInPoints_.x * scaleX_ +  c * -anchorPointInPoints_.y * scaleY_;
+		}
+
 		
+		// Build Transform Matrix
+		transform_ = CGAffineTransformMake( c * scaleX_,  s * scaleX_,
+										   -s * scaleY_, c * scaleY_,
+										   x, y );
+
+		// XXX: Try to inline skew
+		// If skew is needed, apply skew and then anchor point
+		if( needsSkewMatrix ) {
+			CGAffineTransform skewMatrix = CGAffineTransformMake(1.0f, tanf(CC_DEGREES_TO_RADIANS(skewY_)),
+																 tanf(CC_DEGREES_TO_RADIANS(skewX_)), 1.0f,
+																 0.0f, 0.0f );
+			transform_ = CGAffineTransformConcat(skewMatrix, transform_);
+		
+			// adjust anchor point
+			if( ! CGPointEqualToPoint(anchorPointInPoints_, CGPointZero) )
+				transform_ = CGAffineTransformTranslate(transform_, -anchorPointInPoints_.x, -anchorPointInPoints_.y);
+		}
+
 		isTransformDirty_ = NO;
 	}
 	

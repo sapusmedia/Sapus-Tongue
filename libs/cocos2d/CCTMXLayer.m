@@ -36,6 +36,7 @@
 #import "CCTextureCache.h"
 #import "Support/CGPointExtension.h"
 
+
 #pragma mark -
 #pragma mark CCSpriteBatchNode Extension
 
@@ -66,7 +67,7 @@
 	// update the quad directly. Don't add the sprite to the scene graph
 	//
 
-	[sprite useBatchNode:self];
+	[sprite setBatchNode:self];
 	[sprite setAtlasIndex:index];
 
 	ccV3F_C4B_T2F_Quad quad = [sprite quad];
@@ -293,11 +294,12 @@ int compareInts (const void * a, const void * b);
 		
 		// tile not created yet. create it
 		if( ! tile ) {
-			CGRect rect = [tileset_ rectForGID:gid];			
-			tile = [[CCSprite alloc] initWithBatchNode:self rectInPixels:rect];
+			CGRect rect = [tileset_ rectForGID:gid];
+			rect = CC_RECT_PIXELS_TO_POINTS(rect);
+			tile = [[CCSprite alloc] initWithBatchNode:self rect:rect];
 			
             CGPoint p = [self positionAt:pos];
-            [tile setPosition:CC_POINT_PIXELS_TO_POINTS(p)];
+            [tile setPosition:p];
 			tile.anchorPoint = CGPointZero;
 			[tile setOpacity:opacity_];
 			
@@ -315,26 +317,38 @@ int compareInts (const void * a, const void * b);
 	NSAssert( tiles_ && atlasIndexArray_, @"TMXLayer: the tiles map has been released");
 	
 	NSInteger idx = pos.x + pos.y * layerSize_.width;
-	return tiles_[ idx ];
+	
+	// Bits on the far end of the 32-bit global tile ID are used for tile flags
+	return (tiles_[ idx ] & kFlippedMask);
 }
 
 #pragma mark CCTMXLayer - adding helper methods
 
+- (void) setupReusedTile:(CGPoint)pos withGID:(uint32_t)gid
+{
+	[reusedTile_ setPosition: [self positionAt:pos]];
+	reusedTile_.anchorPoint = CGPointZero;
+	[reusedTile_ setOpacity:opacity_];
+	
+	if (gid & kFlippedHorizontallyFlag)
+		reusedTile_.flipX = YES;
+	if (gid & kFlippedVerticallyFlag)
+		reusedTile_.flipY = YES;
+}
+
 -(CCSprite*) insertTileForGID:(uint32_t)gid at:(CGPoint)pos
 {
 	CGRect rect = [tileset_ rectForGID:gid];
+	rect = CC_RECT_PIXELS_TO_POINTS(rect);
 	
 	NSInteger z = pos.x + pos.y * layerSize_.width;
 	
 	if( ! reusedTile_ )
-		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rectInPixels:rect];
+		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rect:rect];
 	else
-		[reusedTile_ initWithBatchNode:self rectInPixels:rect];
+		[reusedTile_ initWithBatchNode:self rect:rect];
 	
-    CGPoint p = [self positionAt:pos];
-    [reusedTile_ setPosition:CC_POINT_PIXELS_TO_POINTS(p)];
-    [reusedTile_ setAnchorPoint:CGPointZero];
-    [reusedTile_ setOpacity:opacity_];
+	[self setupReusedTile:pos withGID:gid];
 	
 	// get atlas index
 	NSUInteger indexForZ = [self atlasIndexForNewZ:z];
@@ -361,18 +375,16 @@ int compareInts (const void * a, const void * b);
 -(CCSprite*) updateTileForGID:(uint32_t)gid at:(CGPoint)pos
 {
 	CGRect rect = [tileset_ rectForGID:gid];
+	rect = CC_RECT_PIXELS_TO_POINTS(rect);
 	
 	int z = pos.x + pos.y * layerSize_.width;
 	
 	if( ! reusedTile_ )
-		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rectInPixels:rect];
+		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rect:rect];
 	else
-		[reusedTile_ initWithBatchNode:self rectInPixels:rect];
+		[reusedTile_ initWithBatchNode:self rect:rect];
 	
-    CGPoint p = [self positionAt:pos];
-    [reusedTile_ setPosition:CC_POINT_PIXELS_TO_POINTS(p)];
-    [reusedTile_ setAnchorPoint:CGPointZero];
-	[reusedTile_ setOpacity:opacity_];
+	[self setupReusedTile:pos withGID:gid];
 	
 	// get atlas index
 	NSUInteger indexForZ = [self atlasIndexForExistantZ:z];
@@ -391,18 +403,16 @@ int compareInts (const void * a, const void * b);
 -(CCSprite*) appendTileForGID:(uint32_t)gid at:(CGPoint)pos
 {
 	CGRect rect = [tileset_ rectForGID:gid];
+	rect = CC_RECT_PIXELS_TO_POINTS(rect);
 	
 	NSInteger z = pos.x + pos.y * layerSize_.width;
 	
 	if( ! reusedTile_ )
-		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rectInPixels:rect];
+		reusedTile_ = [[CCSprite alloc] initWithBatchNode:self rect:rect];
 	else
-		[reusedTile_ initWithBatchNode:self rectInPixels:rect];
+		[reusedTile_ initWithBatchNode:self rect:rect];
 	
-    CGPoint p = [self positionAt:pos];
-    [reusedTile_ setPosition:CC_POINT_PIXELS_TO_POINTS(p)];
-    [reusedTile_ setAnchorPoint:CGPointZero];
-	[reusedTile_ setOpacity:opacity_];
+	[self setupReusedTile:pos withGID:gid];
 	
 	// optimization:
 	// The difference between appendTileForGID and insertTileforGID is that append is faster, since
@@ -477,7 +487,9 @@ int compareInts (const void * a, const void * b)
 			id sprite = [self getChildByTag:z];
 			if( sprite ) {
 				CGRect rect = [tileset_ rectForGID:gid];
-				[sprite setTextureRectInPixels:rect rotated:NO untrimmedSize:rect.size];
+				rect = CC_RECT_PIXELS_TO_POINTS(rect);
+
+				[sprite setTextureRect:rect rotated:NO untrimmedSize:rect.size];
 				tiles_[z] = gid;
 			} else
 				[self updateTileForGID:gid at:pos];
@@ -575,6 +587,8 @@ int compareInts (const void * a, const void * b)
 			ret = [self positionForHexAt:pos];
 			break;
 	}
+	
+	ret = CC_POINT_PIXELS_TO_POINTS( ret );
 	return ret;
 }
 

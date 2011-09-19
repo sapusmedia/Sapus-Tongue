@@ -74,10 +74,7 @@
 		blendFunc_.src = CC_BLEND_SRC;
 		blendFunc_.dst = CC_BLEND_DST;
 		
-		// double retain to avoid the autorelease pool
-		// also, using: self.textureAtlas supports re-initialization without leaking
-		self.textureAtlas = [[CCTextureAtlas alloc] initWithFile:tile capacity:c];
-		[textureAtlas_ release];
+		self.textureAtlas = [CCTextureAtlas textureAtlasWithFile:tile capacity:c];
 		
 		if( ! textureAtlas_ ) {
 			CCLOG(@"cocos2d: Could not initialize CCAtlasNode. Invalid Texture");
@@ -125,25 +122,14 @@
 {
 	[super draw];
 
-	// Default Attribs & States: GL_TEXTURE0, k,CCAttribVertex, kCCAttribColor, kCCAttribTexCoords
-	// Needed states: GL_TEXTURE0, kCCAttribVertex, kCCAttribTexCoords
-	// Unneeded states: kCCAttribColor
-	
-	glDisableVertexAttribArray(kCCAttribColor);
-
 	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
 	
 	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformProjectionMatrix( shaderProgram_ );
-	ccGLUniformModelViewMatrix( shaderProgram_ );	
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );	
 	
 	glUniform4f( uniformColor_, color_.r / 255.0f, color_.g / 255.0f, color_.b / 255.0f, opacity_ / 255.0f );
 	
-	[textureAtlas_ drawNumberOfQuads:quadsToDraw_ fromIndex:0];
-	
-	
-	// Restore state
-	glEnableVertexAttribArray(kCCAttribColor);
+	[textureAtlas_ drawNumberOfQuads:quadsToDraw_ fromIndex:0];	
 }
 
 #pragma mark CCAtlasNode - RGBA protocol
@@ -198,7 +184,7 @@
 	opacityModifyRGB_ = [textureAtlas_.texture hasPremultipliedAlpha];
 }
 
-#pragma mark CCAtlasNode - CocosNodeTexture protocol
+#pragma mark CCAtlasNode - CCNodeTexture protocol
 
 -(void) updateBlendFunc
 {

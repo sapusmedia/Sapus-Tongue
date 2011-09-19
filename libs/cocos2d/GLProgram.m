@@ -139,10 +139,7 @@ typedef void (*GLLogFunction) (GLuint program,
 {
 	// Since sample most probably won't change, set it to 0 now.
 	
-	// update uniforms
-	uniforms_[kCCUniformPMatrix] = glGetUniformLocation(program_, kCCUniformPMatrix_s);
-
-	uniforms_[kCCUniformMVMatrix] = glGetUniformLocation(program_, kCCUniformMVMatrix_s);
+	uniforms_[kCCUniformMVPMatrix] = glGetUniformLocation(program_, kCCUniformMVPMatrix_s);
 
 	uniforms_[kCCUniformSampler] = glGetUniformLocation(program_, kCCUniformSampler_s);
 	
@@ -153,10 +150,11 @@ typedef void (*GLLogFunction) (GLuint program,
 #pragma mark -
 
 - (BOOL)link
-{
-    GLint status;
-    
+{    
     glLinkProgram(program_);
+
+#if DEBUG
+	GLint status;
     glValidateProgram(program_);
     
     glGetProgramiv(program_, GL_LINK_STATUS, &status);
@@ -170,6 +168,7 @@ typedef void (*GLLogFunction) (GLuint program,
 		vertShader_ = fragShader_ = program_ = 0;
         return NO;
 	}
+#endif
     
     if (vertShader_)
         glDeleteShader(vertShader_);

@@ -37,26 +37,6 @@
 
 #define CCSpriteIndexNotInitialized 0xffffffff 	/// CCSprite invalid index on the CCSpriteBatchode
 
-/**
- Whether or not an CCSprite will rotate, scale or translate with it's parent.
- Useful in health bars, when you want that the health bar translates with it's parent but you don't
- want it to rotate with its parent.
- @since v0.99.0
- */
-typedef enum {
-	//! Translate with it's parent
-	CC_HONOR_PARENT_TRANSFORM_TRANSLATE =  1 << 0,
-	//! Rotate with it's parent
-	CC_HONOR_PARENT_TRANSFORM_ROTATE	=  1 << 1,
-	//! Scale with it's parent
-	CC_HONOR_PARENT_TRANSFORM_SCALE		=  1 << 2,
-	//! Skew with it's parent
-	CC_HONOR_PARENT_TRANSFORM_SKEW		=  1 << 3,
-
-	//! All possible transformation enabled. Default value.
-	CC_HONOR_PARENT_TRANSFORM_ALL		=  CC_HONOR_PARENT_TRANSFORM_TRANSLATE | CC_HONOR_PARENT_TRANSFORM_ROTATE | CC_HONOR_PARENT_TRANSFORM_SCALE | CC_HONOR_PARENT_TRANSFORM_SKEW,
-
-} ccHonorParentTransform;
 
 /** CCSprite is a 2d image ( http://en.wikipedia.org/wiki/Sprite_(computer_graphics) )
  *
@@ -89,10 +69,11 @@ typedef enum {
 	CCTextureAtlas			*textureAtlas_;			// Sprite Sheet texture atlas (weak reference)
 	NSUInteger				atlasIndex_;			// Absolute (real) Index on the batch node
 	CCSpriteBatchNode		*batchNode_;			// Used batch node (weak reference)
-	ccHonorParentTransform	honorParentTransform_;	// whether or not to transform according to its parent transformations
 	BOOL					dirty_:1;				// Sprite needs to be updated
 	BOOL					recursiveDirty_:1;		// Subchildren needs to be updated
 	BOOL					hasChildren_:1;			// optimization to check if it contain children
+	BOOL					shouldBeHidden_:1;		// should not be drawn because one of the ancestors is not visible
+	CGAffineTransform		transformToBatch_;		//
 	
 	//
 	// Data used when the sprite is self-rendered
@@ -105,13 +86,8 @@ typedef enum {
 	//
 
 	// texture
-	CGRect	rect_;
-	CGRect	rectInPixels_;
 	BOOL	rectRotated_:1;
 
-	// whether or not it's parent is a CCSpriteBatchNode
-	BOOL	usesBatchNode_:1;
-	
 	// Offset Position (used by Zwoptex)
 	CGPoint	offsetPosition_;
 	CGPoint unflippedOffsetPositionFromCenter_;
@@ -128,10 +104,6 @@ typedef enum {
 	// image is flipped
 	BOOL	flipX_:1;
 	BOOL	flipY_:1;
-
-@public
-	// used internally.
-	void (*updateMethod)(id, SEL);
 }
 
 /** whether or not the Sprite needs to be updated in the Atlas */
@@ -140,7 +112,7 @@ typedef enum {
 @property (nonatomic,readonly) ccV3F_C4B_T2F_Quad quad;
 /** The index used on the TextureAtlas. Don't modify this value unless you know what you are doing */
 @property (nonatomic,readwrite) NSUInteger atlasIndex;
-/** returns the rect of the CCSprite in points */
+/** returns the texture rect of the CCSprite in points */
 @property (nonatomic,readonly) CGRect textureRect;
 /** returns whether or not the texture rectangle is rotated */
 @property (nonatomic,readonly) BOOL textureRectRotated;
@@ -164,19 +136,11 @@ typedef enum {
 @property (nonatomic,readwrite) GLubyte opacity;
 /** RGB colors: conforms to CCRGBAProtocol protocol */
 @property (nonatomic,readwrite) ccColor3B color;
-/** whether or not the Sprite is rendered using a CCSpriteBatchNode */
-@property (nonatomic,readwrite) BOOL usesBatchNode;
 /** weak reference of the CCTextureAtlas used when the sprite is rendered using a CCSpriteBatchNode */
 @property (nonatomic,readwrite,assign) CCTextureAtlas *textureAtlas;
 /** weak reference to the CCSpriteBatchNode that renders the CCSprite */
 @property (nonatomic,readwrite,assign) CCSpriteBatchNode *batchNode;
-/** whether or not to transform according to its parent transfomrations.
- Useful for health bars. eg: Don't rotate the health bar, even if the parent rotates.
- IMPORTANT: Only valid if it is rendered using an CCSpriteBatchNode.
- @since v0.99.0
- */
-@property (nonatomic,readwrite) ccHonorParentTransform honorParentTransform;
-/** offset position in pixels of the sprite in points. Calculated automatically by editors like Zwoptex.
+/** offset position in points of the sprite in points. Calculated automatically by editors like Zwoptex.
  @since v0.99.0
  */
 @property (nonatomic,readonly) CGPoint	offsetPosition;
@@ -277,12 +241,6 @@ typedef enum {
  */
 -(id) initWithBatchNode:(CCSpriteBatchNode*)batchNode rect:(CGRect)rect;
 
-/** Initializes an sprite with an CCSpriteBatchNode and a rect in pixels
- @since v0.99.5
- */
--(id) initWithBatchNode:(CCSpriteBatchNode*)batchNode rectInPixels:(CGRect)rect;
-
-
 
 #pragma mark CCSprite - BatchNode methods
 
@@ -290,22 +248,29 @@ typedef enum {
  */
 -(void)updateTransform;
 
-/** updates the texture rect of the CCSprite in points.
+/** set the sprite batch node.
+ If the batchNode is nil, then it won't use a batch for rendering.
+ @since v0.99.0
+ */
+-(void) setBatchNode:(CCSpriteBatchNode*)batchNode;
+
+#pragma mark CCSprite - Texture methods
+
+/** set the texture rect of the CCSprite in points. 
+ It will call setTextureRect:rotated:untrimmedSize with rotated = NO, and utrimmedSize = rect.size.
  */
 -(void) setTextureRect:(CGRect) rect;
-/** updates the texture rect, rectRotated and untrimmed size of the CCSprite in pixels
- */
--(void) setTextureRectInPixels:(CGRect)rect rotated:(BOOL)rotated untrimmedSize:(CGSize)size;
 
-/** tell the sprite to use self-render.
- @since v0.99.0
+/** set the texture rect, rectRotated and untrimmed size of the CCSprite in points.
+ It will update the texture coordinates and the vertex rectangle.
  */
--(void) useSelfRender;
+-(void) setTextureRect:(CGRect)rect rotated:(BOOL)rotated untrimmedSize:(CGSize)size;
 
-/** tell the sprite to use sprite batch node
- @since v0.99.0
+/** set the vertex rect.
+ It will be called internally by setTextureRect. Useful if you want to create 2x images from SD images in Retina Display.
+ Do not call it manually. Use setTextureRect instead.
  */
--(void) useBatchNode:(CCSpriteBatchNode*)batchNode;
+-(void)setVertexRect:(CGRect)rect;
 
 
 #pragma mark CCSprite - Frames

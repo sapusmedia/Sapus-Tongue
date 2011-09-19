@@ -393,26 +393,19 @@ eachShape(cpShape *shape, void* instance)
 							(pivotBody_->p.x - x*1.5f),	(pivotBody_->p.y - y*1.5f),	0.0f,
 							(pivotBody_->p.x + x*1.5f),	(pivotBody_->p.y + y*1.5f),	0.0f };
 	
-	// Default Attribs & States: GL_TEXTURE0, kCCAttribPosition, kCCAttribColor, kCCAttribTexCoords
-	// Needed states: GL_TEXTURE0, kCCAttribPosition, kCCAttribTexCoords
-	// Unneeded states: kCCAttribColor
-	
-	glDisableVertexAttribArray(kCCAttribColor);
-	
+
+	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
+
 	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformProjectionMatrix( shaderProgram_ );
-	ccGLUniformModelViewMatrix( shaderProgram_ );
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 	
-	glBindTexture(GL_TEXTURE_2D, tongue_.name );
+	ccGLBindTexture2D( tongue_.name );
 	
-	glVertexAttribPointer(kCCAttribPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
-	glVertexAttribPointer(kCCAttribTexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
+	glVertexAttribPointer(kCCVertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, coordinates);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	
-	// restore default GL states
-	glEnableVertexAttribArray(kCCAttribColor);
-	
+
 	CHECK_GL_ERROR_DEBUG();	
 }
 

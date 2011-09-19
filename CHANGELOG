@@ -1,9 +1,12 @@
+Changes in 2011-08-29 (v4.1)
+* [3RD] cocos2d: uses v2.0-alpha
+
 Changes in 2011-08-29 (v4.0)
 * [NEW] All: Using iPad suffix API. Removed stConvertToiPad macro
 * [NEW] GameNode / Instructions: Converted code to Chipmunk 6.0.x, and cocos2d 2.x
 * [FIX] ScoreManager: Fixed memory leak
 * [FIX] FastGrid: temporaly disabled
-* [3RD] cocos2d: uses v2.0-alpha
+* [3RD] cocos2d: uses v2.0-pre-alpha
 * [3RD] Chipmunk: uses v6.0.1
 
 Changes in 2011-06-13 (v3.5)

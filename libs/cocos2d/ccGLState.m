@@ -33,14 +33,28 @@
 #import "kazmath/kazmath.h"
 
 static GLuint	_ccCurrentProjectionMatrix = -1;
+static BOOL		_vertexAttribPosition = NO;
+static BOOL		_vertexAttribColor = NO;
+static BOOL		_vertexAttribTexCoords = NO;
 
 #if CC_ENABLE_GL_STATE_CACHE
 static GLuint	_ccCurrentShaderProgram = -1;
+static GLuint	_ccCurrentBoundTexture = -1;
 static GLenum	_ccBlendingSource = -1;
 static GLenum	_ccBlendingDest = -1;
 #endif // CC_ENABLE_GL_STATE_CACHE
 
 #pragma mark - GL State Cache functions
+
+void ccGLInvalidateStateCache( void )
+{
+#if CC_ENABLE_GL_STATE_CACHE
+	_ccCurrentShaderProgram = -1;
+	_ccCurrentBoundTexture = -1;
+	_ccBlendingSource = -1;
+	_ccBlendingDest = -1;
+#endif
+}
 
 void ccGLDeleteProgram( GLuint program )
 {
@@ -78,24 +92,85 @@ void ccGLBlendFunc(GLenum sfactor, GLenum dfactor)
 #endif // CC_ENABLE_GL_STATE_CACHE
 }
 
-#pragma mark - GL Uniforms functions
-
-void ccGLUniformProjectionMatrix( GLProgram *shaderProgram )
+void ccGLBindTexture2D( GLuint textureId )
 {
-	if( shaderProgram->program_ != _ccCurrentProjectionMatrix ) {
-		kmMat4 projectionMatrix;
-		kmGLGetMatrix(KM_GL_PROJECTION, &projectionMatrix );
-		glUniformMatrix4fv( shaderProgram->uniforms_[kCCUniformPMatrix], 1, GL_FALSE, projectionMatrix.mat);
+#if CC_ENABLE_GL_STATE_CACHE
+	if( _ccCurrentBoundTexture != textureId ) {
+		_ccCurrentBoundTexture = textureId;
+		glBindTexture(GL_TEXTURE_2D, textureId );
+	}
+#else
+	glBindTexture(GL_TEXTURE_2D, textureId );
+#endif
+}
+
+
+void ccGLDeleteTexture( GLuint textureId )
+{
+#if CC_ENABLE_GL_STATE_CACHE
+	if( textureId == _ccCurrentBoundTexture )
+	   _ccCurrentBoundTexture = -1;
+#endif
+	glDeleteTextures(1, &textureId );
+}
+
+#pragma mark - GL Vertex Attrib functions
+
+void ccGLEnableVertexAttribs( unsigned int flags )
+{
+	
+
+	/* Position */
+	BOOL enablePosition = flags & kCCVertexAttribFlag_Position;
+
+	if( enablePosition != _vertexAttribPosition ) {
+		if( enablePosition )
+			glEnableVertexAttribArray( kCCVertexAttrib_Position );
+		else
+			glDisableVertexAttribArray( kCCVertexAttrib_Position );
+
+		_vertexAttribPosition = enablePosition;
+	}
+
+	/* Color */
+	BOOL enableColor = flags & kCCVertexAttribFlag_Color;
+	
+	if( enableColor != _vertexAttribColor ) {
+		if( enableColor )
+			glEnableVertexAttribArray( kCCVertexAttrib_Color );
+		else
+			glDisableVertexAttribArray( kCCVertexAttrib_Color );
 		
-		_ccCurrentProjectionMatrix = shaderProgram->program_;
+		_vertexAttribColor = enableColor;
+	}
+
+	/* Tex Coords */
+	BOOL enableTexCoords = flags & kCCVertexAttribFlag_TexCoords;
+
+	if( enableTexCoords != _vertexAttribTexCoords ) {
+		if( enableTexCoords ) 
+			glEnableVertexAttribArray( kCCVertexAttrib_TexCoords );
+		else
+			glDisableVertexAttribArray( kCCVertexAttrib_TexCoords );
+		
+		_vertexAttribTexCoords = enableTexCoords;
 	}
 }
 
-void ccGLUniformModelViewMatrix( GLProgram *shaderProgram )
+#pragma mark - GL Uniforms functions
+
+void ccGLUniformModelViewProjectionMatrix( GLProgram *shaderProgram )
 {
+	kmMat4 matrixP;
 	kmMat4 matrixMV;
+	kmMat4 matrixMVP;
+
+	kmGLGetMatrix(KM_GL_PROJECTION, &matrixP );
 	kmGLGetMatrix(KM_GL_MODELVIEW, &matrixMV );
-	glUniformMatrix4fv( shaderProgram->uniforms_[kCCUniformMVMatrix], 1, GL_FALSE, matrixMV.mat);
+	
+	kmMat4Multiply(&matrixMVP, &matrixP, &matrixMV);
+	
+	glUniformMatrix4fv( shaderProgram->uniforms_[kCCUniformMVPMatrix], 1, GL_FALSE, matrixMVP.mat);
 }
 
 void ccSetProjectionMatrixDirty( void )

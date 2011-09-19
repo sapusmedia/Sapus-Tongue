@@ -72,7 +72,6 @@
 	// Uncomment the following code if you Application only supports landscape mode
 	//
 	
-	CC_ENABLE_DEFAULT_GL_STATES();
 	CCDirector *director = [CCDirector sharedDirector];
 	CGSize size = [director winSize];
 	CCSprite *sprite = nil;
@@ -84,7 +83,6 @@
 	sprite.rotation = -90;
 	[sprite visit];
 	[[director openGLView] swapBuffers];
-	CC_ENABLE_DEFAULT_GL_STATES();	
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED
 

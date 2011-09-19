@@ -129,9 +129,6 @@ CGFloat	__ccContentScaleFactor = 1;
 
 	kmGLPushMatrix();
 
-	// By default enable VertexArray, ColorArray, TextureCoordArray and Texture2D
-	CC_ENABLE_DEFAULT_GL_STATES();
-
 	[runningScene_ visit];
 
 	[notificationNode_ visit];
@@ -139,12 +136,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	if( displayFPS_ )
 		[self showFPS];
 
-	CC_DISABLE_DEFAULT_GL_STATES();
-
-#if CC_ENABLE_PROFILERS
-	[self showProfilers];
-#endif
-	
 	kmGLPopMatrix();
 
 	totalFrames_++;

@@ -163,15 +163,10 @@ enum {
 	// If YES the transformtions will be relative to (-transform.x, -transform.y).
 	// Sprites, Labels and any other "small" object uses it.
 	// Scenes, Layers and other "whole screen" object don't use it.
-	BOOL isRelativeAnchorPoint_:1;	
-
-@public
-	kmMat4	transformMV_;
-	BOOL	isTransformMVDirty_:1;
-
+	BOOL isRelativeAnchorPoint_:1;
 }
 
-/** The z order of the node relative to it's "brothers": children of the same parent */
+/** The z order of the node relative to its "siblings": children of the same parent */
 @property(nonatomic,readonly) NSInteger zOrder;
 /** The real openGL Z vertex.
  Differences between openGL Z vertex and cocos2d Z order:
@@ -239,7 +234,7 @@ enum {
 @property(nonatomic,readonly) BOOL isRunning;
 /** A weak reference to the parent */
 @property(nonatomic,readwrite,assign) CCNode* parent;
-/** If YES the transformtions will be relative to it's anchor point.
+/** If YES the transformtions will be relative to its anchor point.
  * Sprites, Labels and any other sizeble object use it have it enabled by default.
  * Scenes, Layers and other "whole screen" object don't use it, have it disabled by default.
  */
@@ -344,16 +339,8 @@ enum {
 // draw
 
 /** Override this method to draw your own node.
- The following GL states will be enabled by default:
-	- glActiveTexture(GL_TEXTURE0);
-	- glEnableVertexAttribArray(kCCAttribPosition);
-	- glEnableVertexAttribArray(kCCAttribColor);
-	- glEnableVertexAttribArray(kCCAttribTexCoords);
-
- 
-   AND YOU SHOULD NOT DISABLE THEM AFTER DRAWING YOUR NODE
- 
- But if you enable any other GL state, you should disable it after drawing your node.
+ You should use cocos2d's GL API to enable/disable the GL state / shaders.
+ For further info, please see ccGLstate.h 
  */
 -(void) draw;
 
@@ -365,9 +352,8 @@ enum {
 /** performs OpenGL view-matrix transformation based on position, scale, rotation and other attributes. */
 -(void) transform;
 
-/** performs OpenGL view-matrix transformation of it's ancestors.
- Generally the ancestors are already transformed, but in certain cases (eg: attaching a FBO)
- it's necessary to transform the ancestors again.
+/** performs OpenGL view-matrix transformation of its ancestors.
+ Generally the ancestors are already transformed, but in certain cases (eg: attaching a FBO) it is necessary to transform the ancestors again.
  @since v0.7.2
  */
 -(void) transformAncestors;

@@ -78,14 +78,14 @@
 		free( data );
     
 		// generate FBO
-		ccGLGenFramebuffers(1, &fbo_);
-		ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
+		glGenFramebuffers(1, &fbo_);
+		glBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
     
 		// associate texture with FBO
-		ccGLFramebufferTexture2D(CC_GL_FRAMEBUFFER, CC_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_.name, 0);
+		glFramebufferTexture2D(CC_GL_FRAMEBUFFER, CC_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_.name, 0);
     
 		// check if it worked (probably worth doing :) )
-		GLuint status = ccGLCheckFramebufferStatus(CC_GL_FRAMEBUFFER);
+		GLuint status = glCheckFramebufferStatus(CC_GL_FRAMEBUFFER);
 		if (status != CC_GL_FRAMEBUFFER_COMPLETE)
 		{
 			[NSException raise:@"Render Texture" format:@"Could not attach texture to framebuffer"];
@@ -101,14 +101,14 @@
 		// issue #937
 		[sprite_ setBlendFunc:(ccBlendFunc){GL_ONE, GL_ONE_MINUS_SRC_ALPHA}];
 
-		ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
+		glBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
 	}
 	return self;
 }
 
 -(void)dealloc
 {
-	ccGLDeleteFramebuffers(1, &fbo_);
+	glDeleteFramebuffers(1, &fbo_);
 	[super dealloc];
 }
 
@@ -141,18 +141,7 @@
 	
 	
 	glGetIntegerv(CC_GL_FRAMEBUFFER_BINDING, &oldFBO_);
-	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
-	
-	// Issue #1145
-	// There is no need to enable the default GL states here
-	// but since CCRenderTexture is mostly used outside the "render" loop
-	// these states needs to be enabled.
-	// Since this bug was discovered in API-freeze (very close of 1.0 release)
-	// This bug won't be fixed to prevent incompatibilities with code.
-	// 
-	// If you understand the above mentioned message, then you can comment the following line
-	// and enable the gl states manually, in case you need them.
-	CC_ENABLE_DEFAULT_GL_STATES();
+	glBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);	
 }
 
 -(void)begin2
@@ -170,18 +159,7 @@
 //	kmGLMultMatrix(&orthoMatrix);
 	
 	glGetIntegerv(CC_GL_FRAMEBUFFER_BINDING, &oldFBO_);
-	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);
-	
-	// Issue #1145
-	// There is no need to enable the default GL states here
-	// but since CCRenderTexture is mostly used outside the "render" loop
-	// these states needs to be enabled.
-	// Since this bug was discovered in API-freeze (very close of 1.0 release)
-	// This bug won't be fixed to prevent incompatibilities with code.
-	// 
-	// If you understand the above mentioned message, then you can comment the following line
-	// and enable the gl states manually, in case you need them.
-	CC_ENABLE_DEFAULT_GL_STATES();
+	glBindFramebuffer(CC_GL_FRAMEBUFFER, fbo_);	
 }
 
 
@@ -202,7 +180,7 @@
 
 -(void)end
 {
-	ccGLBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
+	glBindFramebuffer(CC_GL_FRAMEBUFFER, oldFBO_);
 
 	kmGLPopMatrix();
 
