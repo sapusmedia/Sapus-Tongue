@@ -99,12 +99,25 @@ void ccSetProjectionMatrixDirty( void );
  @since v2.0.0
  */
 void ccGLEnableVertexAttribs( unsigned int flags );
+
+/** If the active texture is not textureEnum, then it will active it.
+ If CC_ENABLE_GL_STATE_CACHE is disabled, it will call glActiveTexture() directly.
+ @since v2.0.0
+ */
+void ccGLActiveTexture(GLenum textureEnum );
 	
+/** Returns the active texture.
+ If CC_ENABLE_GL_STATE_CACHE is disabled, it will call glGetIntegerv(GL_ACTIVE_TEXTURE);
+ @since v2.0.0
+ */
+GLenum ccGLGetActiveTexture( void );
+
+
 /** If the texture is not already bound, it binds it.
  If CC_ENABLE_GL_STATE_CACHE is disabled, it will call glBindTexture() directly.
  @since v2.0.0
  */
-void ccGLBindTexture2D(GLuint textureId);
+void ccGLBindTexture2D(GLuint textureId );
 
 /** It will delete a given texture. If the texture was bound, it will invalidate the cached.
  If CC_ENABLE_GL_STATE_CACHE is disabled, it will call glDeleteTextures() directly.
