@@ -106,6 +106,7 @@ default gl blend src function. Compatible with premultiplied alpha images.
 	- The EAGLView view will have multiple touches disabled.
 	- It will create a UIWindow and it will assign it the 'window_' ivar. 'window_' must be declared before calling this marcro.
 	- It will create a RootViewController and it will assign it the 'viewController_' ivar. 'viewController_' must be declared before using this macro. The file "RootViewController.h" should be imported
+	- It will create a UINavigationController and it will assign it the 'navigationController_' ivar. 'navigationController_' must be declared before using this macro.
 	- It will connect the EAGLView to the UIViewController view.
 	- It will connect the UIViewController view to the UIWindow.
 	- It will try to run at 60 FPS.
@@ -125,7 +126,7 @@ default gl blend src function. Compatible with premultiplied alpha images.
 do	{																							\
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];					\
 	CCDirector *__director = [CCDirector sharedDirector];										\
-	[__director setDisplayFPS:NO];																\
+	[__director setDisplayStats:kCCDirectorStatsNone];																\
 	[__director setAnimationInterval:1.0/60];													\
 	EAGLView *__glView = [EAGLView viewWithFrame:[window_ bounds]								\
 									pixelFormat:kEAGLColorFormatRGB565							\
@@ -139,7 +140,11 @@ do	{																							\
 	viewController_ = [[RootViewController alloc] initWithNibName:nil bundle:nil];				\
 	viewController_.wantsFullScreenLayout = YES;												\
 	[viewController_ setView:__glView];															\
-	[window_ addSubview:viewController_.view];													\
+	navigationController_ = [[UINavigationController alloc] initWithRootViewController:viewController_];	\
+	navigationController_.navigationBarHidden = YES;											\
+	[window_ setRootViewController:navigationController_];										\
+	[navigationController_ release];															\
+	[viewController_ release];																	\
 	[window_ makeKeyAndVisible];																\
 } while(0)
 
@@ -155,7 +160,7 @@ do	{																							\
 	glView_ = [[MacGLView alloc] initWithFrame:frameRect shareContext:nil];						\
 	[self.window setContentView:self.glView];													\
 	CCDirector *__director = [CCDirector sharedDirector];										\
-	[__director setDisplayFPS:NO];																\
+	[__director setDisplayStats:kCCDirectorStatsNone];																\
 	[__director setOpenGLView:self.glView];														\
 	[(CCDirectorMac*)__director setOriginalWinSize:__WINSIZE__];								\
 	[self.window makeMainWindow];																\
@@ -163,6 +168,17 @@ do	{																							\
 } while(0)
 
 #endif
+
+/** @def CC_NODE_DRAW_SETUP
+ Helpful macro that setups the GL server state, the correct GL program and sets the Model View Projection matrix
+ @since v2.0
+ */
+#define CC_NODE_DRAW_SETUP()																	\
+do {																							\
+	ccGLEnable( glServerState_ );																\
+	ccGLUseProgram( shaderProgram_->program_ );													\
+	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );										\
+} while(0)
 
  
  /** @def CC_DIRECTOR_END
@@ -291,4 +307,20 @@ CGSizeMake( (__size_in_points__).width * CC_CONTENT_SCALE_FACTOR(), (__size_in_p
 #define CC_PROFILER_STOP_INSTANCE(__id__, __name__) do {} while(0)
 #define CC_PROFILER_RESET_INSTANCE(__id__, __name__) do {} while(0)
 
+#endif
+
+/*****************/
+/** ARC Macros  **/
+/*****************/
+#if defined(__has_feature) && __has_feature(objc_arc)
+// ARC (used for inline functions)
+#define CC_ARC_RETAIN(value)	value
+#define CC_ARC_RELEASE(value)	value = 0
+#define CC_ARC_UNSAFE_RETAINED	__unsafe_unretained
+
+#else
+// No ARC
+#define CC_ARC_RETAIN(value)	[value retain]
+#define CC_ARC_RELEASE(value)	[value release]
+#define CC_ARC_UNSAFE_RETAINED
 #endif

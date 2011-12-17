@@ -370,7 +370,7 @@
 
 - (void) draw
 {
-	[super draw];
+	CC_NODE_DRAW_SETUP();
 
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color );
 
@@ -381,9 +381,6 @@
 	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_FLOAT, GL_FALSE, 0, squareColors_);
 
 	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
-	
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);	
 }

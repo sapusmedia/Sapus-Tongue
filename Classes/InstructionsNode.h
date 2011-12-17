@@ -29,8 +29,6 @@
 	
 	NSURL			*mMovieURL;
 	
-	BOOL			newMVPlayer_;
-	
 	BOOL			isLandscapeLeft_;
 
 

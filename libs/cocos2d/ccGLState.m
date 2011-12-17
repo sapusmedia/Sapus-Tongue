@@ -44,6 +44,7 @@ static GLuint	_ccCurrentBoundTexture[kCCMaxActiveTexture] =  {-1,-1,-1,-1, -1,-1
 static GLenum	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
 static GLenum	_ccBlendingSource = -1;
 static GLenum	_ccBlendingDest = -1;
+static ccGLServerState _ccGLServerState = 0;
 #endif // CC_ENABLE_GL_STATE_CACHE
 
 #pragma mark - GL State Cache functions
@@ -59,7 +60,7 @@ void ccGLInvalidateStateCache( void )
 	_ccCurrentActiveTexture = (GL_TEXTURE0 - GL_TEXTURE0);
 	_ccBlendingSource = -1;
 	_ccBlendingDest = -1;
-	
+	_ccGLServerState = 0;
 #endif
 }
 
@@ -105,7 +106,7 @@ GLenum ccGLGetActiveTexture( void )
 	return _ccCurrentActiveTexture + GL_TEXTURE0;
 #else
 	GLenum activeTexture;
-	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+	glGetIntegerv(GL_ACTIVE_TEXTURE, (GLint*)&activeTexture);
 	return activeTexture;
 #endif
 }
@@ -114,7 +115,7 @@ void ccGLActiveTexture( GLenum textureEnum )
 {
 #if CC_ENABLE_GL_STATE_CACHE
 	NSCAssert1( (textureEnum - GL_TEXTURE0) < kCCMaxActiveTexture, @"cocos2d ERROR: Increase kCCMaxActiveTexture to %d!", (textureEnum-GL_TEXTURE0) );
-	if( textureEnum != _ccCurrentActiveTexture ) {
+	if( (textureEnum - GL_TEXTURE0) != _ccCurrentActiveTexture ) {
 		_ccCurrentActiveTexture = (textureEnum - GL_TEXTURE0);
 		glActiveTexture( textureEnum );		
 	} 	
@@ -144,6 +145,31 @@ void ccGLDeleteTexture( GLuint textureId )
 	   _ccCurrentBoundTexture[ _ccCurrentActiveTexture ] = -1;
 #endif
 	glDeleteTextures(1, &textureId );
+}
+
+void ccGLEnable( ccGLServerState flags )
+{
+#if CC_ENABLE_GL_STATE_CACHE
+
+	BOOL enabled = NO;
+	
+	/* GL_BLEND */
+	if( (enabled=(flags & CC_GL_BLEND)) != (_ccGLServerState & CC_GL_BLEND) ) {
+		if( enabled ) {
+			glEnable( GL_BLEND );
+			_ccGLServerState |= CC_GL_BLEND;
+		} else {
+			glDisable( GL_BLEND );
+			_ccGLServerState &=  ~CC_GL_BLEND;
+		}
+	}
+
+#else
+	if( flags & CC_GL_BLEND )
+		glEnable( GL_BLEND );
+	else
+		glDisable( GL_BLEND );
+#endif
 }
 
 #pragma mark - GL Vertex Attrib functions

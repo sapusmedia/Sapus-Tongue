@@ -11,14 +11,14 @@
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
+#import <GameKit/GameKit.h>
 
-@class GameCenterViewController;
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 #endif
 
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-@interface HiScoresNode : CCLayer <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
+@interface HiScoresNode : CCLayer <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 @interface HiScoresNode : CCLayer <NSTableViewDelegate, NSTableViewDataSource>
@@ -29,7 +29,6 @@
 	UITableView					*myTableView_;
 	UIActivityIndicatorView		*activityIndicator_;
 	BOOL						displayLocalScores_;
-	GameCenterViewController	*gameCenterViewController_;
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED
 	
 }

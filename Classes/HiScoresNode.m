@@ -30,7 +30,6 @@
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import "cocoslive.h"
 #import "GameCenterManager.h"
-#import "GameCenterViewController.h"
 #import "RootViewController.h"
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 #import "BDSKOverlayWindow.h"
@@ -196,7 +195,6 @@
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	[activityIndicator_ release];
 	[myTableView_ release];	
-	[gameCenterViewController_ release];
 #endif
 
 	[super dealloc];
@@ -341,10 +339,18 @@
 
 -(void) gameCenterCB:(id) sender
 {
-	if( ! gameCenterViewController_ )
-		gameCenterViewController_ = [[GameCenterViewController alloc] init];
-	
-	[gameCenterViewController_ showAchievements];
+	//
+	// Display Achievements
+	//
+	GKAchievementViewController *achivementViewController = [[GKAchievementViewController alloc] init];
+	if (achivementViewController != nil)
+	{		
+		// Obtain the Main Window
+		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];		
+		achivementViewController.achievementDelegate = self;
+		
+		[[appDelegate navigationController] presentModalViewController:achivementViewController animated:YES];
+	}	
 }
 
 
@@ -537,12 +543,25 @@
 	return cell;
 }
 
-#pragma mark UIAlertView Delegate
+#pragma mark UIAlertView Delegate (iOS)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 }
 
+#pragma mark GameCenter Delegate (iOS)
+
+-(void) leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController
+{
+	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
+	[[appDelegate navigationController] dismissModalViewControllerAnimated:YES];
+}
+
+-(void) achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
+{
+	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
+	[[appDelegate navigationController] dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark -
 #pragma mark HiScoresNode - Mac Only

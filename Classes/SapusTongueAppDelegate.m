@@ -50,7 +50,7 @@
 @synthesize window=window_;
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-@synthesize viewController=viewController_;
+@synthesize viewController=viewController_, navigationController=navigationController_;
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 @synthesize glView=glView_;
@@ -133,16 +133,15 @@
 	// turn this feature On when testing the speed
 //	[director setDisplayFPS:YES];
 	
-	// Removes the startup flicker
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	// Removes the startup flicker
 	[self removeStartupFlicker];
-#endif //
 
 	// Run the intro Scene
-	[director runWithScene: [SapusIntroNode scene] ];
-	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	[director pushScene: [SapusIntroNode scene] ];
 	return YES;
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+	[director runWithScene:[SapusIntroNode scene] ];
 #endif
 }
 
@@ -151,34 +150,61 @@
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
-// Called when an SMS, call or 'turn off' event is executed
-// So pause the music & code. This will save energy consuption
+// getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UINavigationController *nav = [app navigationController];
+	
+	if( [nav visibleViewController] == viewController_ )
+		[[CCDirector sharedDirector] pause];
+	
 	[[CDAudioManager sharedManager] pauseBackgroundMusic];
 }
 
-//
-// Resume everything
-// If we were playing the show the "Resume dialog".
-//
+// call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	if( !isPaused_ && isPlaying_) {
-		// Dialog
-		UIAlertView *pauseAlert = [[UIAlertView alloc]
-								   initWithTitle:@"Game Paused"
-								   message:nil
-								   delegate:self
-								   cancelButtonTitle:nil
-								   otherButtonTitles:@"Resume",nil];	
-		[pauseAlert show];
-		[pauseAlert release];
-	} else
-		[[CCDirector sharedDirector] resume];
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UINavigationController *nav = [app navigationController];	
+	
+	if( [nav visibleViewController] == viewController_ ) {
+		if( !isPaused_ && isPlaying_) {
+			// Dialog
+			UIAlertView *pauseAlert = [[UIAlertView alloc]
+									   initWithTitle:@"Game Paused"
+									   message:nil
+									   delegate:self
+									   cancelButtonTitle:nil
+									   otherButtonTitles:@"Resume",nil];	
+			[pauseAlert show];
+			[pauseAlert release];
+		} else
+			[[CCDirector sharedDirector] resume];
+	}
+	
 	[[CDAudioManager sharedManager] resumeBackgroundMusic];
+}
 
+-(void) applicationDidEnterBackground:(UIApplication*)application
+{
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UINavigationController *nav = [app navigationController];	
+	
+	if( [nav visibleViewController] == viewController_ ) {
+		[[CCDirector sharedDirector] stopAnimation];
+	}
+	
+	[[CCDirector sharedDirector] purgeCachedData];
+}
+
+-(void) applicationWillEnterForeground:(UIApplication*)application
+{
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	UINavigationController *nav = [app navigationController];	
+	
+	if( [nav visibleViewController] == viewController_ )
+		[[CCDirector sharedDirector] startAnimation];
 }
 
 //
@@ -195,32 +221,12 @@
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
--(void) applicationDidEnterBackground:(UIApplication*)application
-{
-	//
-	// Before going background do:
-	// 1. removed unused memory
-	// 2. Stop animation
-	//
-	CCDirector *director = [CCDirector sharedDirector];
-	[director purgeCachedData];
-	[director stopAnimation];
-}
-
--(void) applicationWillEnterForeground:(UIApplication*)application
-{
-	[[CCDirector sharedDirector] startAnimation];
-}
-
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
 	CCDirector *director = [CCDirector sharedDirector];	
 	[[director openGLView] removeFromSuperview];
 	
-	[viewController_ release];
-	viewController_ = nil;
-
 	[window_ release];
 	window_ = nil;
 	
@@ -289,14 +295,23 @@
 
 	[director setAnimationInterval:1.0/60];
 	
-	[director setDisplayFPS:YES];
+	[director setDisplayStats:kCCDirectorStatsFPS];
+	
+	// Init the View Controller
+	viewController_ = [[RootViewController alloc] initWithNibName:nil bundle:nil];
+	viewController_.wantsFullScreenLayout = YES;
 	
 	// make the OpenGLView a child of the view controller
-//	[viewController_ setView:glView];
-	[viewController_.view addSubview:glView];
+	[viewController_ setView:glView];
 	
-	// make the View Controller a child of the main window
-	[window_ addSubview: viewController_.view];
+	navigationController_ = [[UINavigationController alloc] initWithRootViewController:viewController_];
+	navigationController_.navigationBarHidden = YES;
+	
+	// set the Navigation Controller as the root view controller
+	[window_ setRootViewController:navigationController_];
+	
+	[viewController_ release];
+	[navigationController_ release];
 	
 	[window_ makeKeyAndVisible];	
 	

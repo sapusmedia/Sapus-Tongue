@@ -495,70 +495,47 @@ eachShape(cpShape *shape, void* instance)
 
 -(void)playMovieAtURL:(NSURL*)theURL
 {
-	MPMoviePlayerController* theMovie = [[MPMoviePlayerController alloc] initWithContentURL:theURL];
-
 	// TIP:
-	// MPMoviePlayer works differently in iOS >= 3.2 than iOS < 3.2, so we need to check
-	// in runtime if the new MPMoviePlayer is supported.	
-
-	newMVPlayer_ = [theMovie respondsToSelector:@selector(setControlStyle:)];
-	
-	// TIP:
-	// In SDK 3.2 (and newer), the right way to play a video, is by adding a "controller"
-	// in a view.
-	// In this case, we are going to add the Movie Player view into the "OpenGL view"
-	// But since the OpenGL view is not rotated (landscape mode is simulated using a glRotate command)
-	// we need to rotate the Movie view manually. Hence the:
-	//        movieView.transform = ...
+	// The easiest way to play a movie, is by creating a Movie View Controller
+	// and present it as modal using the Navigation Controller
 	//
-	// Also, since we are playing a video on top of the OpenGL view,
-	// we should turn off the director and the music, and we should enable them when the video
-	// finishes playing.
-	//
+	MPMoviePlayerViewController *mpvc = [[MPMoviePlayerViewController alloc] initWithContentURL:theURL];
 
-
-	if( newMVPlayer_ ) {
+	if( mpvc ) {
 		
-		// Code valid for iOS 3.2 or newer
-		theMovie.scalingMode = MPMovieScalingModeNone;
-
-		theMovie.controlStyle = MPMovieControlStyleFullscreen;
-
-
-		// Attach movie player to the RootViewController
-		// Add the control to "cocos2d"... this is the only way to add them
+		[[mpvc moviePlayer] prepareToPlay];
+		
 		SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-		UIViewController *viewController = [app viewController];
-		
-		UIView *myView = [viewController view];
-		UIView *movieView = [theMovie view];
+		UINavigationController *navControler = [app navigationController];
 
-		[movieView setFrame:[myView bounds]]; // fit the movie to the exact bounds of myView
-		[myView addSubview:movieView];
+		[navControler presentModalViewController:mpvc animated:YES];
 
-	} else {
-		// code valid for iOS 3.1.x or older
-		theMovie.scalingMode = MPMovieScalingModeAspectFit;
-	}
-		
-	if( theMovie ) {
-		[[CCDirector sharedDirector] stopAnimation];
+		// TIP:
+		// There is no need to pause cocos2d, since the RootViewController will pause it
+		// automatically when the cocos2d view is not visible
+		// But we need to pause the music in order to listen to the movie audio.
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
-		[theMovie play];
+		
+		// play the video
+		[[mpvc moviePlayer] play];
 		
 		// Register for the playback finished notification.
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												selector:@selector(myMovieFinishedCallback:)
-												name:MPMoviePlayerPlaybackDidFinishNotification
-												object:theMovie];
-	}	
+												 selector:@selector(myMovieFinishedCallback:)
+													 name:MPMoviePlayerPlaybackDidFinishNotification
+												   object:[mpvc moviePlayer]];
+	}
+	
+	[mpvc release];
 }
 
 // When the movie is done, release the controller.
 -(void)myMovieFinishedCallback:(NSNotification*)aNotification
 {	
- 	// Restore the director and the music
-	[[CCDirector sharedDirector] startAnimation];
+	// TIP:
+	// There is no need to re-animate the cocos2d view.
+	// The RootViewController will do it automatically
+	// But we need to resume the audio
 	[[CDAudioManager sharedManager] audioSessionResumed];
 
 	SimpleAudioEngine *audioEngine = [SimpleAudioEngine sharedEngine];
@@ -571,22 +548,14 @@ eachShape(cpShape *shape, void* instance)
 	[audioMgr setMute:m];
 	
 	// remove the movie player 
-	MPMoviePlayerController* theMovie = [aNotification object];
-
-	// Only valid in iOS 3.2 or newer
-	if( newMVPlayer_ )
-		[[theMovie view] removeFromSuperview];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+	MPMoviePlayerController* mp = [aNotification object];
+	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:MPMoviePlayerPlaybackDidFinishNotification
-												  object:theMovie];
-	
-    // Release the movie instance created in playMovieAtURL:
-    [theMovie release];
-	
-	// Hide the Status Bar (again) after playing a video. Only happens on iOS >= 4.0
-	if( [[CCConfiguration sharedConfiguration] OSVersion] >= kCCiOSVersion_4_0 )
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+												  object:mp];
+
+	// Dismiss the Movie View Controller
+	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
+	[[app navigationController] dismissMoviePlayerViewControllerAnimated];	
 }
 
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED

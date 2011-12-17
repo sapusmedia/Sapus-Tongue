@@ -475,20 +475,17 @@ const char kCCProgressTextureCoords = 0x4b;
 	return CGPointZero;
 }
 
--(void)draw
+-(void) draw
 {
-	[super draw];
-
 	if( ! vertexData_ || ! sprite_)
 		return;
-	
+
+	CC_NODE_DRAW_SETUP();
+
 	ccGLBlendFunc( sprite_.blendFunc.src, sprite_.blendFunc.dst );
 
 	ccGLEnableVertexAttribs(kCCVertexAttribFlag_PosColorTex );	
 	
-	ccGLUseProgram( shaderProgram_->program_ );	
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
-
 	ccGLBindTexture2D( sprite_.texture.name );
 	
     glVertexAttribPointer( kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, sizeof(vertexData_[0]) , &vertexData_[0].vertices);

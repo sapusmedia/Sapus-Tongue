@@ -17,8 +17,9 @@
 {
 	UIWindow			*window_;
 	
-	RootViewController	*viewController_;
-	
+	RootViewController	*viewController_;			// weak ref
+	UINavigationController *navigationController_;	// weak ref
+
 	// is paused
 	BOOL				isPaused_;
 	BOOL				isPlaying_;
@@ -29,9 +30,10 @@
 }
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
-@property (nonatomic, readwrite, retain) UIWindow *window;
 @property (nonatomic, readwrite) BOOL isLandscapeLeft;
-@property (nonatomic, readwrite, retain) RootViewController *viewController;
+@property (nonatomic, readwrite, retain) UIWindow *window;
+@property (nonatomic, readonly, assign) RootViewController *viewController;
+@property (nonatomic, readonly, assign) UINavigationController *navigationController;
 
 -(void) initRandom;
 -(void) preLoadSounds;

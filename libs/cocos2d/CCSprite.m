@@ -517,14 +517,11 @@
 {
 	CC_PROFILER_START_CATEGORY(kCCProfilerCategorySprite, @"CCSprite - draw");
 
-	[super draw];
-	
 	NSAssert(!batchNode_, @"If CCSprite is being rendered by CCSpriteBatchNode, CCSprite#draw SHOULD NOT be called");
 
+	CC_NODE_DRAW_SETUP();
+	
 	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
-
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 	
 	ccGLBindTexture2D( [texture_ name] );
 		
@@ -656,7 +653,7 @@
 			tempItem = x[i];
 			j = i-1;
 			
-			//continue moving element downwards while zOrder is smaller or when zOrder is the same but mutatedIndex is smaller
+			//continue moving element downwards while zOrder is smaller or when zOrder is the same but orderOfArrival is smaller
 			while(j>=0 && ( tempItem.zOrder < x[j].zOrder || ( tempItem.zOrder == x[j].zOrder && tempItem.orderOfArrival < x[j].orderOfArrival ) ) ) 
 			{
 				x[j+1] = x[j];

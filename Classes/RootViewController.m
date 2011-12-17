@@ -114,11 +114,36 @@
 #endif
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+//	[[CCDirector sharedDirector] startAnimation];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	[[CCDirector sharedDirector] startAnimation];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+//	[[CCDirector sharedDirector] stopAnimation];
+	
+	[super viewWillDisappear:animated];
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+	[[CCDirector sharedDirector] stopAnimation];
+	
+	[super viewDidDisappear:animated];
+}
 
 - (void)dealloc
 {
 #ifdef LITE_VERSION
-	NSLog(@"dealloc: %@", self);
+	CCLOGINFO(@"dealloc: %@", self);
     [contentView release]; contentView = nil;
     banner.delegate = nil;
     [banner release]; banner = nil; 
