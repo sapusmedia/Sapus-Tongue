@@ -4,7 +4,8 @@ Changes in 2012-01-09 (v4.1)
 * [NEW] AppDelegate: Improved callbacks. If cocos2d view is not being displayed, don't resume it
 * [NEW] Instructions: Movie uses Movie View Controller (instead of View). Handled by the NavigationViewController
 * [NEW] Scores: GameCenter uses NavigationViewController to display the Achievements View Controller
-* [NEW] RootViewController: Removed. Part of CCDirector
+* [NEW] RootViewController: renamed to AdViewController
+* [FIX] Info.plist: fixed orientation on iPad. Added "required device capabilities"
 * [3RD] cocos2d: uses v2.0-beta2
 * [3RD] Chipmunk: uses v6.0.2
 
