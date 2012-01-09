@@ -287,7 +287,7 @@ enum {
 
 -(void) menuCallback: (id) sender
 {
-	[[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:1.0f scene: [MainMenuNode scene] ]];
+	[[CCDirector sharedDirector] replaceScene: [CCTransitionProgressVertical transitionWithDuration:1.0f scene: [MainMenuNode scene] ]];
 }
 
 -(void) saveScoreCallback: (id) sender

@@ -1418,7 +1418,7 @@
 		50D217E60F27820600E8A303 /* libcocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D2194D0F278A5C00E8A303 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		50F4338B11AD51BB00A23662 /* tilemap.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tilemap.tmx; sourceTree = "<group>"; };
-		A09EB52514BA750F00B269C3 /* AdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = AdViewController.h; sourceTree = "<group>"; };
+		A09EB52514BA750F00B269C3 /* AdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdViewController.h; sourceTree = "<group>"; };
 		A09EB52614BA750F00B269C3 /* AdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdViewController.m; sourceTree = "<group>"; };
 		A09F4256140C519800DE33D7 /* ChipmunkHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChipmunkHelper.c; sourceTree = "<group>"; };
 		A09F4259140C51C100DE33D7 /* ChipmunkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkHelper.h; sourceTree = "<group>"; };
@@ -4084,6 +4084,7 @@
 				GCC_PREFIX_HEADER = Resources/SapusTongue_Prefix.pch;
 				GCC_STRICT_ALIASING = NO;
 				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -4106,6 +4107,7 @@
 				GCC_PREFIX_HEADER = Resources/SapusTongue_Prefix.pch;
 				GCC_STRICT_ALIASING = NO;
 				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -4133,6 +4135,7 @@
 					"COCOS2D_DEBUG=1",
 				);
 				INFOPLIST_FILE = "Resources/Info-lite.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -4154,6 +4157,7 @@
 				GCC_PREFIX_HEADER = Resources/SapusTongue_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "LITE_VERSION=1";
 				INFOPLIST_FILE = "Resources/Info-lite.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
