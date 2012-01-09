@@ -142,8 +142,9 @@ static CCNotifications *sharedManager;
 
 	if(state_==kCCNotificationStateShowing)
 	{
-		[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
-		[[CCScheduler sharedScheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];		
+		CCDirector *director = [CCDirector sharedDirector];
+		[[director touchDispatcher] removeDelegate:self];
+		[[director scheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];		
 	}
 	
 	[templates retain];
@@ -222,7 +223,9 @@ static CCNotifications *sharedManager;
 	[self registerWithTouchDispatcher];
 	[self _setState:kCCNotificationStateShowing];
 	[template_ stopAllActions];
-	[[CCScheduler sharedScheduler] scheduleSelector:@selector(_hideNotificationScheduler) forTarget:self interval:showingTime_ paused:NO];
+	
+	CCDirector *director = [CCDirector sharedDirector];
+	[[director scheduler] scheduleSelector:@selector(_hideNotificationScheduler) forTarget:self interval:showingTime_ paused:NO];
 }
 
 - (void) _hideNotification
@@ -242,8 +245,10 @@ static CCNotifications *sharedManager;
 
 - (void) _hideNotificationScheduler
 {	
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
-	[[CCScheduler sharedScheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];
+	CCDirector *director = [CCDirector sharedDirector];
+
+	[[director touchDispatcher] removeDelegate:self];
+	[[director scheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];
 	if([currentNotification_ animated])
 	{
 		[self _setState:kCCNotificationStateAnimationOut];
@@ -332,13 +337,15 @@ static CCNotifications *sharedManager;
 
 - (void) _showNotification
 {
+	CCDirector *director = [CCDirector sharedDirector];
+
 	if([cachedNotifications_ count]==0) return;
 	//Get notification data
 	self.currentNotification = [cachedNotifications_ objectAtIndex:0];
 	
 	//Stop system
 	if(state_==kCCNotificationStateShowing)
-		[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+		[[director touchDispatcher] removeDelegate:self];
 	
 	if(state_!=kCCNotificationStateHide)
 	{
@@ -347,7 +354,7 @@ static CCNotifications *sharedManager;
 		[template_ setVisible:NO];
 		[template_ stopAllActions];
 		[template_ onExit];
-		[[CCScheduler sharedScheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];
+		[[director scheduler] unscheduleSelector:@selector(_hideNotificationScheduler) forTarget:self];
 	}
 	
 	//Get variables
@@ -421,7 +428,8 @@ static CCNotifications *sharedManager;
 
 - (void) registerWithTouchDispatcher
 {
-	[[CCTouchDispatcher sharedDispatcher] addStandardDelegate:self priority:INT_MIN];
+	CCDirector *director = [CCDirector sharedDirector];
+	[[director touchDispatcher] addStandardDelegate:self priority:INT_MIN];
 }
 
 - (void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

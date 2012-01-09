@@ -63,8 +63,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
-#import <Availability.h>
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#import "../../ccMacros.h"
+#ifdef __CC_PLATFORM_IOS
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
@@ -97,7 +97,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  */
 @interface EAGLView : UIView
 {
-    id<ESRenderer>			renderer_;	
+    id<ESRenderer>			renderer_;
 	EAGLContext				*context_; // weak ref
 
 	NSString				*pixelformat_;
@@ -110,7 +110,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 	//fsaa addition
 	BOOL					multisampling_;
-	unsigned int			requestedSamples_;	
+	unsigned int			requestedSamples_;
 }
 
 /** creates an initializes an EAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer. */
@@ -152,4 +152,4 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (CGRect) convertRectFromViewToSurface:(CGRect)rect;
 @end
 
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS

@@ -9,7 +9,7 @@
 #import "ScoreManager.h"
 #import "LocalScore.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import "CCNotifications.h"
 #import "GameCenterManager.h"
 #endif
@@ -62,7 +62,7 @@ static ScoreManager *sharedManager = nil;
 	// scores used by CocosLive
 	self.globalScores = [NSMutableArray arrayWithCapacity:50];
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	
 	// GameCenter initialization
 	if( [GameCenterManager isGameCenterAvailable] ) {
@@ -82,7 +82,7 @@ static ScoreManager *sharedManager = nil;
 	{
 		CCLOG(@"GameCenter not available");
 	}
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 }
 
 #pragma mark ScoreManager - Database Stuff
@@ -207,7 +207,7 @@ static ScoreManager *sharedManager = nil;
 	}
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #pragma mark AppDelegate - GameCenterManagerDelegate (iOS)
 - (void) processGameCenterAuth: (NSError*) error
@@ -252,6 +252,6 @@ static ScoreManager *sharedManager = nil;
 	}
 }
 
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 @end

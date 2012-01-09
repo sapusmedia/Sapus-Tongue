@@ -42,7 +42,7 @@
 	if( disabledFrameName )
 		disabled = [CCSprite spriteWithSpriteFrameName:disabledFrameName];
 				
-	if( (self=[super initFromNormalSprite:normal selectedSprite:selected disabledSprite:disabled target:target selector:selector]))
+	if( (self=[super initWithNormalSprite:normal selectedSprite:selected disabledSprite:disabled target:target selector:selector]))
 	{
 
 		// nothing

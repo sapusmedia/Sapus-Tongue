@@ -16,7 +16,7 @@
 -(void) saveScoreButtonPressed;
 -(void) submitLocalScoreWithName:(NSString*) name;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 -(void) submitGlobalScoreWithName: (NSString*) name;
 -(void) submitScore;
 -(void) gotoHiScores;

@@ -20,9 +20,8 @@
 #import "chipmunk.h"
 #import "ChipmunkHelper.h"
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 #import <MediaPlayer/MediaPlayer.h>
-#import "RootViewController.h"
 #endif
 
 // local imports
@@ -35,10 +34,10 @@
 #import "FloorNode.h"
 #import "MountainNode.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #define kJointX 142
 #define kJointY 130
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #define kJointX 210
 #define kJointY 170
 #endif
@@ -53,9 +52,9 @@ static const float kSapusFriction = 0.8f;
 static const float kSapusOffsetY = 32;
 static const float kCircleRadius = 12.0f;
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 static const float kGravityRoll = -50.0f;
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 static const float kGravityRoll = -350.0f;
 #endif
 
@@ -125,13 +124,13 @@ eachShape(cpShape *shape, void* instance)
 {
 	if( (self=[super init] ) ) {
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		self.isAccelerometerEnabled = YES;
 		
 		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
 		isLandscapeLeft_ = appDelegate.isLandscapeLeft;
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 		self.isMouseEnabled = YES;
 #endif
 		
@@ -144,14 +143,14 @@ eachShape(cpShape *shape, void* instance)
 		CGSize s = [[CCDirector sharedDirector] winSize];
 
 		CCMenu *menu;
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		CCMenuItem* item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-viewvideo-normal.png" selectedSpriteFrameName:@"btn-viewvideo-selected.png" target:self selector:@selector(viewVideoCB:)];	
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 		CCMenuItem* item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-menumed-normal.png" selectedSpriteFrameName:@"btn-menumed-selected.png" target:self selector:@selector(menuCB:)];	
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		menu = [CCMenu menuWithItems:item1, item2, nil];
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 		menu = [CCMenu menuWithItems:item2, nil];
 #endif
 		[menu alignItemsVertically];
@@ -183,9 +182,9 @@ eachShape(cpShape *shape, void* instance)
 {
 	// tree
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 		[self setupBackgroundTree];
 
 	// gradient
@@ -335,7 +334,7 @@ eachShape(cpShape *shape, void* instance)
 {
 	[super onEnter];
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / 60)];
 #endif
 
@@ -418,7 +417,7 @@ eachShape(cpShape *shape, void* instance)
 
 #pragma mark InstructionsNode - Accelerometer Event (iOS only)
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
 {
 	static float prevX=0, prevY=0;
@@ -438,7 +437,7 @@ eachShape(cpShape *shape, void* instance)
 		force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 -(BOOL) ccMouseDragged:(NSEvent *)event
 {
 	CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
@@ -471,7 +470,7 @@ eachShape(cpShape *shape, void* instance)
 
 #pragma mark InstructionsNode - Movie Player (iOS only)
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 // return a URL for the movie file in our bundle
 -(NSURL *)movieURL
@@ -505,14 +504,13 @@ eachShape(cpShape *shape, void* instance)
 		
 		[[mpvc moviePlayer] prepareToPlay];
 		
-		SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-		UINavigationController *navControler = [app navigationController];
+		SapusTongueAppDelegate *app = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
+		UINavigationController *navControler = [app navController];
 
 		[navControler presentModalViewController:mpvc animated:YES];
 
 		// TIP:
-		// There is no need to pause cocos2d, since the RootViewController will pause it
-		// automatically when the cocos2d view is not visible
+		// There is no need to pause cocos2d, cocos2d will be automatically paused
 		// But we need to pause the music in order to listen to the movie audio.
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
 		
@@ -533,8 +531,7 @@ eachShape(cpShape *shape, void* instance)
 -(void)myMovieFinishedCallback:(NSNotification*)aNotification
 {	
 	// TIP:
-	// There is no need to re-animate the cocos2d view.
-	// The RootViewController will do it automatically
+	// There is no need to re-animate the cocos2d view. cocos2d will be resumed automatically.
 	// But we need to resume the audio
 	[[CDAudioManager sharedManager] audioSessionResumed];
 
@@ -554,11 +551,11 @@ eachShape(cpShape *shape, void* instance)
 												  object:mp];
 
 	// Dismiss the Movie View Controller
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	[[app navigationController] dismissMoviePlayerViewControllerAnimated];	
+	SapusTongueAppDelegate *app = (SapusTongueAppDelegate*)[[UIApplication sharedApplication] delegate];
+	[[app navController] dismissMoviePlayerViewControllerAnimated];	
 }
 
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 @end
 

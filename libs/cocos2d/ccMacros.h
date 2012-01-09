@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,6 +35,12 @@
  cocos2d helper macros
  */
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#define __CC_PLATFORM_IOS 1
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#define __CC_PLATFORM_MAC 1
+#endif
+
 /*
  * if COCOS2D_DEBUG is not defined, or if it is 0 then
  *	all CCLOGXXX macros will be disabled
@@ -47,7 +53,7 @@
  * if COCOS2D_DEBUG==2 or higher then:
  *		CCLOG() will be enabled
  *		CCLOGERROR() will be enabled
- *		CCLOGINFO()	will be enabled 
+ *		CCLOGINFO()	will be enabled
  */
 #if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
 #define CCLOG(...) do {} while (0)
@@ -105,29 +111,29 @@ default gl blend src function. Compatible with premultiplied alpha images.
 	- Initializes an EAGLView with 0-bit depth format, and RGB565 render buffer.
 	- The EAGLView view will have multiple touches disabled.
 	- It will create a UIWindow and it will assign it the 'window_' ivar. 'window_' must be declared before calling this marcro.
-	- It will create a RootViewController and it will assign it the 'viewController_' ivar. 'viewController_' must be declared before using this macro. The file "RootViewController.h" should be imported
-	- It will create a UINavigationController and it will assign it the 'navigationController_' ivar. 'navigationController_' must be declared before using this macro.
-	- It will connect the EAGLView to the UIViewController view.
-	- It will connect the UIViewController view to the UIWindow.
+    - It will create a UINavigationController and it will assign it the 'navigationController_' ivar. 'navController_' must be declared before using this macro.
+    - The director_ will be the root view controller of the navController.
+    - It will try to enable Retina Display for the Director
+	- It will connect the EAGLView to the Director
+	- It will connect the UINavController view to the UIWindow.
 	- It will try to run at 60 FPS.
-	- The FPS won't be displayed.
 	- It will connect the director with the EAGLView.
 
  IMPORTANT: If you want to use another type of render buffer (eg: RGBA8)
  or if you want to use a 16-bit or 24-bit depth buffer, you should NOT
  use this macro. Instead, you should create the EAGLView manually.
- 
+
  @since v0.99.4
  */
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #define CC_DIRECTOR_INIT()																		\
 do	{																							\
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];					\
-	CCDirector *__director = [CCDirector sharedDirector];										\
-	[__director setDisplayStats:kCCDirectorStatsNone];																\
-	[__director setAnimationInterval:1.0/60];													\
+	director_ = (CCDirectorIOS*)[CCDirector sharedDirector];													\
+	[director_ setDisplayStats:NO];																\
+	[director_ setAnimationInterval:1.0/60];													\
 	EAGLView *__glView = [EAGLView viewWithFrame:[window_ bounds]								\
 									pixelFormat:kEAGLColorFormatRGB565							\
 									depthFormat:0 /* GL_DEPTH_COMPONENT24_OES */				\
@@ -136,22 +142,18 @@ do	{																							\
 								  multiSampling:NO												\
 								numberOfSamples:0												\
 													];											\
-	[__director setOpenGLView:__glView];														\
-	viewController_ = [[RootViewController alloc] initWithNibName:nil bundle:nil];				\
-	viewController_.wantsFullScreenLayout = YES;												\
-	[viewController_ setView:__glView];															\
-	navigationController_ = [[UINavigationController alloc] initWithRootViewController:viewController_];	\
-	navigationController_.navigationBarHidden = YES;											\
-	[window_ setRootViewController:navigationController_];										\
-	[navigationController_ release];															\
-	[viewController_ release];																	\
+	[director_ setView:__glView];																\
+	[director_ setDelegate:self];																\
+	director_.wantsFullScreenLayout = YES;														\
+	[director_ enableRetinaDisplay:YES];														\
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];		\
+	navController_.navigationBarHidden = YES;													\
+	[window_ addSubview:navController_.view];													\
 	[window_ makeKeyAndVisible];																\
 } while(0)
 
 
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
-
-#import "Platforms/Mac/MacWindow.h"
+#elif __CC_PLATFORM_MAC
 
 #define CC_DIRECTOR_INIT(__WINSIZE__)															\
 do	{																							\
@@ -159,12 +161,13 @@ do	{																							\
 	window_ = [[MacWindow alloc] initWithFrame:frameRect fullscreen:NO];						\
 	glView_ = [[MacGLView alloc] initWithFrame:frameRect shareContext:nil];						\
 	[self.window setContentView:self.glView];													\
-	CCDirector *__director = [CCDirector sharedDirector];										\
-	[__director setDisplayStats:kCCDirectorStatsNone];																\
-	[__director setOpenGLView:self.glView];														\
-	[(CCDirectorMac*)__director setOriginalWinSize:__WINSIZE__];								\
+	director_ = (CCDirectorMac*) [CCDirector sharedDirector];									\
+	[director_ setDisplayStats:NO];																\
+	[director_ setView:self.glView];															\
+	[director_ setOriginalWinSize:__WINSIZE__];													\
 	[self.window makeMainWindow];																\
 	[self.window makeKeyAndOrderFront:self];													\
+	[self.window center];																		\
 } while(0)
 
 #endif
@@ -180,25 +183,23 @@ do {																							\
 	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );										\
 } while(0)
 
- 
+
  /** @def CC_DIRECTOR_END
   Stops and removes the director from memory.
   Removes the EAGLView from its parent
-  
+
   @since v0.99.4
   */
 #define CC_DIRECTOR_END()										\
 do {															\
 	CCDirector *__director = [CCDirector sharedDirector];		\
-	CC_GLVIEW *__view = [__director openGLView];				\
-	[__view removeFromSuperview];								\
 	[__director end];											\
 } while(0)
 
 
 
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 
 /****************************/
 /** RETINA DISPLAY ENABLED **/
@@ -208,7 +209,7 @@ do {															\
  On Mac it returns 1;
  On iPhone it returns 2 if RetinaDisplay is On. Otherwise it returns 1
  */
-#import "Platforms/iOS/CCDirectorIOS.h"
+extern float __ccContentScaleFactor;
 #define CC_CONTENT_SCALE_FACTOR() __ccContentScaleFactor
 
 
@@ -251,7 +252,7 @@ CGSizeMake( (__size_in_pixels__).width / CC_CONTENT_SCALE_FACTOR(), (__size_in_p
 CGSizeMake( (__size_in_points__).width * CC_CONTENT_SCALE_FACTOR(), (__size_in_points__).height * CC_CONTENT_SCALE_FACTOR())
 
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 /*****************************/
 /** RETINA DISPLAY DISABLED **/
@@ -266,7 +267,7 @@ CGSizeMake( (__size_in_points__).width * CC_CONTENT_SCALE_FACTOR(), (__size_in_p
 #define CC_POINT_POINTS_TO_PIXELS(__points__) __points__
 
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 
 /**********************/

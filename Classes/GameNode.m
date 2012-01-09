@@ -32,10 +32,10 @@
 #import "CocosDenshion.h"
 #import "SimpleAudioEngine.h"
 #import "CDAudioManager.h"
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import "CCNotifications.h"
 #import <GameKit/GameKit.h>
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 #import "SelectCharNode.h"
 #import "SapusTongueAppDelegate.h"
@@ -56,10 +56,10 @@ enum {
 //  The most difficult part with a physics engine is tunning it.
 //  Use constants (or #defines) while tunning the engine, and modify these constants.
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 const float kForceFactor = 350.0f;
 const float kWallLength = 32768.0f;
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 const float kForceFactor = 200.0f;		// reduced force in Mac, since it is much easier to use the mouse, than the accelerometer
 const float kWallLength = 49152;		// world is bigger in Mac
 
@@ -227,7 +227,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpBody *sapusBody_ = sapusShape->body;
 
 	// play a vibrate "sound" & add "helmet" achievement if Sapus touches ground at a speed greater than 1000
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if( cpvlength(sapusBody_->v) > 1000 ) {
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 		
@@ -313,7 +313,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 {
 	if( (self=[super init]) ) {
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
 		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];	
@@ -321,7 +321,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		if( [GameCenterManager isGameCenterAvailable] )
 			[[GameCenterManager sharedManager] setDelegate: self];
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 		self.isMouseEnabled = YES;
 		SapusTongueAppDelegate *appDelegate = [NSApp delegate];
 #endif
@@ -655,9 +655,9 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 -(void) dealloc
 {
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];	
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	SapusTongueAppDelegate *appDelegate = [NSApp delegate];
 #endif
 	appDelegate.isPlaying = NO;
@@ -677,7 +677,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if( [GameCenterManager isGameCenterAvailable] )
 		[[GameCenterManager sharedManager] setDelegate:nil];
 #endif
@@ -705,7 +705,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// A workaround it to re-enable it here.
 	// This is useful if the incoming and outgoing scenes are both are using the accelerometer
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if( self.isAccelerometerEnabled )
 		[[UIAccelerometer sharedAccelerometer] setDelegate:self];
 #endif
@@ -716,7 +716,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 {
 	[super onEnter];
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
 #endif
 }
@@ -761,7 +761,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 			sapusBody_->p.y = 70;
 		}
 		
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		// Check Max Height
 		if( ! maxHeightAchievementTriggered_ && sapusBody_->p.y > 2200) {
 			maxHeightAchievementTriggered_ = YES;
@@ -771,7 +771,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 			[[GameCenterManager sharedManager] submitAchievement:@"Moon" percentComplete:100];
 #endif
 		}
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 	}
 
@@ -989,7 +989,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	state_ = kGameOver;
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #pragma mark GameNode - iOS GameCenterManager Delegate
 
@@ -1076,7 +1076,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 #pragma mark GameNode - Mac Mouse events
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 -(BOOL) ccMouseUp:(NSEvent*) event
 {

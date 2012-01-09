@@ -9,45 +9,41 @@
 
 #import "cocos2d.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if defined(__CC_PLATFORM_IOS)
 
 @class RootViewController;
 
-@interface SapusTongueAppDelegate : NSObject <UIApplicationDelegate>
+@interface SapusTongueAppDelegate : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
-	UIWindow			*window_;
-	
-	RootViewController	*viewController_;			// weak ref
-	UINavigationController *navigationController_;	// weak ref
+	UIWindow				*window_;
+	UINavigationController	*navController_;
+	CCDirectorIOS			*director_;							// weak ref
 
 	// is paused
 	BOOL				isPaused_;
-	BOOL				isPlaying_;
-	
-	// Needed by the accelerometer
-	BOOL				isLandscapeLeft_;
-	
+	BOOL				isPlaying_;	
 }
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
 @property (nonatomic, readwrite) BOOL isLandscapeLeft;
-@property (nonatomic, readwrite, retain) UIWindow *window;
-@property (nonatomic, readonly, assign) RootViewController *viewController;
-@property (nonatomic, readonly, assign) UINavigationController *navigationController;
+@property (nonatomic, retain) UIWindow *window;
+@property (readonly) UINavigationController *navController;
+@property (readonly) CCDirectorIOS *director;
 
 -(void) initRandom;
 -(void) preLoadSounds;
 
 @end
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 @class BDSKOverlayWindow;
 
-@interface SapusTongueAppDelegate : NSObject <NSApplicationDelegate>
+@interface SapusTongueAppDelegate : NSObject <NSApplicationDelegate, CCDirectorDelegate>
 {
-	NSWindow			*window_;	// Main Window
-	MacGLView			*glView_;	// MacGLView
+	NSWindow		*window_;
+	MacGLView		*glView_;
+	CCDirectorMac	*director_;							// weak ref
 	
 	// Save Score Window
 	NSWindow			*saveScoreWindow_;
@@ -61,11 +57,6 @@
 	// is paused
 	BOOL				isPaused_;
 	BOOL				isPlaying_;
-	
-	// Needed by the accelerometer
-	BOOL				isLandscapeLeft_;
-	
-	
 }
 
 /** main window */
@@ -73,6 +64,9 @@
 
 /** opengl view */
 @property (assign) IBOutlet MacGLView	*glView;
+
+/** director */
+@property (nonatomic, readonly) CCDirectorMac	*director;
 
 /* Save Score Window properties */
 @property (assign) IBOutlet NSWindow	*saveScoreWindow;
@@ -94,5 +88,5 @@
 
 @end
 
-#endif
+#endif // __CC_PLATFORM_MAC
 

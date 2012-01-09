@@ -11,14 +11,14 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
 #endif
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 @interface InstructionsNode : CCLayer <UIAccelerometerDelegate>
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 @interface InstructionsNode : CCLayer
 #endif
 {

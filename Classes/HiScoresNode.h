@@ -9,27 +9,27 @@
 
 #import "cocos2d.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #endif
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 @interface HiScoresNode : CCLayer <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
 
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif __CC_PLATFORM_MAC
 @interface HiScoresNode : CCLayer <NSTableViewDelegate, NSTableViewDataSource>
 #endif
 {
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	UITableView					*myTableView_;
 	UIActivityIndicatorView		*activityIndicator_;
 	BOOL						displayLocalScores_;
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 	
 }
 

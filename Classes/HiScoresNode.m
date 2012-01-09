@@ -27,11 +27,10 @@
 #import "MountainNode.h"
 #import "ScoreManager.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import "cocoslive.h"
 #import "GameCenterManager.h"
-#import "RootViewController.h"
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #import "BDSKOverlayWindow.h"
 #endif
 
@@ -69,7 +68,7 @@
 		[self addChild:back z:0];
 
 		// CocosLive server is only supported on iOS
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		// local Scores
 		displayLocalScores_ = YES;
 
@@ -97,7 +96,7 @@
 		
 		[self addChild: menuV z:0];
 		
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 		CCMenu *menuH;
 		CCMenuItem* menuItem = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-menumed-normal.png" selectedSpriteFrameName:@"btn-menumed-selected.png" target:self selector:@selector(menuCB:)];
@@ -131,7 +130,7 @@
 {	
 	// Only iPad version
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #endif
 	{
@@ -173,7 +172,7 @@
 	// gradient
 	CCLayerGradient *g = [CCLayerGradient layerWithColor:ccc4(0,0,0,255) fadingTo:ccc4(0,0,0,255) alongVector:ccp(0,1)];
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
 		[g setEndColor:ccc3(0,0,0)];
@@ -181,7 +180,7 @@
 		[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
 		[g setEndColor:ccc3(0x93,0xc2,0xc6)];
 	}
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	[g setStartColor:ccc3(0xb3, 0xe2, 0xe6)];
 #endif
 	
@@ -192,7 +191,7 @@
 {
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	[activityIndicator_ release];
 	[myTableView_ release];	
 #endif
@@ -202,7 +201,7 @@
 
 -(void) menuCB:(id) sender
 {
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if( activityIndicator_ ) {
 		[activityIndicator_ removeFromSuperview];
 		[activityIndicator_ release];
@@ -214,18 +213,18 @@
 		[myTableView_ release];
 		myTableView_ = nil;
 	}
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	SapusTongueAppDelegate *delegate = [NSApp delegate];
 	[[delegate overlayWindow] remove];
 #endif
 //	[[CCDirector sharedDirector] replaceScene: [CCTransitionSplitRows transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
-	[[CCDirector sharedDirector] replaceScene: [CCTransitionRadialCW transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
+	[[CCDirector sharedDirector] replaceScene: [CCTransitionProgressInOut transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
 
 }
 
 -(void) playAgainCB:(id) sender
 {
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	if( activityIndicator_ ) {
 		[activityIndicator_ removeFromSuperview];
 		[activityIndicator_ release];
@@ -237,7 +236,7 @@
 		[myTableView_ release];
 		myTableView_ = nil;
 	}
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	SapusTongueAppDelegate *delegate = [NSApp delegate];
 	[[delegate overlayWindow] remove];
 #endif
@@ -246,7 +245,7 @@
 }
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #pragma mark -
 #pragma mark HiScoresNode - iOS Only
@@ -276,8 +275,8 @@
 {
 	[super onEnterTransitionDidFinish];
 
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UIViewController *ctl = [app viewController];		
+	SapusTongueAppDelegate *app = (SapusTongueAppDelegate*)[[UIApplication sharedApplication] delegate];
+	UIViewController *ctl = [app navController];		
 
 	// activity indicator
 	if( ! activityIndicator_ ) {
@@ -349,7 +348,7 @@
 		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];		
 		achivementViewController.achievementDelegate = self;
 		
-		[[appDelegate navigationController] presentModalViewController:achivementViewController animated:YES];
+		[[appDelegate navController] presentModalViewController:achivementViewController animated:YES];
 	}	
 }
 
@@ -554,19 +553,19 @@
 -(void) leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController
 {
 	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
-	[[appDelegate navigationController] dismissModalViewControllerAnimated:YES];
+	[[appDelegate navController] dismissModalViewControllerAnimated:YES];
 }
 
 -(void) achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
 {
 	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
-	[[appDelegate navigationController] dismissModalViewControllerAnimated:YES];
+	[[appDelegate navController] dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
 #pragma mark HiScoresNode - Mac Only
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 -(void) onEnterTransitionDidFinish
 {
@@ -636,6 +635,6 @@
 }
 
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 @end

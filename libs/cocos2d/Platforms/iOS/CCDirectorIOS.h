@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,15 +26,20 @@
 
 // Only compile this code on iOS. These files should NOT be included on your Mac project.
 // But in case they are included, it won't be compiled.
-#import <Availability.h>
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#import "../../ccMacros.h"
+#ifdef __CC_PLATFORM_IOS
 
 #import "../../CCDirector.h"
 #import "kazmath/mat4.h"
 
+@class CCTouchDispatcher;
+
 /** CCDirector extensions for iPhone
  */
 @interface CCDirector (iOSExtension)
+
+/** Touch Dispatcher */
+@property (nonatomic,readwrite,retain) CCTouchDispatcher * touchDispatcher;
 
 /** The size in pixels of the surface. It could be different than the screen size.
  High-res devices might have a higher surface size than the screen size.
@@ -49,7 +54,7 @@
 /** Will enable Retina Display on devices that supports it.
  It will enable Retina Display on iPhone4 and iPod Touch 4.
  It will return YES, if it could enabled it, otherwise it will return NO.
- 
+
  This is the recommened way to enable Retina Display.
  @since v0.99.5
  */
@@ -68,7 +73,9 @@
 @interface CCDirectorIOS : CCDirector
 {
 	/* contentScaleFactor could be simulated */
-	BOOL	isContentScaleSupported_;	
+	BOOL	isContentScaleSupported_;
+	
+	CCTouchDispatcher	*touchDispatcher_;
 }
 @end
 
@@ -85,7 +92,8 @@
  */
 @interface CCDirectorDisplayLink : CCDirectorIOS
 {
-	id displayLink;
+	CADisplayLink	*displayLink_;
+	CFTimeInterval	lastDisplayTime_;
 }
 -(void) mainLoop:(id)sender;
 @end
@@ -93,4 +101,4 @@
 // optimization. Should only be used to read it. Never to write it.
 extern CGFloat	__ccContentScaleFactor;
 
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS

@@ -28,8 +28,9 @@
 #import "SelectCharNode.h"
 #import "HiScoresNode.h"
 #import "ScoreManager.h"
+#import "cocos2d.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import "cocoslive.h"
 #import "RootViewController.h"
 #endif
@@ -76,7 +77,7 @@ static NSString *_oldName = @"";
 #pragma mark -
 #pragma mark GameHUD SaveScoreExtension - iOS
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 -(void) submitGlobalScoreWithName:(NSString*) playername
 {
@@ -155,8 +156,8 @@ static NSString *_oldName = @"";
 		nameField_.text = _oldName;
 	
 	// Add the control to "cocos2d"... this is the only way to add them
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UIViewController *viewController = [app viewController];
+	SapusTongueAppDelegate *app = (SapusTongueAppDelegate*)[[UIApplication sharedApplication] delegate];
+	UIViewController *viewController = [app navController];
 	
 	[viewController.view addSubview:nameField_];
 
@@ -165,7 +166,8 @@ static NSString *_oldName = @"";
 	// TIP:
 	//   Disable all cocos2d events when dealing ONLY with UIKit objects
 	//   eg: The "pause" button can't be touched now
-	[[CCTouchDispatcher sharedDispatcher] setDispatchEvents: NO];
+	CCDirector *director = [CCDirector sharedDirector];
+	[[director touchDispatcher] setDispatchEvents: NO];
 	
 	
 	//	[nameField release];
@@ -287,7 +289,8 @@ static NSString *_oldName = @"";
 	[tf resignFirstResponder];
 	
 	// re-enable cocos2d events
-	[[CCTouchDispatcher sharedDispatcher] setDispatchEvents: YES];
+	CCDirector *director = [CCDirector sharedDirector];
+	[[director touchDispatcher] setDispatchEvents: YES];
 	
 	[self submitScore];
 	
@@ -306,7 +309,7 @@ static NSString *_oldName = @"";
 	[[ScoreManager sharedManager] setSendGlobalScores:switchCtl_.on];
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 #pragma mark -
 #pragma mark GameHUD SaveScoreExtension - Mac
@@ -338,7 +341,7 @@ static NSString *_oldName = @"";
 	[self gotoHiScores];
 }
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 
 @end

@@ -24,19 +24,20 @@
 // Adapted for cocos2d http://www.cocos2d-iphone.org
 
 #import <Foundation/Foundation.h>
+#import "ccMacros.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #import <OpenGL/gl.h>
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 enum {
 	kCCVertexAttrib_Position,
 	kCCVertexAttrib_Color,
 	kCCVertexAttrib_TexCoords,
-	
+
 	kCCVertexAttrib_MAX,
 };
 
@@ -67,17 +68,17 @@ enum {
 
 /** GLProgram
  */
-@interface GLProgram : NSObject 
+@interface GLProgram : NSObject
 {
 @public
 	GLuint          program_,
 					vertShader_,
 					fragShader_;
-	
+
 	GLint			uniforms_[kCCUniform_MAX];
 }
 
-- (id)initWithVertexShaderFilename:(NSString *)vShaderFilename 
+- (id)initWithVertexShaderFilename:(NSString *)vShaderFilename
             fragmentShaderFilename:(NSString *)fShaderFilename;
 - (void)addAttribute:(NSString *)attributeName index:(GLuint)index;
 - (BOOL)link;
@@ -86,7 +87,7 @@ enum {
 	- kCCUniformPMatrix
 	- kCCUniformMVMatrix
 	- kCCUniformSampler
- 
+
  And it will bind "kCCUniformSampler" to 0
 
  @since v2.0.0

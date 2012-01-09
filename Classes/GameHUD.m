@@ -59,9 +59,9 @@ enum {
 {
 	if((self=[super init]) ) {
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		self.isTouchEnabled = YES;
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif __CC_PLATFORM_MAC
 		self.isMouseEnabled = YES;
 #endif
 		
@@ -96,7 +96,7 @@ enum {
 	[speedLabel_ release];
 	[speedSprite_ release];
 	
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 	[activityIndicator_ release];
 #endif
 	
@@ -129,12 +129,15 @@ enum {
 
 -(void) createGlobalScoresVars
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 	activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
 	activityIndicator_.frame = CGRectMake(20, 20, 20, 20);
-	[[[CCDirector sharedDirector] openGLView] addSubview:activityIndicator_];
+	
+	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
+	
+	[[[appDelegate navController] view] addSubview:activityIndicator_];
 	activityIndicator_.hidesWhenStopped = YES;
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 }
 
 -(void) createAngle

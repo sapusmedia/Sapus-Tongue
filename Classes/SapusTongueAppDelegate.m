@@ -22,9 +22,9 @@
 #import "SapusIntroNode.h"
 #import "ScoreManager.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if defined(__CC_PLATFORM_IOS)
 #import "RootViewController.h"
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #import "BDSKOverlayWindow.h"
 #endif
 
@@ -47,23 +47,22 @@
 @synthesize isPaused=isPaused_;
 @synthesize isPlaying=isPlaying_;
 @synthesize isLandscapeLeft=isLandscapeLeft_;
-@synthesize window=window_;
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-@synthesize viewController=viewController_, navigationController=navigationController_;
+#ifdef __CC_PLATFORM_IOS
+@synthesize window=window_, navController=navController_, director=director_;
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
-@synthesize glView=glView_;
+#elif defined(__CC_PLATFORM_MAC)
+@synthesize glView=glView_, window=window_, director=director_;
 @synthesize saveScoreWindow=saveScoreWindow_;
 @synthesize saveScoreButton=saveScoreButton_;
 @synthesize playerNameTextField=playerNameTextField_;
 @synthesize displayScoresTableView=displayScoresTableView_;
 @synthesize overlayWindow=overlayWindow_;
 
-#endif
+#endif // __CC_PLATFORM_MAC
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 - (void) removeStartupFlicker
 {
 	//
@@ -72,24 +71,24 @@
 	// Uncomment the following code if you Application only supports landscape mode
 	//
 	
-	CCDirector *director = [CCDirector sharedDirector];
-	CGSize size = [director winSize];
-	CCSprite *sprite = nil;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		sprite = [CCSprite spriteWithFile:@"Default-Portrait.png"];
-	else
-		sprite = [CCSprite spriteWithFile:@"Default.png"];
-	sprite.position = ccp(size.width/2, size.height/2);
-	sprite.rotation = -90;
-	[sprite visit];
-	[[director openGLView] swapBuffers];
+//	CCDirector *director = [CCDirector sharedDirector];
+//	CGSize size = [director winSize];
+//	CCSprite *sprite = nil;
+//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//		sprite = [CCSprite spriteWithFile:@"Default-Portrait.png"];
+//	else
+//		sprite = [CCSprite spriteWithFile:@"Default.png"];
+//	sprite.position = ccp(size.width/2, size.height/2);
+//	sprite.rotation = -90;
+//	[sprite visit];
+//	[[director openGLView] swapBuffers];
 }
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif defined(__CC_PLATFORM_MAC)
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 #endif
 {
@@ -109,9 +108,9 @@
 	//
 	// CCDirector / OpenGLview initialization
 	//
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	[self setupDirectorIOS];
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif __CC_PLATFORM_MAC
 	[self setupDirectorMac];
 #endif
 	
@@ -133,14 +132,14 @@
 	// turn this feature On when testing the speed
 //	[director setDisplayFPS:YES];
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 
 	// Run the intro Scene
 	[director pushScene: [SapusIntroNode scene] ];
 	return YES;
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	[director runWithScene:[SapusIntroNode scene] ];
 #endif
 }
@@ -148,16 +147,13 @@
 
 #pragma mark AppDelegate - iOS Callbacks
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if defined(__CC_PLATFORM_IOS)
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UINavigationController *nav = [app navigationController];
-	
-	if( [nav visibleViewController] == viewController_ )
-		[[CCDirector sharedDirector] pause];
+	if( [navController_ visibleViewController] == director_ )
+		[director_ pause];
 	
 	[[CDAudioManager sharedManager] pauseBackgroundMusic];
 }
@@ -165,10 +161,7 @@
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UINavigationController *nav = [app navigationController];	
-	
-	if( [nav visibleViewController] == viewController_ ) {
+	if( [navController_ visibleViewController] == director_ ) {
 		if( !isPaused_ && isPlaying_) {
 			// Dialog
 			UIAlertView *pauseAlert = [[UIAlertView alloc]
@@ -180,58 +173,44 @@
 			[pauseAlert show];
 			[pauseAlert release];
 		} else
-			[[CCDirector sharedDirector] resume];
+			[director_ resume];
 	}
-	
+
 	[[CDAudioManager sharedManager] resumeBackgroundMusic];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UINavigationController *nav = [app navigationController];	
+	if( [navController_ visibleViewController] == director_ )
+		[director_ stopAnimation];
 	
-	if( [nav visibleViewController] == viewController_ ) {
-		[[CCDirector sharedDirector] stopAnimation];
-	}
-	
-	[[CCDirector sharedDirector] purgeCachedData];
+	[director_ purgeCachedData];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	SapusTongueAppDelegate *app = [[UIApplication sharedApplication] delegate];
-	UINavigationController *nav = [app navigationController];	
-	
-	if( [nav visibleViewController] == viewController_ )
-		[[CCDirector sharedDirector] startAnimation];
+	if( [navController_ visibleViewController] == director_ )
+		[director_ startAnimation];
 }
 
-//
-// Purge memory, else the application will be shut down
-//
+// application will be killed
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+	CC_DIRECTOR_END();
+}
+
+// purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[director_ purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[director_ setNextDeltaTimeZero:YES];
 }
 
-// application will be killed
-- (void)applicationWillTerminate:(UIApplication *)application
-{	
-	CCDirector *director = [CCDirector sharedDirector];	
-	[[director openGLView] removeFromSuperview];
-	
-	[window_ release];
-	window_ = nil;
-	
-	[director end];		
-}
 
 #pragma mark AppDelegate - UIAlertView delegate (iOS)
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -240,7 +219,7 @@
 	return;
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 #pragma mark SapusTongueAppDelegate - Window callbacks (Mac)
 
@@ -268,60 +247,79 @@
 }
 #pragma mark AppDelegate - Setup Director
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 -(void) setupDirectorIOS
 {
+	// Don't call super
 	// Init the window
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
-	CCDirector *director = [CCDirector sharedDirector];
 	
-	// Init the View Controller
-	viewController_ = [[RootViewController alloc] initWithNibName:nil bundle:nil];
-	viewController_.wantsFullScreenLayout = YES;
-	
-	// Create the EAGLView manually
+	// Create an EAGLView with a RGB8 color buffer without a depth buffer
 	EAGLView *glView = [EAGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGBA8
-								   depthFormat:0];
+								   depthFormat:0			// GL_DEPTH_COMPONENT24_OES
+							preserveBackbuffer:NO
+									sharegroup:nil
+								 multiSampling:NO
+							   numberOfSamples:0];
+	
+	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+	
+	director_.wantsFullScreenLayout = YES;
+
+	// Display Milliseconds Per Frame
+	[director_ setDisplayStats:YES];
+	
+	// set FPS at 60
+	[director_ setAnimationInterval:1.0/60];
 	
 	// attach the openglView to the director
-	[director setOpenGLView:glView];
+	[director_ setView:glView];
+	
+	// for rotation and other messages
+	[director_ setDelegate:self];
+	
+	// 2D projection
+	[director_ setProjection:kCCDirectorProjection2D];
+	//	[director setProjection:kCCDirectorProjection3D];
 	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director enableRetinaDisplay:YES] )
+	if( ! [director_ enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
-
-	[director setAnimationInterval:1.0/60];
 	
-	[director setDisplayStats:kCCDirectorStatsFPS];
-	
-	// Init the View Controller
-	viewController_ = [[RootViewController alloc] initWithNibName:nil bundle:nil];
-	viewController_.wantsFullScreenLayout = YES;
-	
-	// make the OpenGLView a child of the view controller
-	[viewController_ setView:glView];
-	
-	navigationController_ = [[UINavigationController alloc] initWithRootViewController:viewController_];
-	navigationController_.navigationBarHidden = YES;
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller
-	[window_ setRootViewController:navigationController_];
+	//	[window_ setRootViewController:rootViewController_];
+	[window_ addSubview:navController_.view];
 	
-	[viewController_ release];
-	[navigationController_ release];
+	// make main window visible
+	[window_ makeKeyAndVisible];
 	
-	[window_ makeKeyAndVisible];	
+	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
+	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
+	// You can change anytime.
+	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 	
 	// When in iPad / RetinaDisplay mode, CCFileUtils will append the "-ipad" / "-hd" to all loaded files
 	// If the -ipad  / -hdfile is not found, it will load the non-suffixed version
 	[CCFileUtils setiPadSuffix:@"-ipad"];			// Default on iPad is "" (empty string)
 	[CCFileUtils setRetinaDisplaySuffix:@"-hd"];	// Default on RetinaDisplay is "-hd"
+	
+	// Assume that PVR images have premultiplied alpha
+	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];	
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+// Support only landscape mode
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+}
+
+#elif defined(__CC_PLATFORM_MAC)
 
 -(void) setupDirectorMac
 {
@@ -342,7 +340,7 @@
 }
 
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 #pragma mark AppDelegate - Init Sound
 // pre load sounds... this prevent a small delay when the sound is played for the 1st time

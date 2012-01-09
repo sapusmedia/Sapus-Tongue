@@ -44,7 +44,7 @@ enum {
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-monus-ufo-hud.plist"];		
 		
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		// TIP: If you are going to do an Universal application (iPad + iPhone)
 		// then you should do runtime checks, like the following:
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -54,7 +54,7 @@ enum {
 
 		background.rotation = -90;
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 		background = [CCSprite spriteWithFile:@"Default-mac.png"];
 #endif
 		background.position = ccp(size.width/2, size.height/2);

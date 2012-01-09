@@ -9,15 +9,16 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import "cocos2d.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #import "GameCenterManager.h"
 #import "CCNotifications.h"
 
 @interface ScoreManager : NSObject <GameCenterManagerDelegate, CCNotificationsDelegate>
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 @interface ScoreManager : NSObject
 #endif
 {

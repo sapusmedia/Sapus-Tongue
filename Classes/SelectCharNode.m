@@ -50,9 +50,9 @@ static int _selectedChar = kSTSelectedCharSapus;
 {
 	if( (self=[super init] )) {
 	
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 		self.isTouchEnabled = YES;
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 		self.isMouseEnabled = YES;
 #endif
 
@@ -178,7 +178,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0f scene:[GameNode scene]]];
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #pragma mark SelectCharNode - iPhone Touches
 
@@ -217,7 +217,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 	}
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 #pragma mark SelectCharNode - Mac Mouse
 -(BOOL) ccMouseUp:(NSEvent *)event

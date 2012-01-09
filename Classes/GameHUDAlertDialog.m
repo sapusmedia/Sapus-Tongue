@@ -17,7 +17,7 @@
 @implementation GameHUD (AlertExtension)
 
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 
 #pragma mark GameHUD - AlertExtension iOS
 
@@ -93,7 +93,7 @@
 	[alertView release];	
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 
 #pragma mark GameHUD - AlertExtension MAC
 
@@ -134,6 +134,6 @@
 	} 
 }
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC
 
 @end

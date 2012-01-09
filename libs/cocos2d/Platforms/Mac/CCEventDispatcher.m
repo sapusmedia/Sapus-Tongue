@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,20 +25,17 @@
 
 // Only compile this code on Mac. These files should not be included on your iOS project.
 // But in case they are included, it won't be compiled.
-#import <Availability.h>
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#import "../../ccMacros.h"
+#ifdef __CC_PLATFORM_MAC
 
 #import "CCEventDispatcher.h"
 #import "../../ccConfig.h"
-
-static CCEventDispatcher *sharedDispatcher = nil;
 
 enum  {
 	// mouse
 	kCCImplementsMouseDown			= 1 << 0,
 	kCCImplementsMouseMoved			= 1 << 1,
-	kCCImplementsMouseDragged		= 1 << 2,	
+	kCCImplementsMouseDragged		= 1 << 2,
 	kCCImplementsMouseUp			= 1 << 3,
 	kCCImplementsRightMouseDown		= 1 << 4,
 	kCCImplementsRightMouseDragged	= 1 << 5,
@@ -89,25 +86,6 @@ static int		eventQueueCount;
 
 @synthesize dispatchEvents=dispatchEvents_;
 
-
-+(CCEventDispatcher*) sharedDispatcher
-{
-	@synchronized(self) {
-		if (sharedDispatcher == nil)
-			sharedDispatcher = [[self alloc] init]; // assignment not done here
-	}
-	return sharedDispatcher;
-}
-
-+(id) allocWithZone:(NSZone *)zone
-{
-	@synchronized(self) {
-		NSAssert(sharedDispatcher == nil, @"Attempted to allocate a second instance of a singleton.");
-		return [super allocWithZone:zone];
-	}
-	return nil; // on subsequent allocation attempts return nil
-}
-
 -(id) init
 {
 	if( (self = [super init]) )
@@ -118,13 +96,13 @@ static int		eventQueueCount;
 		// delegates
 		keyboardDelegates_ = NULL;
 		mouseDelegates_ = NULL;
-                touchDelegates_ = NULL;
-		
+		touchDelegates_ = NULL;
+
 #if	CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
 		eventQueueCount = 0;
 #endif
 	}
-	
+
 	return self;
 }
 
@@ -138,37 +116,37 @@ static int		eventQueueCount;
 -(void) addDelegate:(id)delegate priority:(NSInteger)priority flags:(NSUInteger)flags list:(tListEntry**)list
 {
 	tListEntry *listElement = malloc( sizeof(*listElement) );
-	
+
 	listElement->delegate = [delegate retain];
 	listElement->priority = priority;
 	listElement->flags = flags;
 	listElement->next = listElement->prev = NULL;
-	
+
 	// empty list ?
 	if( ! *list ) {
 		DL_APPEND( *list, listElement );
-		
+
 	} else {
-		BOOL added = NO;		
-		
+		BOOL added = NO;
+
 		for( tListEntry *elem = *list; elem ; elem = elem->next ) {
 			if( priority < elem->priority ) {
-				
+
 				if( elem == *list )
 					DL_PREPEND(*list, listElement);
 				else {
 					listElement->next = elem;
 					listElement->prev = elem->prev;
-					
+
 					elem->prev->next = listElement;
 					elem->prev = listElement;
 				}
-				
+
 				added = YES;
 				break;
 			}
 		}
-		
+
 		// Not added? priority has the higher value. Append it.
 		if( !added )
 			DL_APPEND(*list, listElement);
@@ -178,7 +156,7 @@ static int		eventQueueCount;
 -(void) removeDelegate:(id)delegate fromList:(tListEntry**)list
 {
 	tListEntry *entry, *tmp;
-	
+
 	// updates with priority < 0
 	DL_FOREACH_SAFE( *list, entry, tmp ) {
 		if( entry->delegate == delegate ) {
@@ -204,7 +182,7 @@ static int		eventQueueCount;
 -(void) addMouseDelegate:(id<CCMouseEventDelegate>) delegate priority:(NSInteger)priority
 {
 	NSUInteger flags = 0;
-	
+
 	flags |= ( [delegate respondsToSelector:@selector(ccMouseDown:)] ? kCCImplementsMouseDown : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccMouseDragged:)] ? kCCImplementsMouseDragged : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccMouseMoved:)] ? kCCImplementsMouseMoved : 0 );
@@ -239,11 +217,11 @@ static int		eventQueueCount;
 -(void) addKeyboardDelegate:(id<CCKeyboardEventDelegate>) delegate priority:(NSInteger)priority
 {
 	NSUInteger flags = 0;
-	
+
 	flags |= ( [delegate respondsToSelector:@selector(ccKeyUp:)] ? kCCImplementsKeyUp : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccKeyDown:)] ? kCCImplementsKeyDown : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccFlagsChanged:)] ? kCCImplementsFlagsChanged : 0 );
-	
+
 	[self addDelegate:delegate priority:priority flags:flags list:&keyboardDelegates_];
 }
 
@@ -260,12 +238,12 @@ static int		eventQueueCount;
 -(void) addTouchDelegate:(id<CCTouchEventDelegate>) delegate priority:(NSInteger)priority
 {
 	NSUInteger flags = 0;
-	
+
 	flags |= ( [delegate respondsToSelector:@selector(ccTouchesBeganWithEvent:)] ? kCCImplementsTouchesBegan : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccTouchesMovedWithEvent:)] ? kCCImplementsTouchesMoved : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccTouchesEndedWithEvent:)] ? kCCImplementsTouchesEnded : 0 );
 	flags |= ( [delegate respondsToSelector:@selector(ccTouchesCancelledWithEvent:)] ? kCCImplementsTouchesCancelled : 0 );
-	
+
 	[self addDelegate:delegate priority:priority flags:flags list:&touchDelegates_];
 }
 
@@ -307,7 +285,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsMouseMoved ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccMouseMoved:) withObject:event];
@@ -322,7 +300,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsMouseDragged ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccMouseDragged:) withObject:event];
@@ -337,7 +315,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsMouseUp ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccMouseUp:) withObject:event];
@@ -355,7 +333,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsRightMouseDown ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccRightMouseDown:) withObject:event];
@@ -370,7 +348,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsRightMouseDragged ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccRightMouseDragged:) withObject:event];
@@ -385,7 +363,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsRightMouseUp ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccRightMouseUp:) withObject:event];
@@ -403,7 +381,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsOtherMouseDown ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccOtherMouseDown:) withObject:event];
@@ -418,7 +396,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsOtherMouseDragged ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccOtherMouseDragged:) withObject:event];
@@ -433,7 +411,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsOtherMouseUp ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccOtherMouseUp:) withObject:event];
@@ -451,7 +429,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsScrollWheel ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccScrollWheel:) withObject:event];
@@ -468,7 +446,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsMouseEntered ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccMouseEntered:) withObject:event];
@@ -476,14 +454,14 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 - (void)mouseEntered:(NSEvent *)event
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( mouseDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsMouseExited) {
 				void *swallows = [entry->delegate performSelector:@selector(ccMouseExited:) withObject:event];
@@ -491,7 +469,7 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 
@@ -502,7 +480,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( keyboardDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsKeyDown ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccKeyDown:) withObject:event];
@@ -517,7 +495,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( keyboardDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsKeyUp ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccKeyUp:) withObject:event];
@@ -532,7 +510,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( keyboardDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsFlagsChanged ) {
 				void *swallows = [entry->delegate performSelector:@selector(ccFlagsChanged:) withObject:event];
@@ -550,7 +528,7 @@ static int		eventQueueCount;
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( touchDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsTouchesBegan) {
 				void *swallows = [entry->delegate performSelector:@selector(ccTouchesBeganWithEvent:) withObject:event];
@@ -558,14 +536,14 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 - (void)touchesMovedWithEvent:(NSEvent *)event
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( touchDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsTouchesMoved) {
 				void *swallows = [entry->delegate performSelector:@selector(ccTouchesMovedWithEvent:) withObject:event];
@@ -573,14 +551,14 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *)event
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( touchDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsTouchesEnded) {
 				void *swallows = [entry->delegate performSelector:@selector(ccTouchesEndedWithEvent:) withObject:event];
@@ -588,14 +566,14 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 - (void)touchesCancelledWithEvent:(NSEvent *)event
 {
 	if( dispatchEvents_ ) {
 		tListEntry *entry, *tmp;
-		
+
 		DL_FOREACH_SAFE( touchDelegates_, entry, tmp ) {
 			if ( entry->flags & kCCImplementsTouchesCancelled) {
 				void *swallows = [entry->delegate performSelector:@selector(ccTouchesCancelledWithEvent:) withObject:event];
@@ -603,7 +581,7 @@ static int		eventQueueCount;
 					break;
 			}
 		}
-	}	
+	}
 }
 
 
@@ -617,7 +595,7 @@ static int		eventQueueCount;
 	@synchronized (self) {
 		eventQueue[eventQueueCount].selector = selector;
 		eventQueue[eventQueueCount].event = [event copy];
-		
+
 		eventQueueCount++;
 	}
 }
@@ -628,12 +606,12 @@ static int		eventQueueCount;
 		for( int i=0; i < eventQueueCount; i++ ) {
 			SEL sel = eventQueue[i].selector;
 			NSEvent *event = eventQueue[i].event;
-			
+
 			[self performSelector:sel withObject:event];
-			
+
 			[event release];
 		}
-		
+
 		eventQueueCount = 0;
 	}
 }
@@ -642,4 +620,4 @@ static int		eventQueueCount;
 
 @end
 
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_MAC

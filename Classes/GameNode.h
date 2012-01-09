@@ -11,10 +11,10 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
 #import "GameCenterManager.h"
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 typedef enum {
 	kGameWaiting,
@@ -26,9 +26,9 @@ typedef enum {
 	kGameIsBeingReplaced,
 } tGameState;
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 @interface GameNode : CCLayer <UIAccelerometerDelegate, GameCenterManagerDelegate>
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif __CC_PLATFORM_MAC
 @interface GameNode : CCLayer
 #endif
 {

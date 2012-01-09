@@ -3,17 +3,17 @@
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
  * Copyright (c) 2011 Zynga Inc.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,7 +42,6 @@
 // 00   02 00 00
 #define COCOS2D_VERSION 0x00020000
 
-#import <Availability.h>
 
 //
 // all cocos2d include files
@@ -86,7 +85,7 @@
 
 #import "CCTransition.h"
 #import "CCTransitionPageTurn.h"
-#import "CCTransitionRadial.h"
+#import "CCTransitionProgress.h"
 
 #import "CCTMXTiledMap.h"
 #import "CCTMXLayer.h"
@@ -100,7 +99,6 @@
 #import "CCDrawingPrimitives.h"
 #import "CCScene.h"
 #import "CCScheduler.h"
-#import "CCBlockSupport.h"
 #import "CCCamera.h"
 #import "CCProtocols.h"
 #import "CCNode.h"
@@ -129,16 +127,18 @@
 #import "Platforms/CCGL.h"
 #import "Platforms/CCNS.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCTouchDispatcher.h"
 #import "Platforms/iOS/CCTouchDelegateProtocol.h"
 #import "Platforms/iOS/CCTouchHandler.h"
 #import "Platforms/iOS/EAGLView.h"
 #import "Platforms/iOS/CCDirectorIOS.h"
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 #import "Platforms/Mac/MacGLView.h"
 #import "Platforms/Mac/CCDirectorMac.h"
+#import "Platforms/Mac/MacWindow.h"
+#import "Platforms/Mac/CCEventDispatcher.h"
 #endif
 
 //
@@ -164,7 +164,7 @@
 // free functions
 NSString * cocos2dVersion(void);
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #ifndef __IPHONE_4_0
 #error "If you are targeting iPad, you should set BASE SDK = 4.0 (or 4.1, or 4.2), and set the 'iOS deploy target' = 3.2"
 #endif

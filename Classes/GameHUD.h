@@ -9,7 +9,7 @@
 
 #import "cocos2d.h"
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
 #endif
 
@@ -27,20 +27,20 @@ typedef enum {
 
 @class GameNode;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 @interface GameHUD : CCLayer  <UITextFieldDelegate, UIAlertViewDelegate>
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+#elif __CC_PLATFORM_MAC
 @interface GameHUD : CCLayer
 #endif
 {
 	
-#if __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __CC_PLATFORM_IOS
 	// UI controls
 	UITextField		*nameField_;
 	UIToolbar		*toolbar_;
 	UISwitch		*switchCtl_;
 	UIActivityIndicatorView *activityIndicator_;
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED
+#endif // __CC_PLATFORM_IOS
 
 	// pointer to State
 	GameNode		*game_;

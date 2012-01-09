@@ -35,7 +35,6 @@
 //
 #ifdef LITE_VERSION
 #import "BuyNode.h"
-#import "RootViewController.h"
 #import "SapusTongueAppDelegate.h"
 #endif
 
@@ -201,7 +200,7 @@ static BOOL firstTime = YES;
 -(void) startCallback: (id) sender
 {
 	[self removeAd];
-    [[CCDirector sharedDirector] replaceScene: [CCTransitionRadialCW transitionWithDuration:1.0f scene:[SelectCharNode scene]]];
+    [[CCDirector sharedDirector] replaceScene: [CCTransitionProgressRadialCW transitionWithDuration:1.0f scene:[SelectCharNode scene]]];
 }
 
 -(void) instructionsCallback: (id) sender 
@@ -225,9 +224,9 @@ static BOOL firstTime = YES;
 -(void) buyCallback: (id) sender
 {
 	// Launches Safari and opens the requested web page
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifdef __CC_PLATFORM_IOS
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sapusmedia.com/sources/"]];
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif defined(__CC_PLATFORM_MAC)
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.sapusmedia.com/sources/"]];
 #endif
 }
