@@ -36,6 +36,7 @@
 #ifdef LITE_VERSION
 #import "BuyNode.h"
 #import "SapusTongueAppDelegate.h"
+#import "AdViewController.h"
 #endif
 
 #ifdef LITE_VERSION
@@ -152,6 +153,9 @@ static BOOL firstTime = YES;
 		// If the iOS suports it (iOS >= 4), then display iAds
 		// otherwise, don't display them
 		supportsAds_ = NSClassFromString(@"ADBannerView") != nil;
+		
+		if( supportsAds_ )
+			adViewController_ = [[AdViewController alloc] initWithNibName:nil bundle:nil];
 
 #else
 		menu.position = ccp(s.width-50,40);
@@ -167,18 +171,22 @@ static BOOL firstTime = YES;
 #ifdef LITE_VERSION
 
 	if( supportsAds_ ) {
-		SapusTongueAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		RootViewController *viewController = [appDelegate viewController];
-		[viewController createADBannerView];
+		CCDirector *director = [CCDirector sharedDirector];
+	
+		[adViewController_ createADBannerView];
+		[director.view addSubview:adViewController_.view];
 		
 		inStage_ = YES;		
 	}
-	
 #endif // LITE_VERSION	
 }
 
 -(void) dealloc
 {
+#ifdef LITE_VERSION	
+	[adViewController_ release];
+#endif
+
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
 	[super dealloc];
 }
@@ -235,10 +243,7 @@ static BOOL firstTime = YES;
 {
 #ifdef LITE_VERSION
 	if( supportsAds_ ) {
-		SapusTongueAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-		RootViewController *viewController = [appDelegate viewController];
-		
-		[[viewController banner] removeFromSuperview];
+		[adViewController_.view removeFromSuperview];
 
 		inStage_ = NO;	
 	}

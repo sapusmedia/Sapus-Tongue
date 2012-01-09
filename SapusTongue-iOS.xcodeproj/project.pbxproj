@@ -640,6 +640,7 @@
 		50F4338D11AD51BB00A23662 /* tilemap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 50F4338B11AD51BB00A23662 /* tilemap.tmx */; };
 		50F4338F11AD51BB00A23662 /* tilemap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 50F4338B11AD51BB00A23662 /* tilemap.tmx */; };
 		50F433FE11AD56E500A23662 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D2194D0F278A5C00E8A303 /* CoreLocation.framework */; };
+		A09EB52714BA750F00B269C3 /* AdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09EB52614BA750F00B269C3 /* AdViewController.m */; };
 		A09F4257140C519800DE33D7 /* ChipmunkHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = A09F4256140C519800DE33D7 /* ChipmunkHelper.c */; };
 		A09F4258140C519800DE33D7 /* ChipmunkHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = A09F4256140C519800DE33D7 /* ChipmunkHelper.c */; };
 		A0BE67731405AE0600DAA336 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BE67721405AE0600DAA336 /* fps_images-hd.png */; };
@@ -1417,6 +1418,8 @@
 		50D217E60F27820600E8A303 /* libcocos2d.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcocos2d.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D2194D0F278A5C00E8A303 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		50F4338B11AD51BB00A23662 /* tilemap.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tilemap.tmx; sourceTree = "<group>"; };
+		A09EB52514BA750F00B269C3 /* AdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = AdViewController.h; sourceTree = "<group>"; };
+		A09EB52614BA750F00B269C3 /* AdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdViewController.m; sourceTree = "<group>"; };
 		A09F4256140C519800DE33D7 /* ChipmunkHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChipmunkHelper.c; sourceTree = "<group>"; };
 		A09F4259140C51C100DE33D7 /* ChipmunkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkHelper.h; sourceTree = "<group>"; };
 		A0BE67721405AE0600DAA336 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
@@ -2785,6 +2788,8 @@
 		E04D949E122C126A00BBA55B /* iOS Only */ = {
 			isa = PBXGroup;
 			children = (
+				A09EB52514BA750F00B269C3 /* AdViewController.h */,
+				A09EB52614BA750F00B269C3 /* AdViewController.m */,
 				E042CD80125E4B21006D81AB /* GameCenterManager.h */,
 				E042CD81125E4B21006D81AB /* GameCenterManager.m */,
 			);
@@ -3905,6 +3910,7 @@
 				E042CD83125E4B21006D81AB /* GameCenterManager.m in Sources */,
 				E0B1EE6C1264AAFE00ACD961 /* ScoreManager.m in Sources */,
 				A09F4258140C519800DE33D7 /* ChipmunkHelper.c in Sources */,
+				A09EB52714BA750F00B269C3 /* AdViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

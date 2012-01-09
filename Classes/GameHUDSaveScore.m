@@ -32,7 +32,6 @@
 
 #ifdef __CC_PLATFORM_IOS
 #import "cocoslive.h"
-#import "RootViewController.h"
 #endif
 
 

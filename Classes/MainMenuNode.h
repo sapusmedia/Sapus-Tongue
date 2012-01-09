@@ -13,14 +13,17 @@
 
 #ifdef LITE_VERSION
 #import <UIKit/UIKit.h>
+#import "AdViewController.h"
 #endif // LITE_VERSION
 
-@interface MainMenuNode : CCLayer {
+@interface MainMenuNode : CCLayer
+{
 #ifdef LITE_VERSION
 	// iAd related
 	BOOL				inStage_;
 	BOOL				musicIsEnabled_;
 	BOOL				supportsAds_;
+	AdViewController	*adViewController_;
 #endif // LITE_VERSION
 
 }

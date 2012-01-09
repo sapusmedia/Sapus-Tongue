@@ -218,7 +218,7 @@
 	[[delegate overlayWindow] remove];
 #endif
 //	[[CCDirector sharedDirector] replaceScene: [CCTransitionSplitRows transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
-	[[CCDirector sharedDirector] replaceScene: [CCTransitionProgressInOut transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
+	[[CCDirector sharedDirector] replaceScene: [CCTransitionProgressHorizontal transitionWithDuration:1.0f scene: [MainMenuNode scene]]];
 
 }
 
@@ -574,7 +574,7 @@
 	SapusTongueAppDelegate *delegate = [NSApp delegate];
 	
 	// Overlay Window
-	[[delegate overlayWindow] overlayView:[[CCDirector sharedDirector] openGLView] ];
+	[[delegate overlayWindow] overlayView:[[CCDirector sharedDirector] view] ];
 
 	NSTableView *tv = [delegate displayScoresTableView];
 	tv.delegate = self;

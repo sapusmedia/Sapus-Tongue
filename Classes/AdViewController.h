@@ -7,12 +7,12 @@
 //
 //  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
 
-#import <UIKit/UIKit.h>
-
 #ifdef LITE_VERSION
+
+#import <UIKit/UIKit.h>
 #import <iAd/iAd.h>
 
-@interface RootViewController : UIViewController <ADBannerViewDelegate>
+@interface AdViewController : UIViewController <ADBannerViewDelegate>
 {
 	BOOL			musicIsMuted_;
     UIView			*contentView;
@@ -33,13 +33,6 @@
 @property(nonatomic, retain) IBOutlet UIView *contentView;
 @property(nonatomic, retain) IBOutlet ADBannerView *banner;
 
-@end
-
-#else // ! LITE_VERSION
-
-@interface RootViewController : UIViewController
-{
-}
 @end
 
 #endif // ! LITE_VERSION

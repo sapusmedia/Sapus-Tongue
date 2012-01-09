@@ -1,5 +1,5 @@
 //
-//  RootViewController.m
+//  AdViewController.m
 //  SapusTongue
 //
 //  Created by Ricardo Quesada on 7/28/10.
@@ -8,90 +8,22 @@
 //  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
 
 
+#ifdef LITE_VERSION
+
 #import "cocos2d.h"
 
 #import "SapusConfig.h"
-#import "RootViewController.h"
+#import "AdViewController.h"
 #import "SapusTongueAppDelegate.h"
 #import "GameCenterManager.h"
 #import "SimpleAudioEngine.h"
 
-#pragma mark RootViewController - UIViewController stuff
+#pragma mark AdViewController - UIViewController stuff
 
-@implementation RootViewController
+@implementation AdViewController
 
-#ifdef LITE_VERSION
 @synthesize contentView, banner;
-#endif // LITE_VERSION
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];	
-
-	// Don't rotate the device if it is playing
-	if( ! appDelegate.isPlaying ) {
-		
-		if( UIInterfaceOrientationIsLandscape( interfaceOrientation ) ) {			
-			appDelegate.isLandscapeLeft = (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-			return YES;
-		}
-		return NO;
-	}
-
-	//
-	return NO;
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	//
-	// Assuming that the main window has the size of the screen
-	// BUG: This won't work if the EAGLView is not fullscreen
-	///
-	CGRect screenRect = [[UIScreen mainScreen] bounds];
-	CGRect rect;
-	
-	if( UIInterfaceOrientationIsPortrait( toInterfaceOrientation ) )
-		rect = screenRect;
-	
-	else if(UIInterfaceOrientationIsLandscape( toInterfaceOrientation) )
-		rect.size = CGSizeMake( screenRect.size.height, screenRect.size.width );
-	
-	CCDirector *director = [CCDirector sharedDirector];
-	EAGLView *glView = [director openGLView];
-	float contentScaleFactor = [director contentScaleFactor];
-	
-	if( contentScaleFactor != 1 ) {
-//		rect.size.width *= contentScaleFactor;
-//		rect.size.height *= contentScaleFactor;
-	}
-	glView.frame = rect;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -107,54 +39,48 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 
-#ifdef LITE_VERSION
 	self.contentView = nil;
     banner.delegate = nil;
     self.banner = nil;
-#endif
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-//	[[CCDirector sharedDirector] startAnimation];
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	[[CCDirector sharedDirector] startAnimation];
 }
 
 -(void) viewWillDisappear:(BOOL)animated
-{
-//	[[CCDirector sharedDirector] stopAnimation];
-	
+{	
 	[super viewWillDisappear:animated];
 }
 
 -(void) viewDidDisappear:(BOOL)animated
-{
-	[[CCDirector sharedDirector] stopAnimation];
-	
+{	
 	[super viewDidDisappear:animated];
 }
 
 - (void)dealloc
 {
-#ifdef LITE_VERSION
 	CCLOGINFO(@"dealloc: %@", self);
     [contentView release]; contentView = nil;
     banner.delegate = nil;
     [banner release]; banner = nil; 
-#endif // LITE_VERSION	
 	
     [super dealloc];
 }
 
 #pragma mark RootViewController - iAd related
 
-#ifdef LITE_VERSION
+
+-(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+}
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -175,7 +101,7 @@
     // Depending on our orientation when this method is called, we set our initial content size.
     // If you only support portrait or landscape orientations, then you can remove this check and
     // select either ADBannerContentSizeIdentifier320x50 (if portrait only) or ADBannerContentSizeIdentifier480x32 (if landscape only).
-    NSString *contentSize = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? ADBannerContentSizeIdentifier320x50 : ADBannerContentSizeIdentifier480x32;
+    NSString *contentSize = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifierLandscape;
     
     // Calculate the intial location for the banner.
     // We want this banner to be at the bottom of the view controller, but placed
@@ -193,7 +119,7 @@
     bannerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
     // Since we support all orientations in this view controller, support portrait and landscape content sizes.
     // If you only supported landscape or portrait, you could remove the other from this set.
-    bannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, ADBannerContentSizeIdentifier480x32, nil];
+    bannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil];
     
     // At this point the ad banner is now be visible and looking for an ad.
     [self.view addSubview:bannerView];
@@ -218,12 +144,12 @@
     // First, setup the banner's content size and adjustment based on the current orientation
     if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
     {
-        banner.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+        banner.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
         bannerHeight = 32.0f;
     }
     else
     {
-        banner.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+        banner.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
         bannerHeight = 50.0f;
     }
     
@@ -293,7 +219,6 @@
 	[[CCDirector sharedDirector] startAnimation];
 	
 }
+@end
 
 #endif // LITE_VERSION
-
-@end

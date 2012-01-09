@@ -22,9 +22,7 @@
 #import "SapusIntroNode.h"
 #import "ScoreManager.h"
 
-#if defined(__CC_PLATFORM_IOS)
-#import "RootViewController.h"
-#elif defined(__CC_PLATFORM_MAC)
+#if defined(__CC_PLATFORM_MAC)
 #import "BDSKOverlayWindow.h"
 #endif
 
@@ -71,17 +69,17 @@
 	// Uncomment the following code if you Application only supports landscape mode
 	//
 	
-//	CCDirector *director = [CCDirector sharedDirector];
-//	CGSize size = [director winSize];
-//	CCSprite *sprite = nil;
-//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//		sprite = [CCSprite spriteWithFile:@"Default-Portrait.png"];
-//	else
-//		sprite = [CCSprite spriteWithFile:@"Default.png"];
-//	sprite.position = ccp(size.width/2, size.height/2);
-//	sprite.rotation = -90;
-//	[sprite visit];
-//	[[director openGLView] swapBuffers];
+	CCDirector *director = [CCDirector sharedDirector];
+	CGSize size = [director winSize];
+	CCSprite *sprite = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		sprite = [CCSprite spriteWithFile:@"Default-Portrait.png"];
+	else
+		sprite = [CCSprite spriteWithFile:@"Default.png"];
+	sprite.position = ccp(size.width/2, size.height/2);
+	sprite.rotation = -90;
+	[sprite visit];
+	[(CC_GLVIEW*)[director view] swapBuffers];
 }
 #endif // __CC_PLATFORM_IOS
 
@@ -283,7 +281,7 @@
 	
 	// 2D projection
 	[director_ setProjection:kCCDirectorProjection2D];
-	//	[director setProjection:kCCDirectorProjection3D];
+//	[director_ setProjection:kCCDirectorProjection3D];
 	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if( ! [director_ enableRetinaDisplay:YES] )
@@ -325,7 +323,7 @@
 {
 	CCDirectorMac *director = (CCDirectorMac*)[CCDirector sharedDirector];
 	
-	[director setOpenGLView:glView_];
+	[director setView:glView_];
 	
 	[director setResizeMode:kCCDirectorResize_AutoScale];
 		
