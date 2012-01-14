@@ -7,7 +7,7 @@ Changes in 2012-01-09 (v4.1)
 * [NEW] RootViewController: renamed to AdViewController
 * [FIX] Info.plist: fixed orientation on iPad. Added "required device capabilities"
 * [3RD] cocos2d: uses v2.0-beta2
-* [3RD] Chipmunk: uses v6.0.2
+* [3RD] Chipmunk: uses v6.0.3
 
 Changes in 2011-08-29 (v4.0)
 * [NEW] All: Using iPad suffix API. Removed stConvertToiPad macro

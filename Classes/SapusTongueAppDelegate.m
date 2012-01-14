@@ -79,7 +79,7 @@
 	sprite.position = ccp(size.width/2, size.height/2);
 	sprite.rotation = -90;
 	[sprite visit];
-	[(CC_GLVIEW*)[director view] swapBuffers];
+	[(CCGLView*)[director view] swapBuffers];
 }
 #endif // __CC_PLATFORM_IOS
 
@@ -254,8 +254,8 @@
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	
-	// Create an EAGLView with a RGB8 color buffer without a depth buffer
-	EAGLView *glView = [EAGLView viewWithFrame:[window_ bounds]
+	// Create an CCGLView with a RGB8 color buffer without a depth buffer
+	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGBA8
 								   depthFormat:0			// GL_DEPTH_COMPONENT24_OES
 							preserveBackbuffer:NO

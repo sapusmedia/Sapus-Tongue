@@ -32,13 +32,13 @@
 
 #import "CCDirectorMac.h"
 #import "CCEventDispatcher.h"
-#import "MacGLView.h"
-#import "MacWindow.h"
+#import "CCGLView.h"
+#import "CCWindow.h"
 
 #import "../../CCNode.h"
 #import "../../CCScheduler.h"
 #import "../../ccMacros.h"
-#import "../../GLProgram.h"
+#import "../../CCGLProgram.h"
 #import "../../ccGLState.h"
 
 // external
@@ -124,7 +124,7 @@
     if (isFullScreen_ == fullscreen)
 		return;
 
-	MacGLView *openGLview = (MacGLView*) self.view;
+	CCGLView *openGLview = (CCGLView*) self.view;
 
     if( fullscreen ) {
         originalWinRect_ = [openGLview frame];
@@ -141,7 +141,7 @@
         NSRect displayRect = [[NSScreen mainScreen] frame];
 
         // Create a screen-sized window on the display you want to take over
-        fullScreenWindow_ = [[MacWindow alloc] initWithFrame:displayRect fullscreen:YES];
+        fullScreenWindow_ = [[CCWindow alloc] initWithFrame:displayRect fullscreen:YES];
 
         // Remove glView from window
         [openGLview removeFromSuperview];
@@ -191,7 +191,7 @@
 #endif
 }
 
--(void) setView:(CC_GLVIEW *)view
+-(void) setView:(CCGLView *)view
 {
 	if( view != view_) {
 
@@ -208,7 +208,7 @@
 	}
 }
 
--(CC_GLVIEW*) view
+-(CCGLView*) view
 {
 	return view_;
 }
@@ -382,12 +382,12 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 	[self drawScene];
-	[eventDispatcher_ dispatchQueuedEvents];
 
+	// Process timers and other events
 	[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:nil];
 
 	[pool release];
-
+		
 #else
 	[self performSelector:@selector(drawScene) onThread:runningThread_ withObject:nil waitUntilDone:YES];
 #endif
@@ -419,7 +419,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, self);
 
 	// Set the display link for the current renderer
-	MacGLView *openGLview = (MacGLView*) self.view;
+	CCGLView *openGLview = (CCGLView*) self.view;
 	CGLContextObj cglContext = [[openGLview openGLContext] CGLContextObj];
 	CGLPixelFormatObj cglPixelFormat = [[openGLview pixelFormat] CGLPixelFormatObj];
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
@@ -482,14 +482,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	// When resizing the view, -reshape is called automatically on the main thread
 	// Add a mutex around to avoid the threads accessing the context simultaneously	when resizing
 
-	MacGLView *openGLview = (MacGLView*) self.view;
+	CCGLView *openGLview = (CCGLView*) self.view;
 	CGLLockContext([[openGLview openGLContext] CGLContextObj]);
 	[[openGLview openGLContext] makeCurrentContext];
 
 	/* tick before glClear: issue #533 */
-	if( ! isPaused_ ) {
+	if( ! isPaused_ )
 		[scheduler_ update: dt];
-	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -513,7 +512,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	kmGLPopMatrix();
 
 	totalFrames_++;
-
+	
 	[[openGLview openGLContext] flushBuffer];
 	CGLUnlockContext([[openGLview openGLContext] CGLContextObj]);
 
@@ -522,7 +521,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 }
 
 // set the event dispatcher
--(void) setView:(CC_GLVIEW *)view
+-(void) setView:(CCGLView *)view
 {
 	[super setView:view];
 

@@ -27,43 +27,15 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_MAC
 
-#import "MacWindow.h"
+#import <Cocoa/Cocoa.h>
 
 
-@implementation MacWindow
-
-- (id) initWithFrame:(NSRect)frame fullscreen:(BOOL)fullscreen
+@interface CCWindow : NSWindow
 {
-	int styleMask = fullscreen ? NSBackingStoreBuffered : ( NSTitledWindowMask | NSClosableWindowMask );
-	self = [self initWithContentRect:frame
-						   styleMask:styleMask
-							 backing:NSBackingStoreBuffered
-							   defer:YES];
-
-	if (self != nil)
-	{
-		if(fullscreen)
-		{
-			[self setLevel:NSMainMenuWindowLevel+1];
-			[self setHidesOnDeactivate:YES];
-			[self setHasShadow:NO];
-		}
-
-		[self setAcceptsMouseMovedEvents:NO];
-		[self setOpaque:YES];
-	}
-	return self;
 }
+- (id) initWithFrame:(NSRect)frame fullscreen:(BOOL)fullscreen;
 
-- (BOOL) canBecomeKeyWindow
-{
-	return YES;
-}
-
-- (BOOL) canBecomeMainWindow
-{
-	return YES;
-}
 @end
+
 
 #endif // __CC_PLATFORM_MAC

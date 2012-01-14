@@ -32,15 +32,16 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_MAC
 
-#import "MacGLView.h"
 #import <OpenGL/gl.h>
 
+#import "CCGLView.h"
 #import "CCDirectorMac.h"
+#import "CCEventDispatcher.h"
 #import "../../ccConfig.h"
 #import "../../ccMacros.h"
 
 
-@implementation MacGLView
+@implementation CCGLView
 
 @synthesize eventDelegate = eventDelegate_;
 
@@ -130,18 +131,17 @@
 	[super dealloc];
 }
 
-#if CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
-#define DISPATCH_EVENT(__event__, __selector__) [eventDelegate_ queueEvent:__event__ selector:__selector__];
-#else
 #define DISPATCH_EVENT(__event__, __selector__)												\
 	id obj = eventDelegate_;																\
-	[obj performSelector:__selector__														\
+	CCEventObject *event = [[CCEventObject alloc] init];									\
+	event->event = [__event__ retain];														\
+	event->selector = __selector__;															\
+	[obj performSelector:@selector(dispatchEvent:)											\
 			onThread:[[CCDirector sharedDirector] runningThread]							\
-		  withObject:__event__																\
+		  withObject:event																	\
 	   waitUntilDone:NO];
-#endif
 
-#pragma mark MacGLView - Mouse events
+#pragma mark CCGLView - Mouse events
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
@@ -199,7 +199,7 @@
 	DISPATCH_EVENT(theEvent, _cmd);
 }
 
-#pragma mark MacGLView - Key events
+#pragma mark CCGLView - Key events
 
 -(BOOL) becomeFirstResponder
 {
@@ -231,7 +231,7 @@
 	DISPATCH_EVENT(theEvent, _cmd);
 }
 
-#pragma mark MacGLView - Touch events
+#pragma mark CCGLView - Touch events
 - (void)touchesBeganWithEvent:(NSEvent *)theEvent
 {
 	DISPATCH_EVENT(theEvent, _cmd);
