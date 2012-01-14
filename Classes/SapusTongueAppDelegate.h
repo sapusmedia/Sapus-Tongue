@@ -42,7 +42,7 @@
 @interface SapusTongueAppDelegate : NSObject <NSApplicationDelegate, CCDirectorDelegate>
 {
 	NSWindow		*window_;
-	MacGLView		*glView_;
+	CCGLView		*glView_;
 	CCDirectorMac	*director_;							// weak ref
 	
 	// Save Score Window
@@ -63,7 +63,7 @@
 @property (assign) IBOutlet NSWindow	*window;
 
 /** opengl view */
-@property (assign) IBOutlet MacGLView	*glView;
+@property (assign) IBOutlet CCGLView	*glView;
 
 /** director */
 @property (nonatomic, readonly) CCDirectorMac	*director;
