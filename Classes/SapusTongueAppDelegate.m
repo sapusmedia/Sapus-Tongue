@@ -326,6 +326,8 @@
 	[director setView:glView_];
 	
 	[director setResizeMode:kCCDirectorResize_AutoScale];
+	
+	[window_ center];
 		
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];	
