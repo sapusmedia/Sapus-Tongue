@@ -44,7 +44,6 @@
 
 @synthesize isPaused=isPaused_;
 @synthesize isPlaying=isPlaying_;
-@synthesize isLandscapeLeft=isLandscapeLeft_;
 
 #ifdef __CC_PLATFORM_IOS
 @synthesize window=window_, navController=navController_, director=director_;
@@ -98,7 +97,6 @@
 	
 	isPaused_ = NO;
 	isPlaying_ = NO;
-	isLandscapeLeft_ = YES;
 
 	// random initialization
 	[self initRandom];

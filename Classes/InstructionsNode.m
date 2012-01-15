@@ -126,10 +126,6 @@ eachShape(cpShape *shape, void* instance)
 	
 #ifdef __CC_PLATFORM_IOS
 		self.isAccelerometerEnabled = YES;
-		
-		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];
-		isLandscapeLeft_ = appDelegate.isLandscapeLeft;
-
 #elif defined(__CC_PLATFORM_MAC)
 		self.isMouseEnabled = YES;
 #endif

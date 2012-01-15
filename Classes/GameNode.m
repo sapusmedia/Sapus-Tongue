@@ -329,9 +329,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 		appDelegate.isPlaying = YES;
 		
-		// 
-		isLandscapeLeft_ = appDelegate.isLandscapeLeft;
-				
 		[self setupBackground];
 		[self setupTongue];
 		[self setupChipmunk];
@@ -1062,11 +1059,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		prevX = accelX;
 		prevY = accelY;
 		
-		// landscape left mode
-		if( isLandscapeLeft_ )
-			force_ = cpv( (float)-acceleration.y, (float)acceleration.x);
-		else
-			force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
+		force_ = cpv( (float)-acceleration.y, (float)acceleration.x);
+//		force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
 
 		
 	} else if( state_ == kGameFlying ) {

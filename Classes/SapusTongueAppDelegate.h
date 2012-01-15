@@ -25,7 +25,6 @@
 }
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
-@property (nonatomic, readwrite) BOOL isLandscapeLeft;
 @property (nonatomic, retain) UIWindow *window;
 @property (readonly) UINavigationController *navController;
 @property (readonly) CCDirectorIOS *director;
@@ -78,7 +77,6 @@
 @property (assign) IBOutlet NSTableView	*displayScoresTableView;
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
-@property (nonatomic, readwrite) BOOL isLandscapeLeft;
 
 // Callback from IB
 - (IBAction)toggleFullScreen:(id)sender;

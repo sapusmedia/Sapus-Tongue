@@ -3128,7 +3128,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Sapus Media";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SapusTongue-iOS" */;
@@ -4178,6 +4178,7 @@
 				GCC_FAST_MATH = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_STRICT_ALIASING = YES;
+				GCC_THUMB_SUPPORT = NO;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = cocos2d;
@@ -4193,6 +4194,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_FAST_MATH = YES;
 				GCC_STRICT_ALIASING = YES;
+				GCC_THUMB_SUPPORT = NO;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = cocos2d;
@@ -4213,11 +4215,7 @@
 					"COCOS2D_DEBUG=1",
 					DEBUG,
 				);
-				GCC_THUMB_SUPPORT = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -4225,7 +4223,7 @@
 					libs/kazmath/include,
 					libs/Chipmunk/include/chipmunk,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "C13E56AA-5435-4107-836F-45194668C4F3";
 				SDKROOT = iphoneos;
@@ -4244,10 +4242,7 @@
 					NDEBUG,
 					NS_BLOCK_ASSERTIONS,
 				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -4255,7 +4250,7 @@
 					libs/kazmath/include,
 					libs/Chipmunk/include/chipmunk,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PROVISIONING_PROFILE = "C13E56AA-5435-4107-836F-45194668C4F3";
 				SDKROOT = iphoneos;
 			};
