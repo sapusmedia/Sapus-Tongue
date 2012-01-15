@@ -5,6 +5,7 @@ Changes in 2012-01-16 (v4.1)
 * [NEW] Instructions: Movie uses Movie View Controller (instead of View). Handled by the NavigationViewController
 * [NEW] Scores: GameCenter uses NavigationViewController to display the Achievements View Controller
 * [NEW] RootViewController: renamed to AdViewController
+* [FIX] AppDelegate: isLandscapeLeft removed. Using [director interfaceOrientation]
 * [FIX] Info.plist: fixed orientation on iPad. Added "required device capabilities"
 * [3RD] cocos2d: uses v2.0-beta2
 * [3RD] Chipmunk: uses v6.0.3
