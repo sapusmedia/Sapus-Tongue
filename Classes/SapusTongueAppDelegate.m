@@ -312,7 +312,9 @@
 // Support only landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+	if( ! isPlaying_ )
+		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+	return NO;
 }
 
 #elif defined(__CC_PLATFORM_MAC)
