@@ -1048,7 +1048,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
 {
 	static float prevX=0, prevY=0;
-	
 
 #define kFilterFactor 0.05f
 	
@@ -1059,9 +1058,10 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		prevX = accelX;
 		prevY = accelY;
 		
-		force_ = cpv( (float)-acceleration.y, (float)acceleration.x);
-//		force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
-
+		if( [[CCDirector sharedDirector] interfaceOrientation] == UIInterfaceOrientationLandscapeRight )
+			 force_ = cpv( (float)-acceleration.y, (float)acceleration.x);
+		else
+			 force_ = cpv( (float)acceleration.y, (float)-acceleration.x);
 		
 	} else if( state_ == kGameFlying ) {
 		force_ = cpvzero;
