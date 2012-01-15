@@ -102,7 +102,7 @@
 	[self initRandom];
 	
 	//
-	// CCDirector / OpenGLview initialization
+	// CCDirector / OpenGL initialization
 	//
 #ifdef __CC_PLATFORM_IOS
 	[self setupDirectorIOS];
@@ -110,33 +110,31 @@
 	[self setupDirectorMac];
 #endif
 	
-	// This will initialize the score manager
-	[[ScoreManager sharedManager] initScores];
-		
+	// turn this feature On when testing the speed
+	[director_ setDisplayStats:YES];	
+
 	// TIP:
 	// Sapus Tongue uses almost all of the images with gradients.
 	// They look good in 32 bit mode (RGBA8888) but the consume lot of memory.
 	// If your game doesn't need such precision in the images, use 16-bit textures.
 	// RGBA4444 or RGB5_A1
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+	
+	// Assume that PVR images have premultiplied alpha
+	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+
+	// This will initialize the score manager
+	[[ScoreManager sharedManager] initScores];
 
 	// music initialization
 	[self preLoadSounds];
 		
-	CCDirector *director = [CCDirector sharedDirector];
-	
-	// turn this feature On when testing the speed
-//	[director setDisplayFPS:YES];
-	
 #ifdef __CC_PLATFORM_IOS
-	// Removes the startup flicker
-	[self removeStartupFlicker];
-
 	// Run the intro Scene
-	[director pushScene: [SapusIntroNode scene] ];
+	[director_ pushScene: [SapusIntroNode scene] ];
 	return YES;
 #elif defined(__CC_PLATFORM_MAC)
-	[director runWithScene:[SapusIntroNode scene] ];
+	[director_ runWithScene:[SapusIntroNode scene] ];
 #endif
 }
 
@@ -217,7 +215,7 @@
 
 #elif defined(__CC_PLATFORM_MAC)
 
-#pragma mark SapusTongueAppDelegate - Window callbacks (Mac)
+#pragma mark AppDelegate - Window callbacks (Mac)
 
 - (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *) theApplication
 {
@@ -226,7 +224,7 @@
 
 #endif
 
-#pragma mark SapusTongueAppDelegate - Shared method between iOS and Mac
+#pragma mark AppDelegate - Shared method between iOS and Mac
 - (void)dealloc
 {
 	[window_ release];
@@ -265,9 +263,6 @@
 	
 	director_.wantsFullScreenLayout = YES;
 
-	// Display Milliseconds Per Frame
-	[director_ setDisplayStats:YES];
-	
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
 	
@@ -295,18 +290,13 @@
 	// make main window visible
 	[window_ makeKeyAndVisible];
 	
-	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
-	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
-	// You can change anytime.
-	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-	
 	// When in iPad / RetinaDisplay mode, CCFileUtils will append the "-ipad" / "-hd" to all loaded files
 	// If the -ipad  / -hdfile is not found, it will load the non-suffixed version
 	[CCFileUtils setiPadSuffix:@"-ipad"];			// Default on iPad is "" (empty string)
 	[CCFileUtils setRetinaDisplaySuffix:@"-hd"];	// Default on RetinaDisplay is "-hd"
 	
-	// Assume that PVR images have premultiplied alpha
-	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];	
+	// Removes the startup flicker
+	[self removeStartupFlicker];
 }
 
 // Support only landscape mode
