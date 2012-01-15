@@ -311,11 +311,11 @@
 
 -(void) setupDirectorMac
 {
-	CCDirectorMac *director = (CCDirectorMac*)[CCDirector sharedDirector];
+	director_ = (CCDirectorMac*)[CCDirector sharedDirector];
 	
-	[director setView:glView_];
+	[director_ setView:glView_];
 	
-	[director setResizeMode:kCCDirectorResize_AutoScale];
+	[director_ setResizeMode:kCCDirectorResize_AutoScale];
 	
 	[window_ center];
 		
