@@ -127,7 +127,7 @@
 	if( CC_CONTENT_SCALE_FACTOR() == 2 )
 		[tex setResolutionType:kCCResolutionRetinaDisplay];
 	else
-		[tex setResolutionType:kCCResolutionStandard];
+		[tex setResolutionType:kCCResolutioniPhone];
 #endif
 
 	[self setTexture:tex];
@@ -141,6 +141,37 @@
 -(NSString*) string
 {
 	return string_;
+}
+
+- (void)setFontName:(NSString*)fontName
+{
+	if( fontName != fontName_ ) {
+		[fontName_ release];
+		fontName_ = [fontName retain];
+    
+		// Force update
+		[self setString:[self string]];
+	}
+}
+
+- (NSString*)fontName
+{
+    return fontName_;
+}
+
+- (void) setFontSize:(float)fontSize
+{
+	if( fontSize != fontSize_ ) {
+		fontSize_ = fontSize;
+		
+		// Force update
+		[self setString:[self string]];
+	}
+}
+
+- (float) fontSize
+{
+    return fontSize_;
 }
 
 - (void) dealloc

@@ -40,6 +40,7 @@
 #import "CCSprite.h"
 #import "CCDrawingPrimitives.h"
 #import "CCConfiguration.h"
+#import "CCTextureCache.h"
 #import "Support/CCFileUtils.h"
 #import "Support/CGPointExtension.h"
 #import "Support/uthash.h"
@@ -721,7 +722,7 @@ typedef struct _KerningHashElement
 
 		fontChar = (CCSprite*) [self getChildByTag:i];
 		if( ! fontChar ) {
-			fontChar = [[CCSprite alloc] initWithBatchNode:self rect:rect];
+			fontChar = [[CCSprite alloc] initWithTexture:textureAtlas_.texture rect:rect];
 			[self addChild:fontChar z:0 tag:i];
 			[fontChar release];
 		}
@@ -849,6 +850,15 @@ typedef struct _KerningHashElement
 - (void)setAlignment:(CCTextAlignment)alignment {
     alignment_ = alignment;
     [self updateLabel];
+}
+
+- (void) setFntFile:(NSString*) fntFile
+{
+    [configuration_ release];
+    configuration_ = FNTConfigLoadFile(fntFile);
+    [configuration_ retain];
+    [self setTexture:[[CCTextureCache sharedTextureCache] addImage:configuration_->atlasName_]];
+    [self createFontChars];
 }
 
 #pragma mark LabelBMFont - Debug draw

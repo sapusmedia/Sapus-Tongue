@@ -44,8 +44,8 @@ enum {
 		imagesLoaded_ = 0;
 
 		[self setContentSize:CGSizeMake(LOADING_BAR_X,LOADING_BAR_Y)];
-		CCSprite *back = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(0, 0, LOADING_BAR_X, LOADING_BAR_Y)];
-		CCSprite *loadingBar = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(0, LOADING_BAR_Y*1, 0, LOADING_BAR_Y)];
+		CCSprite *back = [CCSprite spriteWithTexture:batch.texture rect:CGRectMake(0, 0, LOADING_BAR_X, LOADING_BAR_Y)];
+		CCSprite *loadingBar = [CCSprite spriteWithTexture:batch.texture rect:CGRectMake(0, LOADING_BAR_Y*1, 0, LOADING_BAR_Y)];
 		
 //		[back setAnchorPoint:CGPointZero];
 		[loadingBar setAnchorPoint:ccp(0,0.5f)];
