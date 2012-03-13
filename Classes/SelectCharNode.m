@@ -104,24 +104,24 @@ static int _selectedChar = kSTSelectedCharSapus;
 	sapusSprite_ = [[CCSprite alloc] initWithSpriteFrameName:@"SapusSelected1.png"];
 	monusSprite_ = [[CCSprite alloc] initWithSpriteFrameName:@"MonusSelected1.png"];
 	
-	CCAnimation *sapusAnim = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusSelected2.png"]];
+	CCAnimation *sapusAnim = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusSelected2.png"]];
 	[animCache addAnimation:sapusAnim name:@"sapus-anim"];
 
 
-	CCAnimation *sapusDefault = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[sapusDefault addFrame:[frameCache spriteFrameByName:@"SapusUnselected.png"]];
+	CCAnimation *sapusDefault = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[sapusDefault addSpriteFrame:[frameCache spriteFrameByName:@"SapusUnselected.png"]];
 	[animCache addAnimation:sapusDefault name:@"sapus-default"];
 
 
-	CCAnimation *monusAnim = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusSelected2.png"]];
+	CCAnimation *monusAnim = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusSelected2.png"]];
 	[animCache addAnimation:monusAnim name:@"monus-anim"];
 
-	CCAnimation * monusDefault = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[monusDefault addFrame:[frameCache spriteFrameByName:@"MonusUnselected.png"]];
+	CCAnimation * monusDefault = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[monusDefault addSpriteFrame:[frameCache spriteFrameByName:@"MonusUnselected.png"]];
 	[animCache addAnimation:monusDefault name:@"monus-default"];
 	
 	sapusSprite_.position = ccp(s.width/5,s.height/2+20);
@@ -196,7 +196,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 		if( location.x < s.width/2 && location.y < s.height-50 ) {
 			_selectedChar = kSTSelectedCharSapus;
 			animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"sapus-anim"];
-			[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
+			[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation]];
 			[monusSprite_ setDisplayFrameWithAnimationName:@"monus-default" index:0];
 			[[SimpleAudioEngine sharedEngine] playEffect:@"snd-select-sapus-burp.caf"];
 			
@@ -206,7 +206,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 		} else if( location.x > s.width/2 && location.y < s.height-50) {
 			_selectedChar = kSTSelectedCharMonus;
 			animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"monus-anim"];
-			[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
+			[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation]];
 			[sapusSprite_ setDisplayFrameWithAnimationName:@"sapus-default" index:0];
 			[[SimpleAudioEngine sharedEngine] playEffect:@"snd-select-monus.caf"];
 
@@ -232,7 +232,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 		_selectedChar = kSTSelectedCharSapus;
 		animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"sapus-anim"];
 
-		[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
+		[sapusSprite_ runAction: [CCAnimate actionWithAnimation: animation] ];
 		[monusSprite_ setDisplayFrameWithAnimationName:@"monus-default" index:0];
 		[[SimpleAudioEngine sharedEngine] playEffect:@"snd-select-sapus-burp.caf"];
 		
@@ -243,7 +243,7 @@ static int _selectedChar = kSTSelectedCharSapus;
 		_selectedChar = kSTSelectedCharMonus;
 		animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"monus-anim"];
 
-		[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation restoreOriginalFrame:NO] ];
+		[monusSprite_ runAction: [CCAnimate actionWithAnimation: animation] ];
 		[sapusSprite_ setDisplayFrameWithAnimationName:@"sapus-default" index:0];
 		[[SimpleAudioEngine sharedEngine] playEffect:@"snd-select-monus.caf"];
 		

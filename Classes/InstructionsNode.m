@@ -391,8 +391,8 @@ eachShape(cpShape *shape, void* instance)
 
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
+	[shaderProgram_ use];
+	[shaderProgram_ setUniformForModelViewProjectionMatrix];
 	
 	ccGLBindTexture2D( tongue_.name );
 	

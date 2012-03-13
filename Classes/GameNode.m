@@ -504,7 +504,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// Rolling Animation
 	NSArray *rollArray = [NSArray arrayWithObjects: rollFrame, nil];
 														  
-	CCAnimation *animRoll = [CCAnimation animationWithFrames:rollArray delay:0.2f];
+	CCAnimation *animRoll = [CCAnimation animationWithSpriteFrames:rollArray delay:0.2f];
 	[animCache addAnimation:animRoll name:@"roll"];
 
 	
@@ -535,7 +535,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 					nil];
 	}
 
-	CCAnimation *animFly = [CCAnimation animationWithFrames:flyArray delay:0.2f];
+	CCAnimation *animFly = [CCAnimation animationWithSpriteFrames:flyArray delay:0.2f];
 	[animCache addAnimation:animFly name:@"fly"];
 	
 	// Flying NoTail Aniimation (only valid for Monus)
@@ -552,7 +552,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 								[frameCache spriteFrameByName:@"monus_11.png"],
 					nil];
 		
-		CCAnimation *animNoTail = [CCAnimation animationWithFrames:noTailArray delay:0.2f];
+		CCAnimation *animNoTail = [CCAnimation animationWithSpriteFrames:noTailArray delay:0.2f];
 		[animCache addAnimation:animNoTail name:@"notail"];
 	}
 
@@ -923,8 +923,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
+	[shaderProgram_ use];
+	[shaderProgram_ setUniformForModelViewProjectionMatrix];
 	
 	ccGLBindTexture2D( tongue_.name );
 	
