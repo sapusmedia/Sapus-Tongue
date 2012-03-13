@@ -1,3 +1,6 @@
+Changes in 2012-03-XX (v4.2)
+* [3RD] cocos2d: uses v2.0-rc0
+
 Changes in 2012-01-16 (v4.1)
 * [NEW] AppDelegate: Uses NavigationViewController to control the UIViewControllers
 * [NEW] AppDelegate: Director pushes the scene instead of running. RootViewController will start the animation

@@ -141,7 +141,7 @@
 					 [frameCache spriteFrameByName:@"sapus_01.png"],
 					 nil];
 					 
-	CCAnimation *animFly = [CCAnimation animationWithFrames:array delay:0.14f];
+	CCAnimation *animFly = [CCAnimation animationWithSpriteFrames:array delay:0.14f];
 	sapus.position = ccp(240,50+12);
 	
 	id animate = [CCAnimate actionWithAnimation: animFly];

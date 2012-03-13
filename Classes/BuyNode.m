@@ -72,18 +72,18 @@
 	sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"SapusSelected1.png"] retain];
 	monusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"MonusSelected1.png"] retain];
 	
-	CCAnimation *sapusAnim = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusSelected2.png"]];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
-	[sapusAnim addFrame:[frameCache spriteFrameByName:@"SapusUnselected.png"]];
+	CCAnimation *sapusAnim = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusSelected2.png"]];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusSelected1.png"]];
+	[sapusAnim addSpriteFrame:[frameCache spriteFrameByName:@"SapusUnselected.png"]];
 
 	
-	CCAnimation *monusAnim = [CCAnimation animationWithFrames:nil delay:0.3f];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusSelected2.png"]];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
-	[monusAnim addFrame:[frameCache spriteFrameByName:@"MonusUnselected.png"]];
+	CCAnimation *monusAnim = [CCAnimation animationWithSpriteFrames:nil delay:0.3f];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusSelected2.png"]];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusSelected1.png"]];
+	[monusAnim addSpriteFrame:[frameCache spriteFrameByName:@"MonusUnselected.png"]];
 
 	[sapusSprite_ runAction: [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation: sapusAnim] ] ];
 	[monusSprite_ runAction: [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation: monusAnim] ] ];

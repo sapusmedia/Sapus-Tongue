@@ -125,10 +125,10 @@ static BOOL firstTime = YES;
 
 		// Sound ON/OFF button
 		SoundMenuItem *soundButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-music-on.png" selectedSpriteFrameName:@"btn-music-pressed.png" target:self selector:@selector(musicCallback:)];
-		CCAnimation *sounds = [CCAnimation animationWithFrames:nil delay:0.1f];
+		CCAnimation *sounds = [CCAnimation animationWithSpriteFrames:nil delay:0.1f];
 		CCSpriteFrameCache *cache = [CCSpriteFrameCache sharedSpriteFrameCache];
-		[sounds addFrame:[cache spriteFrameByName:@"btn-music-on.png"]];
-		[sounds addFrame:[cache spriteFrameByName:@"btn-music-off.png"]];
+		[sounds addSpriteFrame:[cache spriteFrameByName:@"btn-music-on.png"]];
+		[sounds addSpriteFrame:[cache spriteFrameByName:@"btn-music-off.png"]];
 		[[CCAnimationCache sharedAnimationCache] addAnimation:sounds name:@"sound"];
 
 		BOOL m = [[SimpleAudioEngine  sharedEngine] mute];

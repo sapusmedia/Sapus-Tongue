@@ -277,8 +277,11 @@
 //	[director_ setProjection:kCCDirectorProjection3D];
 	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director_ enableRetinaDisplay:YES] )
-		CCLOG(@"Retina Display Not supported");
+	
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		if( ! [director_ enableRetinaDisplay:YES] )
+			CCLOG(@"Retina Display Not supported");
+	}
 	
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
@@ -292,8 +295,9 @@
 	
 	// When in iPad / RetinaDisplay mode, CCFileUtils will append the "-ipad" / "-hd" to all loaded files
 	// If the -ipad  / -hdfile is not found, it will load the non-suffixed version
-	[CCFileUtils setiPadSuffix:@"-ipad"];			// Default on iPad is "" (empty string)
-	[CCFileUtils setRetinaDisplaySuffix:@"-hd"];	// Default on RetinaDisplay is "-hd"
+	[CCFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "" (empty string)
+	[CCFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
+	[CCFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on RetinaDisplay is "-hd"
 	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
