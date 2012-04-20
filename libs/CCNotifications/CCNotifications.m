@@ -151,7 +151,7 @@ static CCNotifications *sharedManager;
 	[template_ release];
 	template_ = templates;
 	[template_ setVisible:NO];
-	[template_ setIsRelativeAnchorPoint:YES];
+	[template_ setIgnoreAnchorPointForPosition:NO];
 	
 	[self _setState:kCCNotificationStateHide];
 }
