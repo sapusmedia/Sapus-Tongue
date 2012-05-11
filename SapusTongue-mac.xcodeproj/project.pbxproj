@@ -649,6 +649,7 @@
 		A0472C5B155C91BC00D7495D /* LICENSE_CocosDenshion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_CocosDenshion.txt; sourceTree = "<group>"; };
 		A0472C5C155C91BC00D7495D /* LICENSE_Kazmath.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_Kazmath.txt; sourceTree = "<group>"; };
 		A0472C5D155C91BC00D7495D /* LICENSE_SapusTongue.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE_SapusTongue.txt; sourceTree = "<group>"; };
+		A0472C5E155C931F00D7495D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		A09F425D140C680700DE33D7 /* ChipmunkHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChipmunkHelper.c; sourceTree = "<group>"; };
 		A09F425E140C680700DE33D7 /* ChipmunkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkHelper.h; sourceTree = "<group>"; };
 		A0D3A681149C7AC80077CD93 /* aabb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aabb.h; sourceTree = "<group>"; };
@@ -985,6 +986,7 @@
 		29B97314FDCFA39411CA2CEA /* SapusTongue */ = {
 			isa = PBXGroup;
 			children = (
+				A0472C5E155C931F00D7495D /* README.md */,
 				E0540F4A1229606300263E36 /* CHANGELOG */,
 				A0472C58155C91BC00D7495D /* LICENSE_Assets.txt */,
 				A0472C59155C91BC00D7495D /* LICENSE_Chipmunk.txt */,
