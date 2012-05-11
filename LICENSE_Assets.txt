@@ -1,0 +1,49 @@
+Music
+-----
+
+Resources/Sounds/music-background.mp3
+
+From:
+http://www.jamendo.com/en/track/126280/disneyland
+
+Copyright Michael Wehr
+
+LICENSE: Creative Commons http://creativecommons.org/licenses/by-nc-sa/3.0/
+	* Give credit to the artist
+	* Don't use this album for commercial purposes
+	* Distribute all derivative works under the same license
+
+
+Sounds
+------
+
+Resoruces/Sounds/snd-*.caf
+
+Copyright Zynga, Inc.
+
+LICENSE: Creative Commons http://creativecommons.org/licenses/by-nc-sa/3.0/
+	* Give credit to the artist
+	* Don't use them for commercial purposes
+	* Distribute all derivative works under the same license
+
+
+Fonts
+-----
+
+Resources/Images/font_grinched_*.png
+
+Generated from Grinched .TTF font:
+http://www.dafont.com/grinched.font
+
+LICENSE: Free for personal use
+
+
+Images
+------
+
+Copyright Zynga, Inc.
+
+LICENSE: Creative Commons http://creativecommons.org/licenses/by-nc-sa/3.0/
+	* Give credit to the artist
+	* Don't use them for commercial purposes
+	* Distribute all derivative works under the same license

@@ -1,11 +1,26 @@
-//
-//  MainMenuNode.m
-//  SapusTongue
-//
-//  Created by Ricardo Quesada on 06/10/08.
-//  Copyright 2008 Sapus Media. All rights reserved.
-//
-//  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
+/*
+ * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011-2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
 
 // Main Menu Node
 // A simple menu that let's you choose between:
@@ -113,10 +128,10 @@ static BOOL firstTime = YES;
 		[self addChild:background z:-1];
 
 		// Menu Items
-		CCMenuItemImage *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(startCallback:)];
-		CCMenuItemImage *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-instructions-normal.png" selectedSpriteFrameName:@"btn-instructions-selected.png" target:self selector:@selector(instructionsCallback:)];
-		CCMenuItemImage *item3 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-highscores-normal.png" selectedSpriteFrameName:@"btn-highscores-selected.png" target:self selector:@selector(highScoresCallback:)];
-		CCMenuItemImage *item4 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-about-normal.png" selectedSpriteFrameName:@"btn-about-selected.png" target:self selector:@selector(creditsCallback:)];
+		CCMenuItemImage *item1 = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(startCallback:)];
+		CCMenuItemImage *item2 = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-instructions-normal.png" selectedSpriteFrameName:@"btn-instructions-selected.png" target:self selector:@selector(instructionsCallback:)];
+		CCMenuItemImage *item3 = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-highscores-normal.png" selectedSpriteFrameName:@"btn-highscores-selected.png" target:self selector:@selector(highScoresCallback:)];
+		CCMenuItemImage *item4 = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-about-normal.png" selectedSpriteFrameName:@"btn-about-selected.png" target:self selector:@selector(creditsCallback:)];
 		
 		CCMenu *menu = [CCMenu menuWithItems:item1, item2, item3, item4, nil];
 		[menu alignItemsVertically];
@@ -124,7 +139,7 @@ static BOOL firstTime = YES;
 		menu.position = ccp(s.width/2,s.height/2-20);
 
 		// Sound ON/OFF button
-		SoundMenuItem *soundButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-music-on.png" selectedSpriteFrameName:@"btn-music-pressed.png" target:self selector:@selector(musicCallback:)];
+		SoundMenuItem *soundButton = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-music-on.png" selectedSpriteFrameName:@"btn-music-pressed.png" target:self selector:@selector(musicCallback:)];
 		CCAnimation *sounds = [CCAnimation animationWithSpriteFrames:nil delay:0.1f];
 		CCSpriteFrameCache *cache = [CCSpriteFrameCache sharedSpriteFrameCache];
 		[sounds addSpriteFrame:[cache spriteFrameByName:@"btn-music-on.png"]];
@@ -139,7 +154,7 @@ static BOOL firstTime = YES;
 		menu.position = ccp(20,s.height-20);
 
 		// Buy Sapus Sources
-		SoundMenuItem *buyButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-buy-normal.png" selectedSpriteFrameName:@"btn-buy-selected.png" target:self selector:@selector(buyCallback:)];	
+		SoundMenuItem *buyButton = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-buy-normal.png" selectedSpriteFrameName:@"btn-buy-selected.png" target:self selector:@selector(buyCallback:)];	
 		menu = [CCMenu menuWithItems:buyButton, nil];
 		[self addChild: menu z:0];
 

@@ -1,11 +1,26 @@
-//
-//  CreditsNode.m
-//  SapusTongue
-//
-//  Created by Ricardo Quesada on 12/10/08.
-//  Copyright 2008 Sapus Media. All rights reserved.
-//
-//  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
+/*
+ * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011-2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
 
 //
 // A nice credits scene that shows a "scrolling" layer and some sprites moving from here to there
@@ -68,7 +83,7 @@
 
 -(void) setupButton
 {		
-	CCMenuItemImage *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-menu-normal.png" selectedSpriteFrameName:@"btn-menu-selected.png" target:self selector:@selector(menuCallback:)];
+	CCMenuItemImage *item1 = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-menu-normal.png" selectedSpriteFrameName:@"btn-menu-selected.png" target:self selector:@selector(menuCallback:)];
 	CCMenu *menu = [CCMenu menuWithItems:item1, nil];
 	[self addChild:menu z:10];
 	menu.position = ccp(winSize_.width-55,winSize_.height-25);

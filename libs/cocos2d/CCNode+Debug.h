@@ -1,6 +1,7 @@
 /*
- * Copyright (c) 2008-2011 Ricardo Quesada
- * Copyright (c) 2011-2012 Zynga Inc.
+ * cocos2d for iPhone: http://www.cocos2d-iphone.org
+ *
+ * Copyright (c) 2012 Zynga Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,14 +20,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
  */
 
-#import "cocos2d.h"
+#import "CCNode.h"
 
-@interface BuyNode : CCLayer {
-	CCSprite		*sapusSprite_;
-	CCSprite		*monusSprite_;
-}
-+(id) scene;
+@interface CCNode (Debug)
+
+-(void) walkSceneGraph:(NSUInteger)level;
+
 @end

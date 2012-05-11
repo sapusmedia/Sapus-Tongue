@@ -1,4 +1,8 @@
-Changes in 2012-04-XX (v4.3)
+Changes in 2012-05-XX (v4.3)
+* [NEW] Changed license to MIT
+* [FIX] Music: Changed music song. Using a creative-commons music
+* [FIX] cocosLive: removed cocosLive, TouchJSON and related code
+* [FIX] SoundMenuItem: using initWith/itemWith instead of initFrom/itemFrom
 * [3RD] cocos2d: uses v2.0-rc1
 
 Changes in 2012-03-XX (v4.2)

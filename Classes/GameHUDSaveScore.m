@@ -1,12 +1,26 @@
-//
-//  GameHUDSaveScore.m
-//  SapusTongue
-//
-//  Created by Ricardo Quesada on 8/28/10.
-//  Copyright 2010 Sapus Media. All rights reserved.
-//
-//  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
-
+/*
+ * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011-2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
 
 //
 // This file contains a "SaveScoreExtesion" of GameHUD
@@ -29,10 +43,6 @@
 #import "HiScoresNode.h"
 #import "ScoreManager.h"
 #import "cocos2d.h"
-
-#ifdef __CC_PLATFORM_IOS
-#import "cocoslive.h"
-#endif
 
 
 
@@ -78,60 +88,6 @@ static NSString *_oldName = @"";
 
 #ifdef __CC_PLATFORM_IOS
 
--(void) submitGlobalScoreWithName:(NSString*) playername
-{
-	[activityIndicator_ startAnimating];
-	
-	int a = game_->throwAngle_ + 180;
-	if( a < 0 )
-		a += 360;	
-	
-	//
-	// using cocoslive to submit the score
-	//
-	CLScoreServerPost *server = [[CLScoreServerPost alloc] initWithGameName:@"SapusTongue2" gameKey:@"538654d0bffedd90d626c6d77f48b18c" delegate:self];
-	
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
-	
-	NSString *category;
-	
-	// TIP: If you are going to do an Universal application (iPad + iPhone)
-	// then you should do runtime checks, like the following:
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		category = @"iPad";
-	else
-		category = @"iPhone";
-	
-	// usr_ are fields that can be modified. user fields
-	[dict setObject: [NSNumber numberWithInt:[GameNode score]] forKey:@"cc_score"];	
-	[dict setObject: [NSNumber numberWithInt:(int)game_->throwVelocity_] forKey:@"usr_speed"];
-	[dict setObject: [NSNumber numberWithInt:a] forKey:@"usr_angle"];
-	[dict setObject: playername forKey:@"cc_playername"];	
-	[dict setObject: [NSNumber numberWithInt:[SelectCharNode selectedChar]] forKey:@"usr_playertype"];
-	[dict setObject: category forKey:@"cc_category"];
-	
-	// "update score" is the recommend way since it can be treated like a profile
-	// It also supports "world ranking". eg: "What's my ranking ?"
-	BOOL ok = [server updateScore:dict];	
-	
-	if( ! ok ) {
-		[activityIndicator_ stopAnimating];
-	}
-	
-	[server release];
-}
--(void) scorePostOk: (id) sender
-{
-	[activityIndicator_ stopAnimating];
-	[self gotoHiScores];
-}
-
--(void) scorePostFail: (id) sender
-{
-	// Score Post Failed. Show Dialog.
-	[self scorePostFailedShowAlert];
-}
-
 -(void) saveScoreButtonPressed
 {
 	// UIKit text field
@@ -167,65 +123,6 @@ static NSString *_oldName = @"";
 	//   eg: The "pause" button can't be touched now
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director touchDispatcher] setDispatchEvents: NO];
-	
-	
-	//	[nameField release];
-	
-	//
-	// create the UItoolbar_ at the bottom of the view controller
-	// Only in the paid version
-	// The toolbar_ sais: "Submit score to global server: YES/NO?"
-	//
-	// TIP:
-	//   If you are going to submit data to the internet you must inform the user
-	//   otherwise the game will be rejected by Apple
-	//
-#if ! LITE_VERSION	
-	
-	toolbar_ = [UIToolbar new];
-	toolbar_.barStyle = UIBarStyleDefault;
-	
-	switchCtl_ = [[UISwitch alloc] initWithFrame: CGRectMake(0.0f, 0.0f, 94, 27) ];
-	ScoreManager *scoreMgr = [ScoreManager sharedManager];
-	switchCtl_.on = scoreMgr.sendGlobalScores;
-	[switchCtl_ addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-	switchCtl_.backgroundColor = [UIColor clearColor];
-	UIBarButtonItem *customItem = [[UIBarButtonItem alloc] initWithCustomView:switchCtl_];
-	[switchCtl_ release];
-	
-	frame = CGRectMake(0, 0.0f, 290.0f, 20);
-	UILabel *label = [[UILabel alloc] initWithFrame:frame];
-	label.textAlignment = UITextAlignmentRight;
-	label.text = @"Submit score to global server:";
-	label.font = [UIFont boldSystemFontOfSize:14.0f];
-	label.backgroundColor = [UIColor clearColor];
-	label.textColor = [UIColor colorWithRed:76.0f/255.0f green:86.0f/255.0f blue:108.0f/255.0f alpha:1.0f];
-	UIBarButtonItem *labelItem = [[UIBarButtonItem alloc] initWithCustomView:label];
-	[label release];
-	
-	NSArray *items = [NSArray arrayWithObjects: labelItem, customItem, nil];
-	toolbar_.items = items;
-	[customItem release];
-	[labelItem release];
-	
-	// size up the toolbar_ and set its frame
-	[toolbar_ sizeToFit];
-	CGFloat toolbarHeight = [toolbar_ frame].size.height;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		toolbar_.frame = CGRectMake(0, s.height/2-12, s.width, toolbarHeight);
-	else 
-		toolbar_.frame = CGRectMake(0, s.height/2-34, s.width, toolbarHeight);
-	
-	[viewController.view addSubview:toolbar_];
-	
-#else // LITE_VERSION
-	switchCtl_ = nil;
-	toolbar_ = nil;
-#endif // LITE_VERSION
-	
-	
-	//	[toolbar_ release];
 }
 
 -(void) submitScore
@@ -240,16 +137,7 @@ static NSString *_oldName = @"";
 	}
 	
 	// Always post score to local DB
-	[self submitLocalScoreWithName: playername];
-	
-	// Only post it if "submit score" is enabled.
-	// TIP:
-	//   nil objects can receive selectors.
-	//   switchCtl is nil in the Lite version
-	//   and it will return False.
-	//   It is OK to deal with nil objects in obj-c.
-	if( switchCtl_.on )
-		[self submitGlobalScoreWithName: playername];
+	[self submitLocalScoreWithName: playername];	
 }
 
 //
@@ -293,19 +181,11 @@ static NSString *_oldName = @"";
 	
 	[self submitScore];
 	
-	if( ! switchCtl_.on )
-		[self gotoHiScores];
+	[self gotoHiScores];
 	
 	[nameField_ removeFromSuperview];
-	[toolbar_ removeFromSuperview];
 	
 	return NO;
-}
-
-//
-- (void)switchAction:(id)sender
-{
-	[[ScoreManager sharedManager] setSendGlobalScores:switchCtl_.on];
 }
 
 #elif defined(__CC_PLATFORM_MAC)

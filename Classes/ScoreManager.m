@@ -1,10 +1,27 @@
-//
-//  ScoreManager.m
-//  SapusTongue-iOS
-//
-//  Created by Ricardo Quesada on 10/12/10.
-//  Copyright 2010 Sapus Media. All rights reserved.
-//
+/*
+ * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011-2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 
 #import "ScoreManager.h"
 #import "LocalScore.h"
@@ -26,9 +43,7 @@ static ScoreManager *sharedManager = nil;
 @implementation ScoreManager
 
 @synthesize scores=scores_;
-@synthesize globalScores=globalScores_;
 @synthesize database=database_;
-@synthesize sendGlobalScores=sendGlobalScores_;
 
 + (ScoreManager *)sharedManager
 {
@@ -47,8 +62,6 @@ static ScoreManager *sharedManager = nil;
 -(id) init
 {
 	if( (self = [super init]) ) {
-		// "global variables" initialization
-		sendGlobalScores_ = YES;
 		
 		[self createEditableCopyOfDatabaseIfNeeded];
 		[self initializeDatabase];
@@ -58,10 +71,7 @@ static ScoreManager *sharedManager = nil;
 }
 
 -(void) initScores
-{	
-	// scores used by CocosLive
-	self.globalScores = [NSMutableArray arrayWithCapacity:50];
-	
+{		
 #ifdef __CC_PLATFORM_IOS
 	
 	// GameCenter initialization

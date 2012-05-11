@@ -1,11 +1,26 @@
-//
-//  HiScoresNode.m
-//  Sapus Tongue
-//
-//  Created by Ricardo Quesada on 18/09/08.
-//  Copyright 2008 Sapus Media. All rights reserved.
-//
-//  DO NOT DISTRIBUTE THIS FILE WITHOUT PRIOR AUTHORIZATION
+/*
+ * Copyright (c) 2008-2011 Ricardo Quesada
+ * Copyright (c) 2011-2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
 
 //
 // Code that shows the "high score" scene
@@ -28,7 +43,6 @@
 #import "ScoreManager.h"
 
 #ifdef __CC_PLATFORM_IOS
-#import "cocoslive.h"
 #import "GameCenterManager.h"
 #elif defined(__CC_PLATFORM_MAC)
 #import "BDSKOverlayWindow.h"
@@ -69,44 +83,29 @@
 
 		// CocosLive server is only supported on iOS
 #ifdef __CC_PLATFORM_IOS
-		// local Scores
-		displayLocalScores_ = YES;
-
-		CCMenuItem *worldScores = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-world-normal.png" selectedSpriteFrameName:@"btn-world-selected.png" target:self selector:@selector(globalScoresCB:)];
-		CCMenuItem *countryScores = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-country-normal.png" selectedSpriteFrameName:@"btn-country-selected.png" target:self selector:@selector(countryScoresCB:)];
-		CCMenuItem *myScores = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-my_scores-normal.png" selectedSpriteFrameName:@"btn-my_scores-selected.png" target:self selector:@selector(localScoresCB:)];
 
 		CCMenuItem *gameCenter = nil;
 		if( [GameCenterManager isGameCenterAvailable] ) {
-			gameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-game_center-normal.png" selectedSpriteFrameName:@"btn-game_center-selected.png" target:self selector:@selector(gameCenterCB:)];
+			gameCenter = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-game_center-normal.png" selectedSpriteFrameName:@"btn-game_center-selected.png" target:self selector:@selector(gameCenterCB:)];
 		}
 		
-		CCMenu *menuV = nil;
-		if ( gameCenter )
-			menuV = [CCMenu menuWithItems: gameCenter, worldScores, countryScores, myScores, nil];
-		else
-			menuV = [CCMenu menuWithItems: worldScores, countryScores, myScores, nil];
-
-		[menuV alignItemsVertically];
-		if( gameCenter )
-			menuV.position = ccp(s.width/2+192,s.height/2+20);
-		else
-			menuV.position = ccp(s.width/2+192,s.height/2+40);
-
-		
-		[self addChild: menuV z:0];
+		if ( gameCenter ) {
+			CCMenu *menuV = [CCMenu menuWithItems: gameCenter, nil];
+			menuV.position = ccp(s.width/2+192,s.height/2+80);		
+			[self addChild: menuV z:0];
+		}
 		
 #endif // __CC_PLATFORM_IOS
 
 		CCMenu *menuH;
-		CCMenuItem* menuItem = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-menumed-normal.png" selectedSpriteFrameName:@"btn-menumed-selected.png" target:self selector:@selector(menuCB:)];
+		CCMenuItem* menuItem = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-menumed-normal.png" selectedSpriteFrameName:@"btn-menumed-selected.png" target:self selector:@selector(menuCB:)];
 
 		// Menu
 		if( ! again ) {
 			menuH = [CCMenu menuWithItems: menuItem, nil];
 		}
 		else {
-			CCMenuItem* itemAgain = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-playagain-normal.png" selectedSpriteFrameName:@"btn-playagain-selected.png" target:self selector:@selector(playAgainCB:)];
+			CCMenuItem* itemAgain = [SoundMenuItem itemWithNormalSpriteFrameName:@"btn-playagain-normal.png" selectedSpriteFrameName:@"btn-playagain-selected.png" target:self selector:@selector(playAgainCB:)];
 			menuH = [CCMenu menuWithItems: itemAgain, menuItem, nil];
 		}
 		
@@ -298,41 +297,8 @@
 	[ctl.view addSubview: myTableView_];	
 }
 
-// menu callbacks
--(void) globalScoresCB: (id) sender
-{	
-	CLScoreServerRequest *request = [[CLScoreServerRequest alloc] initWithGameName:@"SapusTongue2" delegate:self];
-
-	NSString *category;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		category = @"iPad";
-	else
-		category = @"iPhone";
-
-	if( [request requestScores:kQueryAllTime limit:kMaxScoresToFetch offset:0 flags:kQueryFlagIgnore category:category] )
-		[activityIndicator_ startAnimating];
-	[request release];
-}
-
--(void) countryScoresCB: (id) sender
-{	
-	CLScoreServerRequest *request = [[CLScoreServerRequest alloc] initWithGameName:@"SapusTongue2" delegate:self];
-	
-	NSString *category;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		category = @"iPad";
-	else
-		category = @"iPhone";
-	
-	if( [request requestScores:kQueryAllTime limit:kMaxScoresToFetch offset:0 flags:kQueryFlagByCountry category:category] )
-		[activityIndicator_ startAnimating];
-	[request release];
-}
-
-
 -(void) localScoresCB: (id) sender
 {	
-	displayLocalScores_ = YES;
 	[myTableView_ reloadData];
 }
 
@@ -353,33 +319,6 @@
 }
 
 
-#pragma mark HiScoresNode - GlobalScore Delegate (iOS)
--(void) scoreRequestOk: (id) sender
-{
-	displayLocalScores_ = NO;
-
-	// scores shall is autoreleased... I guess
-	NSArray *scores = [sender parseScores];
-	
-	NSMutableArray *mutable = [NSMutableArray arrayWithArray:scores];
-	[[ScoreManager sharedManager] setGlobalScores:mutable];
-	
-	[activityIndicator_ stopAnimating];
-	[myTableView_ reloadData];	
-}
-
--(void) scoreRequestFail: (id) sender
-{
-	[activityIndicator_ stopAnimating];
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connection failed"
-														message:@"Make sure that you have an active cellular or WiFi connection."
-														delegate:self
-														cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];	
-}
-
-
 #pragma mark HiScoresNode - UITableViewDataSouce (iOS)
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
@@ -393,10 +332,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	ScoreManager *scoreMgr = [ScoreManager sharedManager];
-	if( displayLocalScores_ )
-		return [[scoreMgr scores] count];
-	else
-		return [[scoreMgr globalScores] count];
+	return [[scoreMgr scores] count];
 }
 
 -(void) setImage:(UIImage*)image inTableViewCell:(UITableViewCell*)cell
@@ -503,42 +439,19 @@
 	ScoreManager *scoreMgr = [ScoreManager sharedManager];
 	idx.text = [NSString stringWithFormat:@"%d", indexPath.row + 1];
 
-	if(displayLocalScores_) {
-		
-		LocalScore *s = [[scoreMgr scores] objectAtIndex: i];
-		name.text = s.playername;
-		score.text = [s.score stringValue];
-		speed.text = [s.speed stringValue];
-		angle.text = [s.angle stringValue];
+	LocalScore *s = [[scoreMgr scores] objectAtIndex: i];
+	name.text = s.playername;
+	score.text = [s.score stringValue];
+	speed.text = [s.speed stringValue];
+	angle.text = [s.angle stringValue];
 
-		if( [s.playerType intValue] == 1 )
-			[self setImage:[UIImage imageNamed:@"MonusHead.png"] inTableViewCell:cell];
-		else
-			[self setImage:[UIImage imageNamed:@"SapusHead.png"] inTableViewCell:cell];
+	if( [s.playerType intValue] == 1 )
+		[self setImage:[UIImage imageNamed:@"MonusHead.png"] inTableViewCell:cell];
+	else
+		[self setImage:[UIImage imageNamed:@"SapusHead.png"] inTableViewCell:cell];
 
-		imageView.image = nil;	
-	} else {
-		NSDictionary *s = [[scoreMgr globalScores] objectAtIndex:i];
-		name.text = [s objectForKey:@"cc_playername"];
-		// this is an NSNumber... convert it to string
-		score.text = [[s objectForKey:@"cc_score"] stringValue];
-		speed.text = [[s objectForKey:@"usr_speed"] stringValue];
-		angle.text = [[s objectForKey:@"usr_angle"] stringValue];
+	imageView.image = nil;	
 
-		NSNumber *type = [s objectForKey:@"usr_playertype"];
-		if( [type intValue] == 1 )
-			[self setImage:[UIImage imageNamed:@"MonusHead.png"] inTableViewCell:cell];
-
-		else
-			[self setImage:[UIImage imageNamed:@"SapusHead.png"] inTableViewCell:cell];
-		
-		NSString *flag = [[s objectForKey:@"cc_country"] lowercaseString];
-		UIImage *image;
-		image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", flag]];
-		if(! image )
-			image = [UIImage imageNamed:@"fam.png"];
-		imageView.image = image;		
-	}
 	return cell;
 }
 

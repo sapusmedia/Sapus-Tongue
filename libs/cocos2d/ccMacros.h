@@ -60,21 +60,24 @@
 #define __CCLOGWITHFUNCTION(s, ...) \
 NSLog(@"%s : %@",__FUNCTION__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
 
+#define __CCLOG(s, ...) \
+NSLog(@"%@",[NSString stringWithFormat:(s), ##__VA_ARGS__])
+
 
 #if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
 #define CCLOG(...) do {} while (0)
+#define CCLOGWARN(...) do {} while (0)
 #define CCLOGINFO(...) do {} while (0)
-#define CCLOGERROR(...) do {} while (0)
 
 #elif COCOS2D_DEBUG == 1
-#define CCLOG(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
-#define CCLOGERROR(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOG(...) __CCLOG(__VA_ARGS__)
+#define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
 #define CCLOGINFO(...) do {} while (0)
 
 #elif COCOS2D_DEBUG > 1
-#define CCLOG(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
-#define CCLOGERROR(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
-#define CCLOGINFO(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOG(...) __CCLOG(__VA_ARGS__)
+#define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+#define CCLOGINFO(...) __CCLOG(__VA_ARGS__)
 #endif // COCOS2D_DEBUG
 
 
@@ -186,7 +189,7 @@ do	{																							\
 #define CC_NODE_DRAW_SETUP()																	\
 do {																							\
 	ccGLEnable( glServerState_ );																\
-    NSAssert(shaderProgram_, @"No shader program set for node: %@", self);                      \
+    NSAssert1(shaderProgram_, @"No shader program set for node: %@", self);						\
 	[shaderProgram_ use];																		\
 	[shaderProgram_ setUniformForModelViewProjectionMatrix];									\
 } while(0)
