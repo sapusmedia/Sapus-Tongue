@@ -210,8 +210,6 @@ eachShape(cpShape *shape, void* instance)
 
 -(void) setupChipmunk
 {	
-	cpInitChipmunk();
-		
 	space_ = cpSpaceNew();
 
 	space_->iterations = 10;

@@ -420,8 +420,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 -(void) setupChipmunk
 {	
-	cpInitChipmunk();
-		
 	space_ = cpSpaceNew();
 	space_->iterations = 10;
 	space_->gravity = cpv(0, kGravityRoll);
