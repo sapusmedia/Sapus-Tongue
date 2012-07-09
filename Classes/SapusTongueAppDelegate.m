@@ -75,30 +75,6 @@
 
 
 #ifdef __CC_PLATFORM_IOS
-- (void) removeStartupFlicker
-{
-	//
-	// THIS CODE REMOVES THE STARTUP FLICKER
-	//
-	// Uncomment the following code if you Application only supports landscape mode
-	//
-	
-	CCDirector *director = [CCDirector sharedDirector];
-	CGSize size = [director winSize];
-	CCSprite *sprite = nil;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		sprite = [CCSprite spriteWithFile:@"Default-Portrait.png"];
-	else
-		sprite = [CCSprite spriteWithFile:@"Default.png"];
-	sprite.position = ccp(size.width/2, size.height/2);
-	sprite.rotation = -90;
-	[sprite visit];
-	[(CCGLView*)[director view] swapBuffers];
-}
-#endif // __CC_PLATFORM_IOS
-
-
-#ifdef __CC_PLATFORM_IOS
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 #elif defined(__CC_PLATFORM_MAC)
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -298,16 +274,6 @@
 			CCLOG(@"Retina Display Not supported");
 	}
 	
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
-	navController_.navigationBarHidden = YES;
-	
-	// set the Navigation Controller as the root view controller
-	//	[window_ setRootViewController:rootViewController_];
-	[window_ addSubview:navController_.view];
-	
-	// make main window visible
-	[window_ makeKeyAndVisible];
-	
 	// If the 1st suffix is not found, then the fallback suffixes are going to used. If none is found, it will try with the name without suffix.
 	// On iPad HD  : "-ipadhd", "-ipad",  "-hd"
 	// On iPad     : "-ipad", "-hd"
@@ -317,9 +283,16 @@
 	[sharedFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on iPhone RetinaDisplay is "-hd"
 	[sharedFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "ipad"
 	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
+		
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
 	
-	// Removes the startup flicker
-	[self removeStartupFlicker];
+	// set the Navigation Controller as the root view controller
+	[window_ setRootViewController:navController_];
+	
+	// make main window visible
+	[window_ makeKeyAndVisible];
+	
 }
 
 // Support only landscape mode

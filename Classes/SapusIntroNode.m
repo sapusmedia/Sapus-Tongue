@@ -46,41 +46,13 @@ enum {
 -(id) init {
 	if( (self=[super init])) {
 
-		CCSprite *background;
-		
 		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"music-background.mp3"];
 
-		CGSize size = [[CCDirector sharedDirector] winSize];
-		
 		// Load SpriteFrames here. These SpriteFrames are going to be used all over the game.
 		// TIP: When possible, try to use the sprite frame cache:
 		// TIP: Faster loading times, less memory consuption, and faster rendering in case you use an SpriteSheet.
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-buttons.plist"];		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sapus-monus-ufo-hud.plist"];		
-		
-	
-#ifdef __CC_PLATFORM_IOS
-		// TIP: If you are going to do an Universal application (iPad + iPhone)
-		// then you should do runtime checks, like the following:
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			background = [CCSprite spriteWithFile:@"Default-Portrait.png"];
-		else
-			background = [CCSprite spriteWithFile:@"Default.png"];
-
-		background.rotation = -90;
-
-#elif defined(__CC_PLATFORM_MAC)
-		background = [CCSprite spriteWithFile:@"Default-mac.png"];
-#endif
-		background.position = ccp(size.width/2, size.height/2);
-		[self addChild:background];
-		
-
-		CGSize s = [[CCDirector sharedDirector] winSize];
-		LoadingBarNode *loader = [LoadingBarNode node];
-		
-		[self addChild:loader z:1 tag:kTagLoader];
-		[loader setPosition:ccp(s.width/2, 35)];
 	}
 	return self;
 }
@@ -88,7 +60,31 @@ enum {
 -(void) onEnter
 {
 	[super onEnter];
-	LoadingBarNode *loader = (LoadingBarNode*) [self getChildByTag:kTagLoader];
+	
+	CCSprite *background;
+	
+	CGSize size = [[CCDirector sharedDirector] winSize];
+	
+#ifdef __CC_PLATFORM_IOS
+	// TIP: If you are going to do an Universal application (iPad + iPhone)
+	// then you should do runtime checks, like the following:
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		background = [CCSprite spriteWithFile:@"Default-Landscape~ipad.png"];
+	else {
+		background = [CCSprite spriteWithFile:@"Default.png"];
+		background.rotation = -90;
+	}
+	
+#elif defined(__CC_PLATFORM_MAC)
+	background = [CCSprite spriteWithFile:@"Default-mac.png"];
+#endif
+	background.position = ccp(size.width/2, size.height/2);
+	[self addChild:background];
+	
+	LoadingBarNode *loader = [LoadingBarNode node];
+	
+	[self addChild:loader z:1 tag:kTagLoader];
+	[loader setPosition:ccp(size.width/2, 35)];
 	[loader loadImagesWithArray:[MainMenuNode textureNames] target:self selector:@selector(imagesLoaded:)];
 }
 
