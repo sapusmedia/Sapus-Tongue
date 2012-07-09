@@ -24,7 +24,7 @@
 
 @interface ChipmunkSprite : CCSprite
 {
-	cpBody *body_;	// strong ref
+	cpBody *body_;	// weak ref
 }
 
 -(void) setPhysicsBody:(cpBody*)body;
