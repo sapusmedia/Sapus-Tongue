@@ -24,8 +24,11 @@
 
 
 //
-// The InstructionsNode.m contains a simplified logic of GameNode
+// XXX: 
+// XXX: DO NOT USE THIS FILE AS SAMPLE. INSTEAD USE GameNode.m
+// XXX:
 //
+// The InstructionsNode.m contains a simplified logic of GameNode
 // The entry point of the node is "Init & Creation"
 //
 
@@ -34,6 +37,7 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 #import "ChipmunkHelper.h"
+#import "ChipmunkSprite.h"
 
 #if __CC_PLATFORM_IOS
 #import <MediaPlayer/MediaPlayer.h>
@@ -86,22 +90,6 @@ enum {
 
 #pragma mark Chipmunk Callbacks
 
-
-static void
-eachShape(cpShape *shape, void* instance)
-{
-//	InstructionsNode *self = (InstructionsNode*) instance;
-	CCSprite *sprite = shape->data;
-	if( sprite ) {
-		cpVect c;
-		cpBody *body = shape->body;
-		
-		c = cpvadd(body->p, cpvrotate(cpvzero, body->rot));
-		
-		[sprite setPosition: ccp( c.x, c.y)];
-		[sprite setRotation: CC_RADIANS_TO_DEGREES( -body->a )];
-	}
-}
 
 #pragma mark InstructionsNode - Private interaces
 @interface InstructionsNode ()
@@ -218,7 +206,7 @@ eachShape(cpShape *shape, void* instance)
 	cpShape *shape;
 
 	// pivot point. fly
-	CCSprite *fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
+	ChipmunkSprite *fly = [ChipmunkSprite spriteWithSpriteFrameName:@"fly.png"];
 	[self addChild:fly z:-1];
 	
 	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
@@ -228,6 +216,9 @@ eachShape(cpShape *shape, void* instance)
 	shape->u = 0.9f;
 	shape->data = fly;
 	cpSpaceAddStaticShape(space_, shape);
+	
+	// link sprite and body
+	[fly setPhysicsBody:pivotBody_];
 
 	[self setupSapus];
 	[self setupJoint];
@@ -241,7 +232,7 @@ eachShape(cpShape *shape, void* instance)
 
 -(void) setupSapus
 {	
-	sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];		
+	sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];		
 	[self addChild:sapusSprite_ z:-1];
 	
 	CGSize s = [sapusSprite_ contentSize];
@@ -311,6 +302,8 @@ eachShape(cpShape *shape, void* instance)
 	shape->collision_type = kCollTypeSapus;	
 	cpSpaceAddShape(space_, shape);
 	
+	// link sprite and body
+	[sapusSprite_ setPhysicsBody:sapusBody_];
 }
 
 -(void) setupTongue
@@ -365,8 +358,6 @@ eachShape(cpShape *shape, void* instance)
 	for(int i=0; i<steps; i++){
 		cpSpaceStep(space_, dt);
 	}
-	
-	cpSpaceEachShape(space_, &eachShape, self);
 }
 
 

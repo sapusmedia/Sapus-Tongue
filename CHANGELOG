@@ -3,7 +3,10 @@ Changes in 2012-06-04 (v4.3)
 * [FIX] Music: Changed music song. Using a creative-commons music
 * [FIX] cocosLive: removed cocosLive, TouchJSON and related code
 * [FIX] SoundMenuItem: using initWith/itemWith instead of initFrom/itemFrom
-* [3RD] cocos2d: uses v2.0-rc2
+* [FIX] Removed flicker from startup
+* [FIX] GameNode: ChipmunkSprite (faster update)
+* [FIX] GameNode: chipmunk's setters/getters instead of accesing directly to the struct.
+* [3RD] cocos2d: uses v2.0.0
 * [3RD] Chipmunk: uses v6.1.1
 
 Changes in 2012-03-XX (v4.2)

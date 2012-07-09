@@ -435,6 +435,8 @@
 		A0D3A642149C45F00077CD93 /* prime.h in Headers */ = {isa = PBXBuildFile; fileRef = A0D3A544149C45EE0077CD93 /* prime.h */; };
 		A0E6362015AA7DCE008735E6 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E6361F15AA7DCE008735E6 /* Default-Landscape~ipad.png */; };
 		A0E6362115AA7DCE008735E6 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E6361F15AA7DCE008735E6 /* Default-Landscape~ipad.png */; };
+		A0E6363315AA9058008735E6 /* ChipmunkSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = A0E6363115AA9057008735E6 /* ChipmunkSprite.h */; };
+		A0E6363415AA9058008735E6 /* ChipmunkSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E6363215AA9057008735E6 /* ChipmunkSprite.m */; };
 		E0285920129583A9002E2303 /* SapusChoosePlayer-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */; };
 		E0285921129583A9002E2303 /* SapusChoosePlayer-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */; };
 		E028593F1295848D002E2303 /* SapusMenu-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E028593D1295848D002E2303 /* SapusMenu-ipad.png */; };
@@ -959,6 +961,8 @@
 		A0D3A543149C45EE0077CD93 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		A0D3A544149C45EE0077CD93 /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
 		A0E6361F15AA7DCE008735E6 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		A0E6363115AA9057008735E6 /* ChipmunkSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkSprite.h; sourceTree = "<group>"; };
+		A0E6363215AA9057008735E6 /* ChipmunkSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipmunkSprite.m; sourceTree = "<group>"; };
 		E028591F129583A9002E2303 /* SapusChoosePlayer-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusChoosePlayer-ipad.png"; sourceTree = "<group>"; };
 		E028593D1295848D002E2303 /* SapusMenu-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusMenu-ipad.png"; sourceTree = "<group>"; };
 		E028595212958582002E2303 /* SapusScores-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SapusScores-ipad.png"; sourceTree = "<group>"; };
@@ -1793,6 +1797,8 @@
 		E04D949F122C128100BBA55B /* Helper Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				A0E6363115AA9057008735E6 /* ChipmunkSprite.h */,
+				A0E6363215AA9057008735E6 /* ChipmunkSprite.m */,
 				50609A7711403502002447DB /* MountainNode.h */,
 				50609A7811403502002447DB /* MountainNode.m */,
 				5053BD4A117CE78F00258058 /* FastGrid.h */,
@@ -2028,6 +2034,7 @@
 				A0BCD40D157C1BEE00CCE291 /* uthash.h in Headers */,
 				A0BCD40E157C1BEE00CCE291 /* utlist.h in Headers */,
 				A0BCD40F157C1BEE00CCE291 /* ZipUtils.h in Headers */,
+				A0E6363315AA9058008735E6 /* ChipmunkSprite.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2504,6 +2511,7 @@
 				A0BCD40A157C1BEE00CCE291 /* TGAlib.m in Sources */,
 				A0BCD40C157C1BEE00CCE291 /* TransformUtils.m in Sources */,
 				A0BCD410157C1BEE00CCE291 /* ZipUtils.m in Sources */,
+				A0E6363415AA9058008735E6 /* ChipmunkSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

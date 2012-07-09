@@ -25,6 +25,7 @@
 
 #import "cocos2d.h"
 #import "chipmunk.h"
+#import "ChipmunkSprite.h"
 
 #ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
@@ -63,7 +64,7 @@ typedef enum {
 	// In general, I don't recommend making public every variable, but sometimes it is
 	// faster
 @public
-	CCSprite		*sapusSprite_;
+	ChipmunkSprite		*sapusSprite_;
 	
 	// Physics: Hero
 	cpSpace			*space_;

@@ -285,6 +285,7 @@
 		A0D3A7AB149C7AC90077CD93 /* vec2.c in Sources */ = {isa = PBXBuildFile; fileRef = A0D3A69F149C7AC80077CD93 /* vec2.c */; };
 		A0D3A7AC149C7AC90077CD93 /* vec3.c in Sources */ = {isa = PBXBuildFile; fileRef = A0D3A6A0149C7AC80077CD93 /* vec3.c */; };
 		A0D3A7AD149C7AC90077CD93 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = A0D3A6A1149C7AC80077CD93 /* vec4.c */; };
+		A0E6363A15AA9915008735E6 /* ChipmunkSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E6363915AA9915008735E6 /* ChipmunkSprite.m */; };
 		E0292AED12EA0376009CD87B /* font_grinched_21.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292AE712EA0376009CD87B /* font_grinched_21.png */; };
 		E0292AEE12EA0376009CD87B /* font_grinched_42.png in Resources */ = {isa = PBXBuildFile; fileRef = E0292AE812EA0376009CD87B /* font_grinched_42.png */; };
 		E0292AF112EA0376009CD87B /* sapus-monus-ufo-hud.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0292AEB12EA0376009CD87B /* sapus-monus-ufo-hud.plist */; };
@@ -745,6 +746,8 @@
 		A0D3A69F149C7AC80077CD93 /* vec2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec2.c; sourceTree = "<group>"; };
 		A0D3A6A0149C7AC80077CD93 /* vec3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec3.c; sourceTree = "<group>"; };
 		A0D3A6A1149C7AC80077CD93 /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec4.c; sourceTree = "<group>"; };
+		A0E6363815AA9915008735E6 /* ChipmunkSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipmunkSprite.h; sourceTree = "<group>"; };
+		A0E6363915AA9915008735E6 /* ChipmunkSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipmunkSprite.m; sourceTree = "<group>"; };
 		E0292AE712EA0376009CD87B /* font_grinched_21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = font_grinched_21.png; path = Resources/Images/font_grinched_21.png; sourceTree = "<group>"; };
 		E0292AE812EA0376009CD87B /* font_grinched_42.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = font_grinched_42.png; path = Resources/Images/font_grinched_42.png; sourceTree = "<group>"; };
 		E0292AEB12EA0376009CD87B /* sapus-monus-ufo-hud.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "sapus-monus-ufo-hud.plist"; path = "Resources/Images/sapus-monus-ufo-hud.plist"; sourceTree = "<group>"; };
@@ -1474,6 +1477,8 @@
 		E04D94A0122C129C00BBA55B /* Helper Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				A0E6363815AA9915008735E6 /* ChipmunkSprite.h */,
+				A0E6363915AA9915008735E6 /* ChipmunkSprite.m */,
 				A09F425D140C680700DE33D7 /* ChipmunkHelper.c */,
 				A09F425E140C680700DE33D7 /* ChipmunkHelper.h */,
 				E054F8D61228318700263E36 /* FastGrid.h */,
@@ -2118,6 +2123,7 @@
 				E04D949A122C124100BBA55B /* BDSKOverlayWindow.m in Sources */,
 				E0B1EE9E1264B55100ACD961 /* ScoreManager.m in Sources */,
 				A09F425F140C680700DE33D7 /* ChipmunkHelper.c in Sources */,
+				A0E6363A15AA9915008735E6 /* ChipmunkSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

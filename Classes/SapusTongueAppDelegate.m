@@ -45,9 +45,16 @@
 // "private" methods in objective-c can be coded using an "extension" with the random name,
 // like Private.
 //
-@interface SapusTongueAppDelegate (Private)
+@interface SapusTongueAppDelegate ()
+
+#ifdef __CC_PLATFORM_IOS
 -(void) setupDirectorIOS;
+-(void) setupRootViewController;
+
+#elif defined( __CC_PLATFORM_MAC)
 -(void) setupDirectorMac;
+#endif // __CC_PLATFORM_MAC
+
 @end
 
 
@@ -123,8 +130,13 @@
 #ifdef __CC_PLATFORM_IOS
 	// Run the intro Scene
 	[director_ pushScene: [SapusIntroNode scene] ];
+
+	[self setupRootViewController];
+
 	return YES;
+
 #elif defined(__CC_PLATFORM_MAC)
+
 	[director_ runWithScene:[SapusIntroNode scene] ];
 #endif
 }
@@ -234,6 +246,18 @@
 
 #ifdef __CC_PLATFORM_IOS
 
+-(void) setupRootViewController
+{
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
+	
+	// set the Navigation Controller as the root view controller
+	[window_ setRootViewController:navController_];
+	
+	// make main window visible
+	[window_ makeKeyAndVisible];	
+}
+
 -(void) setupDirectorIOS
 {
 	// Don't call super
@@ -282,17 +306,7 @@
 //	[sharedFileUtils setEnableFallbackSuffixes:YES];			// Default: NO. No fallback suffixes are going to be used
 	[sharedFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on iPhone RetinaDisplay is "-hd"
 	[sharedFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "ipad"
-	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
-		
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
-	navController_.navigationBarHidden = YES;
-	
-	// set the Navigation Controller as the root view controller
-	[window_ setRootViewController:navController_];
-	
-	// make main window visible
-	[window_ makeKeyAndVisible];
-	
+	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"		
 }
 
 // Support only landscape mode

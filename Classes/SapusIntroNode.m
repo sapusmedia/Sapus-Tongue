@@ -68,16 +68,17 @@ enum {
 #ifdef __CC_PLATFORM_IOS
 	// TIP: If you are going to do an Universal application (iPad + iPhone)
 	// then you should do runtime checks, like the following:
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		background = [CCSprite spriteWithFile:@"Default-Landscape~ipad.png"];
-	else {
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ) {
 		background = [CCSprite spriteWithFile:@"Default.png"];
 		background.rotation = -90;
+	} else {
+		background = [CCSprite spriteWithFile:@"Default-Landscape~ipad.png"];
 	}
 	
 #elif defined(__CC_PLATFORM_MAC)
 	background = [CCSprite spriteWithFile:@"Default-mac.png"];
 #endif
+
 	background.position = ccp(size.width/2, size.height/2);
 	[self addChild:background];
 	

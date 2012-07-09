@@ -185,22 +185,6 @@ void drawPolyShape(cpShape *shape)
 }
 #endif // ST_DRAW_SHAPES
 
-static void
-eachShape(cpShape *shape, void* instance)
-{
-//	GameNode *self = (GameNode*) instance;
-	CCSprite *sprite = shape->data;
-	if( sprite ) {
-		cpVect c;
-		cpBody *body = shape->body;
-		
-		c = cpvadd(body->p, cpvrotate(cpvzero, body->rot));
-		
-		[sprite setPosition: ccp( c.x, c.y)];
-		[sprite setRotation: CC_RADIANS_TO_DEGREES( -body->a )];
-
-	}
-}
 
 #if ST_DRAW_SHAPES
 static void drawEachShape( cpShape *shape, void *instace )
@@ -421,15 +405,15 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 -(void) setupChipmunk
 {	
 	space_ = cpSpaceNew();
-	space_->iterations = 10;
-	space_->gravity = cpv(0, kGravityRoll);
+	cpSpaceSetIterations(space_, 10);
+	cpSpaceSetGravity(space_, cpv(0, kGravityRoll) );
 	
 	// pivot point. fly
-	CCSprite *fly = nil;
+	ChipmunkSprite *fly = nil;
 	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
-		fly = [CCSprite spriteWithSpriteFrameName:@"fly.png"];
+		fly = [ChipmunkSprite spriteWithSpriteFrameName:@"fly.png"];
 	else {
-		fly = [CCSprite spriteWithSpriteFrameName:@"branch.png"];
+		fly = [ChipmunkSprite spriteWithSpriteFrameName:@"branch.png"];
 		CGSize s = [fly contentSize];
 		fly.anchorPoint = ccp(19/s.width,30/s.height);
 	}
@@ -439,40 +423,43 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpShape *shape = NULL;
 
 	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
-	pivotBody_->p =  cpv(kJointX,kJointY);
+	cpBodySetPos(pivotBody_, cpv(kJointX,kJointY) );
 	shape = cpCircleShapeNew(pivotBody_, 5.0f, cpvzero);
-	shape->e = 0.9f;
-	shape->u = 0.9f;
-	shape->data = fly;
+	cpShapeSetElasticity(shape, 0.9f);
+	cpShapeSetFriction(shape, 0.9f);
 	cpSpaceAddStaticShape(space_, shape);
-
+	
+	// link body and sprite
+	[fly setPhysicsBody:pivotBody_];
 	
 	GLfloat wallWidth = 1;
 
 	// floor
 	wallBottom_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth+1), cpv(kWallLength,-wallWidth), wallWidth+1);
-	wallBottom_->e = 0.5f;
-	wallBottom_->u = 0.9f;
-	wallBottom_->collision_type = kCollTypeFloor;
+	cpShapeSetElasticity(wallBottom_, 0.5f);
+	cpShapeSetFriction(wallBottom_, 0.9f);
+	cpShapeSetCollisionType(wallBottom_, kCollTypeFloor);
 	cpSpaceAddStaticShape(space_, wallBottom_);
 		
 	// left
 	wallLeft_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth), cpv(-wallWidth,kWallHeight), wallWidth);
-	wallLeft_->e = 0.2f;
-	wallLeft_->u = 1.0f;
+	cpShapeSetElasticity(wallLeft_, 0.2f);
+	cpShapeSetFriction(wallLeft_, 1.0f);
 	cpSpaceAddStaticShape(space_, wallLeft_);
 	
 	// right
 	wallRight_ = cpSegmentShapeNew(space_->staticBody, cpv(kWallLength,-wallWidth), cpv(kWallLength,kWallHeight), wallWidth);
-	wallRight_->e = 0.0f;
-	wallRight_->u = 1.5f;
+	cpShapeSetElasticity(wallRight_, 0.0f);
+	cpShapeSetFriction(wallRight_, 1.5f);
 	cpSpaceAddStaticShape(space_, wallRight_);
 		
 	[self setupSapus];
 	[self setupJoint];
 	
 	// reposition sapus
-	sapusBody_->p.y = 30;
+	cpVect pos = cpBodyGetPos(sapusBody_);
+	pos.y = 30;
+	cpBodySetPos(sapusBody_, pos);
 }
 
 -(void) setupJoint {
@@ -498,11 +485,11 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	CCSpriteFrame *rollFrame = nil;
 	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus ) {
-		sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
+		sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
 		rollFrame = [frameCache spriteFrameByName:@"sapus_02.png"];
 		
 	} else {
-		sapusSprite_ = [[CCSprite spriteWithSpriteFrameName:@"monus_01.png"] retain];
+		sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"monus_01.png"] retain];
 		rollFrame = [frameCache spriteFrameByName:@"monus_12.png"];
 	}
 
@@ -587,10 +574,9 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	moment += cpMomentForCircle(kSapusMass/5.0f, 0, kCircleRadius, cpv(-22,29+kCircleRadius-kSapusOffsetY) );
 
 	sapusBody_ = cpBodyNew(kSapusMass, moment);
-	
-	sapusBody_->p = pivotBody_->p;
-	sapusBody_->p.y = pivotBody_->p.y - kSapusTongueLength;
-//	sapusBody_->p.y = 30;
+	cpVect pos = cpBodyGetPos(pivotBody_);
+	pos.y -= kSapusTongueLength;
+	cpBodySetPos(sapusBody_, pos);
 
 	cpSpaceAddBody(space_, sapusBody_);
 	
@@ -600,35 +586,37 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	//
 //	cpShape *shape = cpPolyShapeNew(sapusBody_, numVertices, verts, cpvzero);
 	cpShape *shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(0,(64-kCircleRadius)-kSapusOffsetY) );
-	shape->e = kSapusElasticity;
-	shape->u = kSapusFriction;
-	shape->collision_type = kCollTypeSapus;	
-	shape->data = sapusSprite_;
+	cpShapeSetElasticity(shape, kSapusElasticity);
+	cpShapeSetFriction(shape, kSapusFriction);
+	cpShapeSetCollisionType(shape, kCollTypeSapus);
 	cpSpaceAddShape(space_, shape);
 
 	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(-14,3+kCircleRadius-kSapusOffsetY) );
-	shape->e = kSapusElasticity;
-	shape->u = kSapusFriction;
-	shape->collision_type = kCollTypeSapus;	
+	cpShapeSetElasticity(shape, kSapusElasticity);
+	cpShapeSetFriction(shape, kSapusFriction);
+	cpShapeSetCollisionType(shape, kCollTypeSapus);
 	cpSpaceAddShape(space_, shape);
 
 	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(14,3+kCircleRadius-kSapusOffsetY) );
-	shape->e = kSapusElasticity;
-	shape->u = kSapusFriction;
-	shape->collision_type = kCollTypeSapus;	
+	cpShapeSetElasticity(shape, kSapusElasticity);
+	cpShapeSetFriction(shape, kSapusFriction);
+	cpShapeSetCollisionType(shape, kCollTypeSapus);
 	cpSpaceAddShape(space_, shape);
 	
 	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(22,29+kCircleRadius-kSapusOffsetY) );
-	shape->e = kSapusElasticity;
-	shape->u = kSapusFriction;
-	shape->collision_type = kCollTypeSapus;	
+	cpShapeSetElasticity(shape, kSapusElasticity);
+	cpShapeSetFriction(shape, kSapusFriction);
+	cpShapeSetCollisionType(shape, kCollTypeSapus);
 	cpSpaceAddShape(space_, shape);
 
 	shape = cpCircleShapeNew(sapusBody_, kCircleRadius, cpv(-22,29+kCircleRadius-kSapusOffsetY) );
-	shape->e = kSapusElasticity;
-	shape->u = kSapusFriction;
-	shape->collision_type = kCollTypeSapus;	
+	cpShapeSetElasticity(shape, kSapusElasticity);
+	cpShapeSetFriction(shape, kSapusFriction);
+	cpShapeSetCollisionType(shape, kCollTypeSapus);
 	cpSpaceAddShape(space_, shape);
+	
+	// link Body and Sprite
+	[sapusSprite_ setPhysicsBody:sapusBody_];
 	
 }
 
@@ -807,12 +795,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 		cpSpaceStep(space_, dt);
 	}	
 #endif
-	
-
-	// update sprite position
-	cpSpaceEachShape(space_, &eachShape, self);
-	
-	
+		
 	CGPoint newPos = self.position;
 	// update screen position
 	if( sapusBody_->p.x > 260 )
@@ -955,7 +938,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	jointAdded_ = YES;
 	state_ = kGameStart;
 	totalScore = 0;
-	space_->gravity = cpv(0, kGravityRoll);
+	cpSpaceSetGravity(space_, cpv(0, kGravityRoll) );
 	maxHeightAchievementTriggered_ = NO;
 }
 
@@ -964,7 +947,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceRemoveConstraint(space_, joint_);
 	jointAdded_ = NO;
 	state_ = kGameFlying;
-	space_->gravity = cpv(0, kGravityFly);
+	cpSpaceSetGravity(space_, cpv(0, kGravityFly) );
 
 	[sapusSprite_ setDisplayFrameWithAnimationName:@"fly" index:2];
 	

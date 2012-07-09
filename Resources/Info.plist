@@ -39,6 +39,13 @@
 	<string>Default-Portrait.png</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>UIRequiredDeviceCapabilities</key>
+	<dict>
+		<key>accelerometer</key>
+		<true/>
+		<key>opengles-2</key>
+		<true/>
+	</dict>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -48,15 +55,8 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIRequiredDeviceCapabilities</key>
-	<dict>
-		<key>accelerometer</key>
-		<true/>
-		<key>opengles-2</key>
-		<true/>
-	</dict>
 </dict>
 </plist>
