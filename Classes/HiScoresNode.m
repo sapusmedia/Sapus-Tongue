@@ -516,7 +516,7 @@
 	NSString *type = [aTableColumn identifier];
 	
 	if( [type isEqualToString:@"position"] ) {
-		cell = [[NSCell alloc] initTextCell: [NSString stringWithFormat:@"%d", rowIndex]];
+		cell = [[NSCell alloc] initTextCell: [NSString stringWithFormat:@"%ld", rowIndex]];
 		
 	} else if( [type isEqualToString:@"image"] ) {
 

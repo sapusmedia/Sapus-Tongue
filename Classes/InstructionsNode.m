@@ -37,7 +37,6 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 #import "ChipmunkHelper.h"
-#import "ChipmunkSprite.h"
 
 #if __CC_PLATFORM_IOS
 #import <MediaPlayer/MediaPlayer.h>
@@ -200,25 +199,24 @@ enum {
 {	
 	space_ = cpSpaceNew();
 
-	space_->iterations = 10;
-	space_->gravity = cpv(0, kGravityRoll);
+	cpSpaceSetIterations(space_, 10);
+	cpSpaceSetGravity(space_, cpv(0, kGravityRoll));
 	
 	cpShape *shape;
 
 	// pivot point. fly
-	ChipmunkSprite *fly = [ChipmunkSprite spriteWithSpriteFrameName:@"fly.png"];
+	CCPhysicsSprite *fly = [CCPhysicsSprite spriteWithSpriteFrameName:@"fly.png"];
 	[self addChild:fly z:-1];
 	
-	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
-	pivotBody_->p =  cpv(kJointX,kJointY);
+	pivotBody_ = cpBodyNewStatic();
+	cpBodySetPos(pivotBody_, cpv(kJointX,kJointY));
 	shape = cpCircleShapeNew(pivotBody_, 5.0f, cpvzero);
-	shape->e = 0.9f;
-	shape->u = 0.9f;
-	shape->data = fly;
+	cpShapeSetElasticity(shape, 0.9f);
+	cpShapeSetFriction(shape, 0.9f);
 	cpSpaceAddStaticShape(space_, shape);
 	
 	// link sprite and body
-	[fly setPhysicsBody:pivotBody_];
+	[fly setBody:pivotBody_];
 
 	[self setupSapus];
 	[self setupJoint];
@@ -232,7 +230,7 @@ enum {
 
 -(void) setupSapus
 {	
-	sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];		
+	sapusSprite_ = [[CCPhysicsSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
 	[self addChild:sapusSprite_ z:-1];
 	
 	CGSize s = [sapusSprite_ contentSize];
@@ -303,7 +301,7 @@ enum {
 	cpSpaceAddShape(space_, shape);
 	
 	// link sprite and body
-	[sapusSprite_ setPhysicsBody:sapusBody_];
+	[sapusSprite_ setBody:sapusBody_];
 }
 
 -(void) setupTongue
@@ -318,6 +316,11 @@ enum {
 	[tongue_ release];
 	
 	ChipmunkFreeSpaceChildren(space_);
+	
+	// Free rogue body
+	cpBodyFree(pivotBody_);
+
+	// finaly, free space
 	cpSpaceFree(space_);
 	
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -396,7 +399,7 @@ enum {
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 
 	[shaderProgram_ use];
-	[shaderProgram_ setUniformForModelViewProjectionMatrix];
+	[shaderProgram_ setUniformsForBuiltins];
 	
 	ccGLBindTexture2D( tongue_.name );
 	

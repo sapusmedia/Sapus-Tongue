@@ -11,37 +11,8 @@
 
 #include "chipmunk.h"
 
-#define NO_POST_REMOVAL 1
+void ChipmunkFreeSpaceChildren(cpSpace *space);
 
-#if NO_POST_REMOVAL
-
-static void shapeFreeWrap( cpShape *shape, void *unused)
-{
-	cpShapeFree(shape);
-}
-
-static void constraintFreeWrap(cpConstraint *constraint, void *unused)
-{
-	cpConstraintFree(constraint);
-}
-
-static void bodyFreeWrap(cpBody *body, void *unused)
-{
-	cpBodyFree(body);
-}
-
-
-// Safe and future proof way to remove and free all objects that have been added to the space.
-void ChipmunkFreeSpaceChildren(cpSpace *space)
-{
-	// Must remove these BEFORE freeing the body or you will access dangling pointers.
-	cpSpaceEachShape(space, (cpSpaceShapeIteratorFunc)shapeFreeWrap, space);
-	cpSpaceEachConstraint(space, (cpSpaceConstraintIteratorFunc)constraintFreeWrap, space);
-	
-	cpSpaceEachBody(space, (cpSpaceBodyIteratorFunc)bodyFreeWrap, space);
-}
-
-#else
 
 static void shapeFreeWrap(cpSpace *space, cpShape *shape, void *unused){
 	cpSpaceRemoveShape(space, shape);
@@ -79,5 +50,3 @@ void ChipmunkFreeSpaceChildren(cpSpace *space)
 	
 	cpSpaceEachBody(space, (cpSpaceBodyIteratorFunc)postBodyFree, space);
 }
-
-#endif // ! NO_POST_REMOVAL

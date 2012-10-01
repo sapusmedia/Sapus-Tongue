@@ -451,7 +451,7 @@ static CCNotifications *sharedManager;
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X>", [self class], self];
+	return [NSString stringWithFormat:@"<%@ = %p>", [self class], self];
 }
 
 -(void) dealloc

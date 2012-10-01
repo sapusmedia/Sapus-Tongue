@@ -59,7 +59,7 @@
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 	
 	[shaderProgram_ use];
-	[shaderProgram_ setUniformForModelViewProjectionMatrix];
+	[shaderProgram_ setUniformsForBuiltins];
 	
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	

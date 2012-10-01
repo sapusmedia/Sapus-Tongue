@@ -25,7 +25,6 @@
 
 #import "cocos2d.h"
 #import "chipmunk.h"
-#import "ChipmunkSprite.h"
 
 #ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
@@ -38,7 +37,7 @@
 @interface InstructionsNode : CCLayer
 #endif
 {
-	ChipmunkSprite	*sapusSprite_;
+	CCPhysicsSprite	*sapusSprite_;
 	
 	ccTime			flyingDeltaAccum_;
 	CCTexture2D		*tongue_;

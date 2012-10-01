@@ -25,7 +25,6 @@
 
 #import "cocos2d.h"
 #import "chipmunk.h"
-#import "ChipmunkSprite.h"
 
 #ifdef __CC_PLATFORM_IOS
 #import <UIKit/UIKit.h>
@@ -54,17 +53,14 @@ typedef enum {
 	// accumulator for the physics engine. Used only in Fixed-Time-Step physics
 	float		physicsAccumulator_;
 	
-	// Whether or not the device is landscape left or right
-	// in order to read the accelerometer correctly
-	BOOL		isLandscapeLeft_;
-
+	CCPhysicsDebugNode *debugPhysics_;
+	
 	// TIP:
 	// GameHUD will access these variables, and instead of creating properties for each one of these,
 	// it is faster to make them public
-	// In general, I don't recommend making public every variable, but sometimes it is
-	// faster
+	// In general, I don't recommend making public every variable, but sometimes it is faster
 @public
-	ChipmunkSprite		*sapusSprite_;
+	CCPhysicsSprite		*sapusSprite_;
 	
 	// Physics: Hero
 	cpSpace			*space_;
@@ -74,9 +70,6 @@ typedef enum {
 	cpVect			force_;
 	BOOL			jointAdded_;
 	
-	// Physics: Wall
-	cpShape			*wallLeft_, *wallBottom_, *wallRight_;
-		
 	float			throwAngle_;
 	float			throwVelocity_;
 	BOOL			maxHeightAchievementTriggered_;

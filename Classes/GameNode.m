@@ -140,73 +140,6 @@ enum {
 
 #pragma mark Chipmunk Callbacks
 
-//
-// Debug functions used to draw the shapes.
-// Only used while debugging & testing the physics world
-//
-#if ST_DRAW_SHAPES
-void drawCircleShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpCircleShape *circle = (cpCircleShape *)shape;
-	cpVect c = cpvadd(body->p, cpvrotate(circle->c, body->rot));
-	ccDrawCircle( ccp(c.x, c.y), circle->r, body->a, 15, YES);
-}
-
-void drawSegmentShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpSegmentShape *seg = (cpSegmentShape *)shape;
-	cpVect a = cpvadd(body->p, cpvrotate(seg->a, body->rot));
-	cpVect b = cpvadd(body->p, cpvrotate(seg->b, body->rot));
-	
-	ccDrawLine( ccp(a.x, a.y), ccp(b.x, b.y) );
-}
-
-void drawPolyShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpPolyShape *poly = (cpPolyShape *)shape;
-	
-	int num = poly->numVerts;
-	cpVect *verts = poly->verts;
-	
-	CGPoint *vertices = malloc( sizeof(CGPoint)*poly->numVerts);
-	if( ! vertices )
-		return;
-	
-	for(int i=0; i<num; i++){
-		cpVect v = cpvadd(body->p, cpvrotate(verts[i], body->rot));
-		vertices[i] = (CGPoint){v.x, v.y};
-	}
-	ccDrawPoly( vertices, poly->numVerts, YES );
-	
-	free(vertices);
-}
-#endif // ST_DRAW_SHAPES
-
-
-#if ST_DRAW_SHAPES
-static void drawEachShape( cpShape *shape, void *instace )
-{
-	if( shape )		
-	{
-		switch(shape->CP_PRIVATE(klass)->type){
-			case CP_CIRCLE_SHAPE:
-				drawCircleShape(shape);
-				break;
-			case CP_SEGMENT_SHAPE:
-				drawSegmentShape(shape);
-				break;
-			case CP_POLY_SHAPE:
-				drawPolyShape(shape);
-				break;
-			default:
-				printf("Bad enumeration in drawEachShape().\n");
-		}
-	}
-}
-#endif // ST_DRAW_SHAPES
 
 int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data);
 
@@ -409,11 +342,11 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceSetGravity(space_, cpv(0, kGravityRoll) );
 	
 	// pivot point. fly
-	ChipmunkSprite *fly = nil;
+	CCPhysicsSprite *fly = nil;
 	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus )
-		fly = [ChipmunkSprite spriteWithSpriteFrameName:@"fly.png"];
+		fly = [CCPhysicsSprite spriteWithSpriteFrameName:@"fly.png"];
 	else {
-		fly = [ChipmunkSprite spriteWithSpriteFrameName:@"branch.png"];
+		fly = [CCPhysicsSprite spriteWithSpriteFrameName:@"branch.png"];
 		CGSize s = [fly contentSize];
 		fly.anchorPoint = ccp(19/s.width,30/s.height);
 	}
@@ -422,7 +355,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 	cpShape *shape = NULL;
 
-	pivotBody_ = cpBodyNew(INFINITY, INFINITY);
+	pivotBody_ = cpBodyNewStatic();
 	cpBodySetPos(pivotBody_, cpv(kJointX,kJointY) );
 	shape = cpCircleShapeNew(pivotBody_, 5.0f, cpvzero);
 	cpShapeSetElasticity(shape, 0.9f);
@@ -430,28 +363,29 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceAddStaticShape(space_, shape);
 	
 	// link body and sprite
-	[fly setPhysicsBody:pivotBody_];
+	[fly setBody:pivotBody_];
 	
 	GLfloat wallWidth = 1;
 
+	cpBody *staticBody = cpSpaceGetStaticBody(space_);
 	// floor
-	wallBottom_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth+1), cpv(kWallLength,-wallWidth), wallWidth+1);
-	cpShapeSetElasticity(wallBottom_, 0.5f);
-	cpShapeSetFriction(wallBottom_, 0.9f);
-	cpShapeSetCollisionType(wallBottom_, kCollTypeFloor);
-	cpSpaceAddStaticShape(space_, wallBottom_);
+	cpShape *wall = cpSegmentShapeNew(staticBody, cpv(-wallWidth,-wallWidth+1), cpv(kWallLength,-wallWidth), wallWidth+1);
+	cpShapeSetElasticity(wall, 0.5f);
+	cpShapeSetFriction(wall, 0.9f);
+	cpShapeSetCollisionType(wall, kCollTypeFloor);
+	cpSpaceAddStaticShape(space_, wall);
 		
 	// left
-	wallLeft_ = cpSegmentShapeNew(space_->staticBody, cpv(-wallWidth,-wallWidth), cpv(-wallWidth,kWallHeight), wallWidth);
-	cpShapeSetElasticity(wallLeft_, 0.2f);
-	cpShapeSetFriction(wallLeft_, 1.0f);
-	cpSpaceAddStaticShape(space_, wallLeft_);
+	wall = cpSegmentShapeNew(staticBody, cpv(-wallWidth,-wallWidth), cpv(-wallWidth,kWallHeight), wallWidth);
+	cpShapeSetElasticity(wall, 0.2f);
+	cpShapeSetFriction(wall, 1.0f);
+	cpSpaceAddStaticShape(space_, wall);
 	
 	// right
-	wallRight_ = cpSegmentShapeNew(space_->staticBody, cpv(kWallLength,-wallWidth), cpv(kWallLength,kWallHeight), wallWidth);
-	cpShapeSetElasticity(wallRight_, 0.0f);
-	cpShapeSetFriction(wallRight_, 1.5f);
-	cpSpaceAddStaticShape(space_, wallRight_);
+	wall = cpSegmentShapeNew(staticBody, cpv(kWallLength,-wallWidth), cpv(kWallLength,kWallHeight), wallWidth);
+	cpShapeSetElasticity(wall, 0.0f);
+	cpShapeSetFriction(wall, 1.5f);
+	cpSpaceAddStaticShape(space_, wall);
 		
 	[self setupSapus];
 	[self setupJoint];
@@ -460,6 +394,22 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpVect pos = cpBodyGetPos(sapusBody_);
 	pos.y = 30;
 	cpBodySetPos(sapusBody_, pos);
+	
+#if DEBUG
+	debugPhysics_ = [CCPhysicsDebugNode debugNodeForCPSpace:space_];
+	[self addChild:debugPhysics_ z:100];
+	debugPhysics_.visible = NO;
+	
+	[CCMenuItemFont setFontSize:16];
+	CCMenuItem *item = [CCMenuItemFont itemWithString:@"Toggle Debug" block:^(id sender) {
+		debugPhysics_.visible = !debugPhysics_.visible;
+	}];
+	CCMenu *menu = [CCMenu menuWithItems:item, nil];
+	[self addChild:menu];
+	[menu alignItemsHorizontally];
+	CGSize s = [[CCDirector sharedDirector] winSize];
+	[menu setPosition:ccp(50, s.height-50)];
+#endif
 }
 
 -(void) setupJoint {
@@ -485,11 +435,11 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	CCSpriteFrame *rollFrame = nil;
 	if( [SelectCharNode selectedChar] == kSTSelectedCharSapus ) {
-		sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
+		sapusSprite_ = [[CCPhysicsSprite spriteWithSpriteFrameName:@"sapus_01.png"] retain];
 		rollFrame = [frameCache spriteFrameByName:@"sapus_02.png"];
 		
 	} else {
-		sapusSprite_ = [[ChipmunkSprite spriteWithSpriteFrameName:@"monus_01.png"] retain];
+		sapusSprite_ = [[CCPhysicsSprite spriteWithSpriteFrameName:@"monus_01.png"] retain];
 		rollFrame = [frameCache spriteFrameByName:@"monus_12.png"];
 	}
 
@@ -616,7 +566,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceAddShape(space_, shape);
 	
 	// link Body and Sprite
-	[sapusSprite_ setPhysicsBody:sapusBody_];
+	[sapusSprite_ setBody:sapusBody_];
 	
 }
 
@@ -665,12 +615,11 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	
 	// TIP:
 	// Remember: static (rogue) shapes needs to be freed manually
-	//
-//	cpShapeFree(wallLeft_);
-//	cpShapeFree(wallRight_);
-//	cpShapeFree(wallBottom_);
-	
 	ChipmunkFreeSpaceChildren(space_);
+	
+	// Free rogue bodies
+	cpBodyFree(pivotBody_);
+	
 	cpSpaceFree(space_);
 
 	[[CCTextureCache sharedTextureCache] removeUnusedTextures];	
@@ -871,13 +820,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 {
 	if( state_ == kGameStart || state_ == kGameDrawTongue )
 		[self drawTongue];
-
-	
-	// draw shapes
-#if ST_DRAW_SHAPES
-	cpSpaceEachShape(space_, &drawEachShape, self);
-#endif
-
 }
 
 -(void) drawTongue
@@ -920,7 +862,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 
 	[shaderProgram_ use];
-	[shaderProgram_ setUniformForModelViewProjectionMatrix];
+	[shaderProgram_ setUniformsForBuiltins];
 	
 	ccGLBindTexture2D( tongue_.name );
 	

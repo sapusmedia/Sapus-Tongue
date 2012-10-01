@@ -26,12 +26,14 @@
 
 #if defined(__CC_PLATFORM_IOS)
 
-@class RootViewController;
+// Added only for iOS 6 support
+@interface MyNavigationController : UINavigationController <CCDirectorDelegate>
+@end
 
 @interface SapusTongueAppDelegate : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow				*window_;
-	UINavigationController	*navController_;
+	MyNavigationController	*navController_;
 	CCDirectorIOS			*director_;							// weak ref
 
 	// is paused
@@ -41,7 +43,7 @@
 
 @property (nonatomic, readwrite) BOOL isPaused, isPlaying;
 @property (nonatomic, retain) UIWindow *window;
-@property (readonly) UINavigationController *navController;
+@property (readonly) MyNavigationController *navController;
 @property (readonly) CCDirectorIOS *director;
 
 -(void) initRandom;
