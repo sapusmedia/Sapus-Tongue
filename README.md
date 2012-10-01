@@ -10,7 +10,7 @@ Basically:
 
 - You can use the source code for your own game.
 - You can use as much or as little source code as you want.
-- But you are NOT allowed to use any of its assets
+- But you are NOT allowed most of its assets (graphics, sounds, icons, etc.) for commercial purposes. If in doubt, read the LICENSE_Assets.txt file.
 
 ## Disclaimer ##
 
@@ -25,3 +25,4 @@ Where to start ?
 1. Open the Xcode project, and run it:
 	SapusTongue-iOS.xcodeproj  for iOS
 	SapusTongue-mac.xcodeproj  for OS X
+
