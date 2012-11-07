@@ -66,7 +66,7 @@ enum
 	kCCNotificationMediaTexture,
 };
 
-@interface CCNotifications : NSObject <CCStandardTouchDelegate>
+@interface CCNotifications : NSObject <CCTouchAllAtOnceDelegate>
 {
 	id <CCNotificationsDelegate>			delegate_;
 	CCNode <CCNotificationDesignProtocol>	*template_;

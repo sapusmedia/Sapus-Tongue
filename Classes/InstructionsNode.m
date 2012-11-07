@@ -127,9 +127,9 @@ enum {
 	if( (self=[super init] ) ) {
 	
 #ifdef __CC_PLATFORM_IOS
-		self.isAccelerometerEnabled = YES;
+		self.accelerometerEnabled = YES;
 #elif defined(__CC_PLATFORM_MAC)
-		self.isMouseEnabled = YES;
+		self.mouseEnabled = YES;
 #endif
 		
 		[self setupBackground];

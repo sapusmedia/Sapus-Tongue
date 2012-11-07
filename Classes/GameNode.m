@@ -246,15 +246,15 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	if( (self=[super init]) ) {
 	
 #ifdef __CC_PLATFORM_IOS
-		self.isTouchEnabled = YES;
-		self.isAccelerometerEnabled = YES;
+		self.touchEnabled = YES;
+		self.accelerometerEnabled = YES;
 		SapusTongueAppDelegate *appDelegate = (SapusTongueAppDelegate*) [[UIApplication sharedApplication] delegate];	
 
 		if( [GameCenterManager isGameCenterAvailable] )
 			[[GameCenterManager sharedManager] setDelegate: self];
 
 #elif defined(__CC_PLATFORM_MAC)
-		self.isMouseEnabled = YES;
+		self.mouseEnabled = YES;
 		SapusTongueAppDelegate *appDelegate = [NSApp delegate];
 #endif
 
@@ -653,7 +653,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	// This is useful if the incoming and outgoing scenes are both are using the accelerometer
 	
 #ifdef __CC_PLATFORM_IOS
-	if( self.isAccelerometerEnabled )
+	if( [self isAccelerometerEnabled] )
 		[[UIAccelerometer sharedAccelerometer] setDelegate:self];
 #endif
 

@@ -26,3 +26,9 @@ Where to start ?
 	SapusTongue-iOS.xcodeproj  for iOS
 	SapusTongue-mac.xcodeproj  for OS X
 
+
+## Download from github ##
+
+    $ git clone git://github.com/sapusmedia/Sapus-Tongue.git
+    $ cd Sapus-Tongue
+    $ git submodule update --init

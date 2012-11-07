@@ -1,0 +1,3 @@
+[submodule "libs/Chipmunk"]
+	path = libs/Chipmunk
+	url = git://github.com/slembcke/Chipmunk-Physics.git

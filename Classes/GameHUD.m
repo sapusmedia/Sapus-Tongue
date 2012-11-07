@@ -75,9 +75,9 @@ enum {
 	if((self=[super init]) ) {
 
 #ifdef __CC_PLATFORM_IOS
-		self.isTouchEnabled = YES;
+		self.touchEnabled = YES;
 #elif __CC_PLATFORM_MAC
-		self.isMouseEnabled = YES;
+		self.mouseEnabled = YES;
 #endif
 		
 		// Reference to GameNode

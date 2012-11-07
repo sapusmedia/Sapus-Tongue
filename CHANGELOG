@@ -1,3 +1,7 @@
+Changes in 2012-11-07 (v4.5)
+* [3RD] cocos2d: uses v2.1-beta3
+* [3RD] Chipmunk: uses v6.1.2
+
 Changes in 2012-10-01 (v4.4)
 * [NEW] All: Upgraded to cocos2d v2.1 API: using CCPhysicsSprite and CCPhysicsDebugNode
 * [FIX] GameNode: Chipmunk bodies were leaked. Fixed

@@ -157,7 +157,7 @@
 	CCScene *s = [CCScene node];	
 	MainMenuNode *node = [MainMenuNode node];
 	[s addChild:node];	
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionZoomFlipX transitionWithDuration:1.0f scene:s orientation:kOrientationRightOver]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionZoomFlipX transitionWithDuration:1.0f scene:s orientation:kCCTransitionOrientationRightOver]];
 }
 
 @end
