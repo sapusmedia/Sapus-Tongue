@@ -47,7 +47,7 @@ enum {
 
 @implementation CCMenu
 
-@synthesize opacity = opacity_, color = color_, enabled=enabled_;
+@synthesize opacity=_opacity, color=_color, enabled=_enabled;
 
 +(id) menuWithArray:(NSArray *)arrayOfItems
 {
@@ -100,13 +100,13 @@ enum {
 		[self setMouseEnabled:YES];
 		
 #endif
-		enabled_ = YES;
+		_enabled = YES;
 		
 		// by default, menu in the center of the screen
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
 		self.ignoreAnchorPointForPosition = YES;
-		anchorPoint_ = ccp(0.5f, 0.5f);
+		_anchorPoint = ccp(0.5f, 0.5f);
 		[self setContentSize:s];
 		
 		// XXX: in v0.7, winSize should return the visible size
@@ -126,8 +126,8 @@ enum {
 
 //		[self alignItemsVertically];
 		
-		selectedItem_ = nil;
-		state_ = kCCMenuStateWaiting;
+		_selectedItem = nil;
+		_state = kCCMenuStateWaiting;
 	}
 	
 	return self;
@@ -149,11 +149,11 @@ enum {
 
 - (void) onExit
 {
-	if(state_ == kCCMenuStateTrackingTouch)
+	if(_state == kCCMenuStateTrackingTouch)
 	{
-		[selectedItem_ unselected];
-		state_ = kCCMenuStateWaiting;
-		selectedItem_ = nil;
+		[_selectedItem unselected];
+		_state = kCCMenuStateWaiting;
+		_selectedItem = nil;
 	}
 	[super onExit];
 }
@@ -183,7 +183,7 @@ enum {
 	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
 
 	CCMenuItem* item;
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		// ignore invisible and disabled items: issue #779, #866
 		if ( [item visible] && [item isEnabled] ) {
 
@@ -200,18 +200,18 @@ enum {
 
 -(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	if( state_ != kCCMenuStateWaiting || !visible_ || ! enabled_)
+	if( _state != kCCMenuStateWaiting || !_visible || ! _enabled)
 		return NO;
 
 	for( CCNode *c = self.parent; c != nil; c = c.parent )
 		if( c.visible == NO )
 			return NO;
 
-	selectedItem_ = [self itemForTouch:touch];
-	[selectedItem_ selected];
+	_selectedItem = [self itemForTouch:touch];
+	[_selectedItem selected];
 
-	if( selectedItem_ ) {
-		state_ = kCCMenuStateTrackingTouch;
+	if( _selectedItem ) {
+		_state = kCCMenuStateTrackingTouch;
 		return YES;
 	}
 	return NO;
@@ -219,33 +219,33 @@ enum {
 
 -(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	NSAssert(state_ == kCCMenuStateTrackingTouch, @"[Menu ccTouchEnded] -- invalid state");
+	NSAssert(_state == kCCMenuStateTrackingTouch, @"[Menu ccTouchEnded] -- invalid state");
 
-	[selectedItem_ unselected];
-	[selectedItem_ activate];
+	[_selectedItem unselected];
+	[_selectedItem activate];
 
-	state_ = kCCMenuStateWaiting;
+	_state = kCCMenuStateWaiting;
 }
 
 -(void) ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	NSAssert(state_ == kCCMenuStateTrackingTouch, @"[Menu ccTouchCancelled] -- invalid state");
+	NSAssert(_state == kCCMenuStateTrackingTouch, @"[Menu ccTouchCancelled] -- invalid state");
 
-	[selectedItem_ unselected];
+	[_selectedItem unselected];
 
-	state_ = kCCMenuStateWaiting;
+	_state = kCCMenuStateWaiting;
 }
 
 -(void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	NSAssert(state_ == kCCMenuStateTrackingTouch, @"[Menu ccTouchMoved] -- invalid state");
+	NSAssert(_state == kCCMenuStateTrackingTouch, @"[Menu ccTouchMoved] -- invalid state");
 
 	CCMenuItem *currentItem = [self itemForTouch:touch];
 
-	if (currentItem != selectedItem_) {
-		[selectedItem_ unselected];
-		selectedItem_ = currentItem;
-		[selectedItem_ selected];
+	if (currentItem != _selectedItem) {
+		[_selectedItem unselected];
+		_selectedItem = currentItem;
+		[_selectedItem selected];
 	}
 }
 
@@ -258,7 +258,7 @@ enum {
 	CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
 
 	CCMenuItem* item;
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		// ignore invisible and disabled items: issue #779, #866
 		if ( [item visible] && [item isEnabled] ) {
 
@@ -276,15 +276,15 @@ enum {
 
 -(BOOL) ccMouseUp:(NSEvent *)event
 {
-	if( ! visible_ || ! enabled_)
+	if( ! _visible || ! _enabled)
 		return NO;
 
-	if(state_ == kCCMenuStateTrackingTouch) {
-		if( selectedItem_ ) {
-			[selectedItem_ unselected];
-			[selectedItem_ activate];
+	if(_state == kCCMenuStateTrackingTouch) {
+		if( _selectedItem ) {
+			[_selectedItem unselected];
+			[_selectedItem activate];
 		}
-		state_ = kCCMenuStateWaiting;
+		_state = kCCMenuStateWaiting;
 
 		return YES;
 	}
@@ -293,14 +293,14 @@ enum {
 
 -(BOOL) ccMouseDown:(NSEvent *)event
 {
-	if( ! visible_ || ! enabled_)
+	if( ! _visible || ! _enabled)
 		return NO;
 
-	selectedItem_ = [self itemForMouseEvent:event];
-	[selectedItem_ selected];
+	_selectedItem = [self itemForMouseEvent:event];
+	[_selectedItem selected];
 
-	if( selectedItem_ ) {
-		state_ = kCCMenuStateTrackingTouch;
+	if( _selectedItem ) {
+		_state = kCCMenuStateTrackingTouch;
 		return YES;
 	}
 
@@ -309,16 +309,16 @@ enum {
 
 -(BOOL) ccMouseDragged:(NSEvent *)event
 {
-	if( ! visible_ || ! enabled_)
+	if( ! _visible || ! _enabled)
 		return NO;
 
-	if(state_ == kCCMenuStateTrackingTouch) {
+	if(_state == kCCMenuStateTrackingTouch) {
 		CCMenuItem *currentItem = [self itemForMouseEvent:event];
 
-		if (currentItem != selectedItem_) {
-			[selectedItem_ unselected];
-			selectedItem_ = currentItem;
-			[selectedItem_ selected];
+		if (currentItem != _selectedItem) {
+			[_selectedItem unselected];
+			_selectedItem = currentItem;
+			[_selectedItem selected];
 		}
 
 		return YES;
@@ -338,12 +338,12 @@ enum {
 	float height = -padding;
 
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item)
+	CCARRAY_FOREACH(_children, item)
 	    height += item.contentSize.height * item.scaleY + padding;
 
 	float y = height / 2.0f;
 
-	CCARRAY_FOREACH(children_, item) {
+	CCARRAY_FOREACH(_children, item) {
 		CGSize itemSize = item.contentSize;
 	    [item setPosition:ccp(0, y - itemSize.height * item.scaleY / 2.0f)];
 	    y -= itemSize.height * item.scaleY + padding;
@@ -360,12 +360,12 @@ enum {
 
 	float width = -padding;
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item)
+	CCARRAY_FOREACH(_children, item)
 	    width += item.contentSize.width * item.scaleX + padding;
 
 	float x = -width / 2.0f;
 
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		CGSize itemSize = item.contentSize;
 		[item setPosition:ccp(x + itemSize.width * item.scaleX / 2.0f, 0)];
 		x += itemSize.width * item.scaleX + padding;
@@ -401,7 +401,7 @@ enum {
 	int height = -5;
     NSUInteger row = 0, rowHeight = 0, columnsOccupied = 0, rowColumns;
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		NSAssert( row < [rows count], @"Too many menu items for the amount of rows/columns.");
 		
 		rowColumns = [(NSNumber *) [rows objectAtIndex:row] unsignedIntegerValue];
@@ -424,7 +424,7 @@ enum {
 	
 	row = 0; rowHeight = 0; rowColumns = 0;
 	float w, x, y = height / 2;
-	CCARRAY_FOREACH(children_, item) {
+	CCARRAY_FOREACH(_children, item) {
 		if(rowColumns == 0) {
 			rowColumns = [(NSNumber *) [rows objectAtIndex:row] unsignedIntegerValue];
 			w = winSize.width / (1 + rowColumns);
@@ -482,7 +482,7 @@ enum {
 	int width = -10, columnHeight = -5;
 	NSUInteger column = 0, columnWidth = 0, rowsOccupied = 0, columnRows;
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		NSAssert( column < [columns count], @"Too many menu items for the amount of rows/columns.");
 		
 		columnRows = [(NSNumber *) [columns objectAtIndex:column] unsignedIntegerValue];
@@ -511,7 +511,7 @@ enum {
 	column = 0; columnWidth = 0; columnRows = 0;
 	float x = -width / 2, y;
 	
-	CCARRAY_FOREACH(children_, item){
+	CCARRAY_FOREACH(_children, item){
 		if(columnRows == 0) {
 			columnRows = [(NSNumber *) [columns objectAtIndex:column] unsignedIntegerValue];
 			y = ([(NSNumber *) [columnHeights objectAtIndex:column] intValue] + winSize.height) / 2;
@@ -544,19 +544,19 @@ enum {
 /** Override synthesized setOpacity to recurse items */
 - (void) setOpacity:(GLubyte)newOpacity
 {
-	opacity_ = newOpacity;
+	_opacity = newOpacity;
 
 	id<CCRGBAProtocol> item;
-	CCARRAY_FOREACH(children_, item)
-		[item setOpacity:opacity_];
+	CCARRAY_FOREACH(_children, item)
+		[item setOpacity:_opacity];
 }
 
 -(void) setColor:(ccColor3B)color
 {
-	color_ = color;
+	_color = color;
 
 	id<CCRGBAProtocol> item;
-	CCARRAY_FOREACH(children_, item)
-		[item setColor:color_];
+	CCARRAY_FOREACH(_children, item)
+		[item setColor:_color];
 }
 @end

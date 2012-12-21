@@ -40,7 +40,7 @@
 -(id) init
 {
 	if( (self=[super init]) )
-		duration_ = 0;
+		_duration = 0;
 
 	return self;
 }
@@ -80,7 +80,7 @@
 @implementation CCShow
 -(void) update:(ccTime)time
 {
-	((CCNode *)target_).visible = YES;
+	((CCNode *)_target).visible = YES;
 }
 
 -(CCFiniteTimeAction*) reverse
@@ -97,7 +97,7 @@
 @implementation CCHide
 -(void) update:(ccTime)time
 {
-	((CCNode *)target_).visible = NO;
+	((CCNode *)_target).visible = NO;
 }
 
 -(CCFiniteTimeAction*) reverse
@@ -114,7 +114,7 @@
 @implementation CCToggleVisibility
 -(void) update:(ccTime)time
 {
-	((CCNode *)target_).visible = !((CCNode *)target_).visible;
+	((CCNode *)_target).visible = !((CCNode *)_target).visible;
 }
 @end
 
@@ -139,7 +139,7 @@
 
 -(void) update:(ccTime)time
 {
-	[(CCSprite*)target_ setFlipX:flipX];
+	[(CCSprite*)_target setFlipX:flipX];
 }
 
 -(CCFiniteTimeAction*) reverse
@@ -175,7 +175,7 @@
 
 -(void) update:(ccTime)time
 {
-	[(CCSprite*)target_ setFlipY:flipY];
+	[(CCSprite*)_target setFlipY:flipY];
 }
 
 -(CCFiniteTimeAction*) reverse
@@ -218,7 +218,7 @@
 
 -(void) update:(ccTime)time
 {
-	((CCNode *)target_).position = position;
+	((CCNode *)_target).position = position;
 }
 
 @end
@@ -230,7 +230,7 @@
 
 @implementation CCCallFunc
 
-@synthesize targetCallback = targetCallback_;
+@synthesize targetCallback = _targetCallback;
 
 +(id) actionWithTarget: (id) t selector:(SEL) s
 {
@@ -241,7 +241,7 @@
 {
 	if( (self=[super init]) ) {
 		self.targetCallback = t;
-		selector_ = s;
+		_selector = s;
 	}
 	return self;
 }
@@ -251,20 +251,20 @@
 	return [NSString stringWithFormat:@"<%@ = %p | Tag = %ld | selector = %@>",
 			[self class],
 			self,
-			(long)tag_,
-			NSStringFromSelector(selector_)
+			(long)_tag,
+			NSStringFromSelector(_selector)
 			];
 }
 
 -(void) dealloc
 {
-	[targetCallback_ release];
+	[_targetCallback release];
 	[super dealloc];
 }
 
 -(id) copyWithZone: (NSZone*) zone
 {
-	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:targetCallback_ selector:selector_];
+	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:_targetCallback selector:_selector];
 	return copy;
 }
 
@@ -275,7 +275,7 @@
 
 -(void) execute
 {
-	[targetCallback_ performSelector:selector_];
+	[_targetCallback performSelector:_selector];
 }
 @end
 
@@ -288,7 +288,7 @@
 
 -(void) execute
 {
-	[targetCallback_ performSelector:selector_ withObject:target_];
+	[_targetCallback performSelector:_selector withObject:_target];
 }
 @end
 
@@ -322,7 +322,7 @@
 
 -(id) copyWithZone: (NSZone*) zone
 {
-	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:targetCallback_ selector:selector_ data:data_];
+	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:_targetCallback selector:_selector data:data_];
 	return copy;
 }
 
@@ -334,7 +334,7 @@
 
 -(void) execute
 {
-	callbackMethod_(targetCallback_,selector_,target_, data_);
+	callbackMethod_(_targetCallback,_selector,_target, data_);
 }
 @end
 
@@ -362,14 +362,14 @@
 
 -(id) copyWithZone: (NSZone*) zone
 {
-	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:targetCallback_ selector:selector_ object:object_];
+	CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithTarget:_targetCallback selector:_selector object:object_];
 	return copy;
 }
 
 
 -(void) execute
 {
-	[targetCallback_ performSelector:selector_ withObject:object_];
+	[_targetCallback performSelector:_selector withObject:object_];
 }
 
 @end
@@ -449,7 +449,7 @@
 
 -(void) execute
 {
-	block_(target_);
+	block_(_target);
 }
 
 -(void) dealloc

@@ -861,8 +861,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
 
-	[shaderProgram_ use];
-	[shaderProgram_ setUniformsForBuiltins];
+	[self.shaderProgram use];
+	[self.shaderProgram setUniformsForBuiltins];
 	
 	ccGLBindTexture2D( tongue_.name );
 	

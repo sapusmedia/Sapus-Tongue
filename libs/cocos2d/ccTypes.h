@@ -198,21 +198,6 @@ typedef struct _ccQuad3 {
 	ccVertex3F		tr;
 } ccQuad3;
 
-//! A 2D grid size
-typedef struct _ccGridSize
-{
-	NSInteger	x;
-	NSInteger	y;
-} ccGridSize;
-
-//! helper function to create a ccGridSize
-static inline ccGridSize
-ccg(const NSInteger x, const NSInteger y)
-{
-	ccGridSize v = {x, y};
-	return v;
-}
-
 //! a Point with a vertex point, a tex coord point and a color 4B
 typedef struct _ccV2F_C4B_T2F
 {
@@ -344,8 +329,12 @@ typedef enum
 #ifdef __CC_PLATFORM_IOS
 	//! iPhone resolution type
 	kCCResolutioniPhone,
-	//! RetinaDisplay resolution type
+	//! iPhone RetinaDisplay resolution type
 	kCCResolutioniPhoneRetinaDisplay,
+	//! iPhone5 resolution type
+	kCCResolutioniPhone5,
+	//! iPhone 5 RetinaDisplay resolution type
+	kCCResolutioniPhone5RetinaDisplay,
 	//! iPad resolution type
 	kCCResolutioniPad,
 	//! iPad Retina Display resolution type
@@ -392,7 +381,7 @@ typedef enum {
 
 //! delta time type
 //! if you want more resolution redefine it as a double
-typedef float ccTime;
+typedef CGFloat ccTime;
 //typedef double ccTime;
 
 typedef float ccMat4[16];

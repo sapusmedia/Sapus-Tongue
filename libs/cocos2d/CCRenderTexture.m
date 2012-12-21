@@ -173,11 +173,14 @@
 
 -(void)begin
 {
-	CCDirector *director = [CCDirector sharedDirector];
-	
-	// Save the current matrix
+	kmGLMatrixMode(KM_GL_PROJECTION);
 	kmGLPushMatrix();
-
+	kmGLMatrixMode(KM_GL_MODELVIEW);
+	kmGLPushMatrix();
+    
+	CCDirector *director = [CCDirector sharedDirector];
+    [director setProjection:director.projection];
+    
 	CGSize texSize = [texture_ contentSizeInPixels];
 
 
@@ -194,6 +197,7 @@
 	kmMat4OrthographicProjection(&orthoMatrix, (float)-1.0 / widthRatio,  (float)1.0 / widthRatio,
 								 (float)-1.0 / heightRatio, (float)1.0 / heightRatio, -1,1 );
 	kmGLMultMatrix(&orthoMatrix);
+    
 
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO_);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
@@ -252,21 +256,15 @@
 -(void)end
 {
 	CCDirector *director = [CCDirector sharedDirector];
-	
 	glBindFramebuffer(GL_FRAMEBUFFER, oldFBO_);
 
-	kmGLPopMatrix();
-
-	CGSize size = [director winSizeInPixels];
-
 	// restore viewport
-	glViewport(0, 0, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
-
-	// special viewport for 3d projection + retina display
-	if ( director.projection == kCCDirectorProjection3D && CC_CONTENT_SCALE_FACTOR() != 1 )
-		glViewport(-size.width/2, -size.height/2, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
-	
-	[director setProjection:director.projection];	
+	[director setViewport];
+    
+	kmGLMatrixMode(KM_GL_PROJECTION);
+	kmGLPopMatrix();
+	kmGLMatrixMode(KM_GL_MODELVIEW);
+	kmGLPopMatrix();
 }
 
 -(void)clear:(float)r g:(float)g b:(float)b a:(float)a
@@ -309,13 +307,13 @@
 {
 	// override visit.
 	// Don't call visit on its children
-	if (!visible_)
+	if (!_visible)
 		return;
 	
 	kmGLPushMatrix();
 	
-	if (grid_ && grid_.active) {
-		[grid_ beforeDraw];
+	if (_grid && _grid.active) {
+		[_grid beforeDraw];
 		[self transformAncestors];
 	}
 
@@ -323,12 +321,12 @@
 	[sprite_ visit];
 	[self draw];
 	
-	if (grid_ && grid_.active)
-		[grid_ afterDraw:self];
+	if (_grid && _grid.active)
+		[_grid afterDraw:self];
 	
 	kmGLPopMatrix();
 	
-	orderOfArrival_ = 0;
+	_orderOfArrival = 0;
 }
 
 - (void)draw
@@ -375,7 +373,7 @@
 		[self sortAllChildren];
 		
 		CCNode *child;
-		CCARRAY_FOREACH(children_, child) {
+		CCARRAY_FOREACH(_children, child) {
 			if( child != sprite_)
 				[child visit];
 		}

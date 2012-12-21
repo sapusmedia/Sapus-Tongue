@@ -72,7 +72,7 @@
 		y = 16;
 	}
 
-	id action  = [self actionWithSize:ccg(x,y)];
+	id action  = [self actionWithSize:CGSizeMake(x,y)];
 
 	if(! back_ )
 	{
@@ -98,18 +98,18 @@
 
 }
 
--(CCActionInterval*) actionWithSize: (ccGridSize) v
+-(CCActionInterval*) actionWithSize: (CGSize) v
 {
 	if( back_ )
 	{
 		// Get hold of the PageTurn3DAction
 		return [CCReverseTime actionWithAction:
-				[CCPageTurn3D actionWithSize:v duration:duration_]];
+				[CCPageTurn3D actionWithDuration:_duration size:v]];
 	}
 	else
 	{
 		// Get hold of the PageTurn3DAction
-		return [CCPageTurn3D actionWithSize:v duration:duration_];
+		return [CCPageTurn3D actionWithDuration:_duration size:v];
 	}
 }
 

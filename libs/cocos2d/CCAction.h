@@ -39,9 +39,9 @@ enum {
  */
 @interface CCAction : NSObject <NSCopying>
 {
-	id			originalTarget_;
-	id			target_;
-	NSInteger	tag_;
+	id			_originalTarget;
+	id			_target;
+	NSInteger	_tag;
 }
 
 /** The "target". The action will modify the target properties.
@@ -96,7 +96,7 @@ enum {
 @interface CCFiniteTimeAction : CCAction <NSCopying>
 {
 	//! duration in seconds
-	ccTime duration_;
+	ccTime _duration;
 }
 //! duration in seconds of the action
 @property (nonatomic,readwrite) ccTime duration;
@@ -113,7 +113,7 @@ enum {
  */
 @interface CCRepeatForever : CCAction <NSCopying>
 {
-	CCActionInterval *innerAction_;
+	CCActionInterval *_innerAction;
 }
 /** Inner action */
 @property (nonatomic, readwrite, retain) CCActionInterval *innerAction;
@@ -131,7 +131,7 @@ enum {
  */
 @interface CCSpeed : CCAction <NSCopying>
 {
-	CCActionInterval	*innerAction_;
+	CCActionInterval	*_innerAction;
 	float speed_;
 }
 /** alter the speed of the inner function in runtime */
@@ -157,23 +157,23 @@ enum {
 @interface CCFollow : CCAction <NSCopying>
 {
 	/* node to follow */
-	CCNode	*followedNode_;
+	CCNode	*_followedNode;
 
 	/* whether camera should be limited to certain area */
-	BOOL boundarySet;
+	BOOL _boundarySet;
 
 	/* if screen-size is bigger than the boundary - update not needed */
-	BOOL boundaryFullyCovered;
+	BOOL _boundaryFullyCovered;
 
 	/* fast access to the screen dimensions */
-	CGPoint halfScreenSize;
-	CGPoint fullScreenSize;
+	CGPoint _halfScreenSize;
+	CGPoint _fullScreenSize;
 
 	/* world boundaries */
-	float leftBoundary;
-	float rightBoundary;
-	float topBoundary;
-	float bottomBoundary;
+	float _leftBoundary;
+	float _rightBoundary;
+	float _topBoundary;
+	float _bottomBoundary;
 }
 
 /** alter behavior - turn on/off boundary */

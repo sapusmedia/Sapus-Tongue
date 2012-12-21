@@ -54,25 +54,25 @@
 	//Gradient code
 	ccColor3B colorFinal = ccc3(0, 50, 100);
 	
-	squareColors_[0].r = color_.r;
-	squareColors_[0].g = color_.g;
-	squareColors_[0].b = color_.b;
-	squareColors_[0].a = opacity_;
+	_squareColors[0].r = _color.r;
+	_squareColors[0].g = _color.g;
+	_squareColors[0].b = _color.b;
+	_squareColors[0].a = _opacity;
 	
-	squareColors_[1].r = color_.r;
-	squareColors_[1].g = color_.g;
-	squareColors_[1].b = color_.b;
-	squareColors_[1].a = opacity_;
+	_squareColors[1].r = _color.r;
+	_squareColors[1].g = _color.g;
+	_squareColors[1].b = _color.b;
+	_squareColors[1].a = _opacity;
 	
-	squareColors_[2].r = colorFinal.r;
-	squareColors_[2].g = colorFinal.g;
-	squareColors_[2].b = colorFinal.b;
-	squareColors_[2].a = opacity_;
+	_squareColors[2].r = colorFinal.r;
+	_squareColors[2].g = colorFinal.g;
+	_squareColors[2].b = colorFinal.b;
+	_squareColors[2].a = _opacity;
 	
-	squareColors_[3].r = colorFinal.r;
-	squareColors_[3].g = colorFinal.g;
-	squareColors_[3].b = colorFinal.b;
-	squareColors_[3].a = opacity_;
+	_squareColors[3].r = colorFinal.r;
+	_squareColors[3].g = colorFinal.g;
+	_squareColors[3].b = colorFinal.b;
+	_squareColors[3].a = _opacity;
 }
 
 @end

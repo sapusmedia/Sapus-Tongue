@@ -145,10 +145,10 @@ and when to execute the Scenes.
 	NSThread	*runningThread_;
 
 	/* scheduler associated with this director */
-	CCScheduler *scheduler_;
+	CCScheduler *_scheduler;
 
 	/* action manager associated with this director */
-	CCActionManager *actionManager_;
+	CCActionManager *_actionManager;
 	
 	/*  OpenGLView. On iOS it is a copy of self.view */
 	CCGLView		*view_;
@@ -225,6 +225,9 @@ and when to execute the Scenes.
 
 /** changes the projection size */
 -(void) reshapeProjection:(CGSize)newWindowSize;
+
+/** Sets the glViewport*/
+-(void) setViewport;
 
 /** converts a UIKit coordinate to an OpenGL coordinate
  Useful to convert (multi) touch coordinates to the current layout (portrait or landscape)

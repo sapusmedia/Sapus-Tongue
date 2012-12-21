@@ -45,6 +45,8 @@
 #import "CCLayer.h"
 #import "ccGLStateCache.h"
 #import "CCShaderCache.h"
+#import "ccFPSImages.h"
+#import "CCDrawingPrimitives.h"
 
 // support imports
 #import "Platforms/CCGL.h"
@@ -82,6 +84,8 @@ extern NSString * cocos2dVersion(void);
 -(void) calculateDeltaTime;
 // calculates the milliseconds per frame from the start of the frame
 -(void) calculateMPF;
+// returns the FPS image data pointer and len
+-(void)getFPSImageData:(unsigned char**)datapointer length:(NSUInteger*)len;
 @end
 
 @implementation CCDirector
@@ -98,8 +102,8 @@ extern NSString * cocos2dVersion(void);
 @synthesize delegate = delegate_;
 @synthesize totalFrames = totalFrames_;
 @synthesize secondsPerFrame = secondsPerFrame_;
-@synthesize scheduler = scheduler_;
-@synthesize actionManager = actionManager_;
+@synthesize scheduler = _scheduler;
+@synthesize actionManager = _actionManager;
 
 //
 // singleton stuff
@@ -162,11 +166,11 @@ static CCDirector *_sharedDirector = nil;
 		runningThread_ = nil;
 
 		// scheduler
-		scheduler_ = [[CCScheduler alloc] init];
+		_scheduler = [[CCScheduler alloc] init];
 
 		// action manager
-		actionManager_ = [[CCActionManager alloc] init];
-		[scheduler_ scheduleUpdateForTarget:actionManager_ priority:kCCPrioritySystem paused:NO];
+		_actionManager = [[CCActionManager alloc] init];
+		[_scheduler scheduleUpdateForTarget:_actionManager priority:kCCPrioritySystem paused:NO];
 
 		winSizeInPixels_ = winSizeInPoints_ = CGSizeZero;
 	}
@@ -189,8 +193,8 @@ static CCDirector *_sharedDirector = nil;
 	[runningScene_ release];
 	[notificationNode_ release];
 	[scenesStack_ release];
-	[scheduler_ release];
-	[actionManager_ release];
+	[_scheduler release];
+	[_actionManager release];
 
 	_sharedDirector = nil;
 
@@ -266,6 +270,11 @@ static CCDirector *_sharedDirector = nil;
 -(float) getZEye
 {
 	return ( winSizeInPixels_.height / 1.1566f / CC_CONTENT_SCALE_FACTOR() );
+}
+
+-(void) setViewport
+{
+	CCLOG(@"cocos2d: override me");
 }
 
 -(void) setProjection:(ccDirectorProjection)projection
@@ -463,6 +472,7 @@ static CCDirector *_sharedDirector = nil;
 	[CCLabelBMFont purgeCachedData];
 
 	// Purge all managers / caches
+	ccDrawFree();
 	[CCAnimationCache purgeSharedAnimationCache];
 	[CCSpriteFrameCache purgeSharedSpriteFrameCache];
 	[CCTextureCache purgeSharedTextureCache];
@@ -608,15 +618,23 @@ static CCDirector *_sharedDirector = nil;
 
 #pragma mark Director - Helper
 
+-(void)getFPSImageData:(unsigned char**)datapointer length:(NSUInteger*)len
+{
+	*datapointer = cc_fps_images_png;
+	*len = cc_fps_images_len();
+}
+
 -(void) createStatsLabel
 {
+	CCTexture2D *texture;
+	CCTextureCache *textureCache = [CCTextureCache sharedTextureCache];
+	
 	if( FPSLabel_ && SPFLabel_ ) {
-		CCTexture2D *texture = [FPSLabel_ texture];
 
 		[FPSLabel_ release];
 		[SPFLabel_ release];
 		[drawsLabel_ release];
-		[[CCTextureCache sharedTextureCache ] removeTexture:texture];
+		[textureCache removeTextureForKey:@"cc_fps_images"];
 		FPSLabel_ = nil;
 		SPFLabel_ = nil;
 		drawsLabel_ = nil;
@@ -626,9 +644,21 @@ static CCDirector *_sharedDirector = nil;
 
 	CCTexture2DPixelFormat currentFormat = [CCTexture2D defaultAlphaPixelFormat];
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-	FPSLabel_ = [[CCLabelAtlas alloc]  initWithString:@"00.0" charMapFile:@"fps_images.png" itemWidth:12 itemHeight:32 startCharMap:'.'];
-	SPFLabel_ = [[CCLabelAtlas alloc]  initWithString:@"0.000" charMapFile:@"fps_images.png" itemWidth:12 itemHeight:32 startCharMap:'.'];
-	drawsLabel_ = [[CCLabelAtlas alloc]  initWithString:@"000" charMapFile:@"fps_images.png" itemWidth:12 itemHeight:32 startCharMap:'.'];
+
+	unsigned char *data;
+	NSUInteger data_len;
+	[self getFPSImageData:&data length:&data_len];
+	
+	NSData *nsdata = [NSData dataWithBytes:data length:data_len];
+	CGDataProviderRef imgDataProvider = CGDataProviderCreateWithCFData( (CFDataRef) nsdata);
+	CGImageRef imageRef = CGImageCreateWithPNGDataProvider(imgDataProvider, NULL, true, kCGRenderingIntentDefault);
+	texture = [textureCache addCGImage:imageRef forKey:@"cc_fps_images"];
+	CGDataProviderRelease(imgDataProvider);
+	CGImageRelease(imageRef);
+
+	FPSLabel_ = [[CCLabelAtlas alloc]  initWithString:@"00.0" texture:texture itemWidth:12 itemHeight:32 startCharMap:'.'];
+	SPFLabel_ = [[CCLabelAtlas alloc]  initWithString:@"0.000" texture:texture itemWidth:12 itemHeight:32 startCharMap:'.'];
+	drawsLabel_ = [[CCLabelAtlas alloc]  initWithString:@"000" texture:texture itemWidth:12 itemHeight:32 startCharMap:'.'];
 
 	[CCTexture2D setDefaultAlphaPixelFormat:currentFormat];
 

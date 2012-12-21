@@ -96,7 +96,7 @@ Example:
 	NSUInteger total_;
 	ccTime nextDt_;
 	BOOL isActionInstant_;
-	CCFiniteTimeAction *innerAction_;
+	CCFiniteTimeAction *_innerAction;
 }
 
 /** Inner action */
@@ -171,26 +171,17 @@ Example:
 -(id) initWithDuration: (ccTime) t angleX:(float) aX angleY:(float) aY;
 @end
 
-/** Moves a CCNode object to the position x,y. x and y are absolute coordinates by modifying its position attribute.
-*/
-@interface CCMoveTo : CCActionInterval <NSCopying>
-{
-	CGPoint endPosition_;
-	CGPoint startPosition_;
-	CGPoint delta_;
-}
-/** creates the action */
-+(id) actionWithDuration:(ccTime)duration position:(CGPoint)position;
-/** initializes the action */
--(id) initWithDuration:(ccTime)duration position:(CGPoint)position;
-@end
-
-/**  Moves a CCNode object x,y pixels by modifying its position attribute.
+/**  Moves a CCNode object x,y pixels by modifying it's position attribute.
  x and y are relative to the position of the object.
- Duration is is seconds.
-*/
-@interface CCMoveBy : CCMoveTo <NSCopying>
+ Several CCMoveBy actions can be concurrently called, and the resulting
+ movement will be the sum of individual movements.
+ @since v2.1beta2-custom
+ */
+@interface CCMoveBy : CCActionInterval <NSCopying>
 {
+	CGPoint _positionDelta;
+	CGPoint _startPos;
+	CGPoint _previousPos;
 }
 /** creates the action */
 +(id) actionWithDuration: (ccTime)duration position:(CGPoint)deltaPosition;
@@ -198,13 +189,28 @@ Example:
 -(id) initWithDuration: (ccTime)duration position:(CGPoint)deltaPosition;
 @end
 
+/** Moves a CCNode object to the position x,y. x and y are absolute coordinates by modifying it's position attribute.
+ Several CCMoveTo actions can be concurrently called, and the resulting
+ movement will be the sum of individual movements.
+ @since v2.1beta2-custom
+ */
+@interface CCMoveTo : CCMoveBy
+{
+	CGPoint _endPosition;
+}
+/** creates the action */
++(id) actionWithDuration:(ccTime)duration position:(CGPoint)position;
+/** initializes the action */
+-(id) initWithDuration:(ccTime)duration position:(CGPoint)position;
+@end
+
 /** Skews a CCNode object to given angles by modifying its skewX and skewY attributes
  @since v1.0
  */
 @interface CCSkewTo : CCActionInterval <NSCopying>
 {
-	float skewX_;
-	float skewY_;
+	float _skewX;
+	float _skewY;
 	float startSkewX_;
 	float startSkewY_;
 	float endSkewX_;
@@ -232,10 +238,11 @@ Example:
 */
 @interface CCJumpBy : CCActionInterval <NSCopying>
 {
-	CGPoint startPosition_;
-	CGPoint delta_;
-	ccTime height_;
-	NSUInteger jumps_;
+	CGPoint _startPosition;
+	CGPoint _delta;
+	ccTime	_height;
+	NSUInteger _jumps;
+	CGPoint _previousPos;
 }
 /** creates the action */
 +(id) actionWithDuration: (ccTime)duration position:(CGPoint)position height:(ccTime)height jumps:(NSUInteger)jumps;
@@ -267,8 +274,9 @@ typedef struct _ccBezierConfig {
  */
 @interface CCBezierBy : CCActionInterval <NSCopying>
 {
-	ccBezierConfig config_;
-	CGPoint startPosition_;
+	ccBezierConfig _config;
+	CGPoint _startPosition;
+	CGPoint _previousPosition;
 }
 
 /** creates the action with a duration and a bezier configuration */
@@ -283,7 +291,7 @@ typedef struct _ccBezierConfig {
  */
 @interface CCBezierTo : CCBezierBy
 {
-	ccBezierConfig toConfig_;
+	ccBezierConfig _toConfig;
 }
 // XXX: Added to prevent bug on BridgeSupport
 -(void) startWithTarget:(CCNode *)aTarget;
@@ -294,8 +302,8 @@ typedef struct _ccBezierConfig {
  */
 @interface CCScaleTo : CCActionInterval <NSCopying>
 {
-	float scaleX_;
-	float scaleY_;
+	float _scaleX;
+	float _scaleY;
 	float startScaleX_;
 	float startScaleY_;
 	float endScaleX_;

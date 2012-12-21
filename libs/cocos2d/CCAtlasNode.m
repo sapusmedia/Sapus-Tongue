@@ -27,6 +27,7 @@
 #import "CCAtlasNode.h"
 #import "ccMacros.h"
 #import "CCGLProgram.h"
+#import "CCTextureCache.h"
 #import "CCShaderCache.h"
 #import "ccGLStateCache.h"
 #import "CCDirector.h"
@@ -60,7 +61,13 @@
 	return [[[self alloc] initWithTileFile:tile tileWidth:w tileHeight:h itemsToRender:c] autorelease];
 }
 
--(id) initWithTileFile:(NSString*)tile tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c
+-(id) initWithTileFile:(NSString*)filename tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c
+{
+	CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:filename];
+	return [self initWithTexture:texture tileWidth:w tileHeight:h itemsToRender:c];
+}
+
+-(id) initWithTexture:(CCTexture2D*)texture tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c;
 {
 	if( (self=[super init]) ) {
 		
@@ -69,14 +76,12 @@
 
 		opacity_ = 255;
 		color_ = colorUnmodified_ = ccWHITE;
-		opacityModifyRGB_ = YES;
+		_opacityModifyRGB = YES;
 
 		blendFunc_.src = CC_BLEND_SRC;
 		blendFunc_.dst = CC_BLEND_DST;
 
-		CCTextureAtlas * newAtlas = [[CCTextureAtlas alloc] initWithFile:tile capacity:c];
-		self.textureAtlas = newAtlas;
-		[newAtlas release];		
+		textureAtlas_ = [[CCTextureAtlas alloc] initWithTexture:texture capacity:c];
 		
 		if( ! textureAtlas_ ) {
 			CCLOG(@"cocos2d: Could not initialize CCAtlasNode. Invalid Texture");
@@ -93,7 +98,7 @@
 
 		// shader stuff
 		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionTexture_uColor];
-		uniformColor_ = glGetUniformLocation( shaderProgram_->program_, "u_color");
+		uniformColor_ = glGetUniformLocation( _shaderProgram->program_, "u_color");
 	}
 	return self;
 }
@@ -127,7 +132,7 @@
 	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
 	
 	GLfloat colors[4] = {color_.r / 255.0f, color_.g / 255.0f, color_.b / 255.0f, opacity_ / 255.0f};
-	[shaderProgram_ setUniformLocation:uniformColor_ with4fv:colors count:1];
+	[_shaderProgram setUniformLocation:uniformColor_ with4fv:colors count:1];
 
 	[textureAtlas_ drawNumberOfQuads:quadsToDraw_ fromIndex:0];
 }
@@ -136,7 +141,7 @@
 
 - (ccColor3B) color
 {
-	if(opacityModifyRGB_)
+	if(_opacityModifyRGB)
 		return colorUnmodified_;
 
 	return color_;
@@ -146,7 +151,7 @@
 {
 	color_ = colorUnmodified_ = color3;
 
-	if( opacityModifyRGB_ ){
+	if( _opacityModifyRGB ){
 		color_.r = color3.r * opacity_/255;
 		color_.g = color3.g * opacity_/255;
 		color_.b = color3.b * opacity_/255;
@@ -163,25 +168,25 @@
 	opacity_			= anOpacity;
 
 	// special opacity for premultiplied textures
-	if( opacityModifyRGB_ )
+	if( _opacityModifyRGB )
 		[self setColor: colorUnmodified_];
 }
 
 -(void) setOpacityModifyRGB:(BOOL)modify
 {
 	ccColor3B oldColor	= self.color;
-	opacityModifyRGB_	= modify;
+	_opacityModifyRGB	= modify;
 	self.color			= oldColor;
 }
 
 -(BOOL) doesOpacityModifyRGB
 {
-	return opacityModifyRGB_;
+	return _opacityModifyRGB;
 }
 
 -(void) updateOpacityModifyRGB
 {
-	opacityModifyRGB_ = [textureAtlas_.texture hasPremultipliedAlpha];
+	_opacityModifyRGB = [textureAtlas_.texture hasPremultipliedAlpha];
 }
 
 #pragma mark CCAtlasNode - CCNodeTexture protocol

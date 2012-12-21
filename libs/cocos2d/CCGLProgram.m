@@ -111,8 +111,8 @@ typedef void (*GLLogFunction) (GLuint program,
 - (id)initWithVertexShaderFilename:(NSString *)vShaderFilename fragmentShaderFilename:(NSString *)fShaderFilename
 {
 	
-	const GLchar * vertexSource = (GLchar*) [[NSString stringWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:vShaderFilename] encoding:NSUTF8StringEncoding error:nil] UTF8String];
-	const GLchar * fragmentSource = (GLchar*) [[NSString stringWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fShaderFilename] encoding:NSUTF8StringEncoding error:nil] UTF8String];
+	const GLchar * vertexSource = (GLchar*) [[NSString stringWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePathIgnoringResolutions:vShaderFilename] encoding:NSUTF8StringEncoding error:nil] UTF8String];
+	const GLchar * fragmentSource = (GLchar*) [[NSString stringWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePathIgnoringResolutions:fShaderFilename] encoding:NSUTF8StringEncoding error:nil] UTF8String];
 
 	return [self initWithVertexShaderByteArray:vertexSource fragmentShaderByteArray:fragmentSource];
 }
@@ -316,6 +316,14 @@ typedef void (*GLLogFunction) (GLuint program,
 	}
 
 	return updated;
+}
+
+- (GLint)uniformLocationForName:(NSString*)name
+{
+    NSAssert(name != nil, @"Invalid uniform name" );
+    NSAssert(program_ != 0, @"Invalid operation. Cannot get uniform location when program is not initialized");
+    
+    return glGetUniformLocation(program_, [name UTF8String]);
 }
 
 -(void) setUniformLocation:(GLint)location withI1:(GLint)i1

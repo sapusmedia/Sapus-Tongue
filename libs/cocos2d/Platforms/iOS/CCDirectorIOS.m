@@ -43,11 +43,14 @@
 #import "../../CCGLProgram.h"
 #import "../../ccGLStateCache.h"
 #import "../../CCLayer.h"
+#import "../../ccFPSImages.h"
+#import "../../CCConfiguration.h"
 
 // support imports
 #import "../../Support/OpenGL_Internal.h"
 #import "../../Support/CGPointExtension.h"
 #import "../../Support/TransformUtils.h"
+#import "../../Support/CCFileUtils.h"
 
 #import "kazmath/kazmath.h"
 #import "kazmath/GL/matrix.h"
@@ -146,7 +149,7 @@ CGFloat	__ccContentScaleFactor = 1;
 
 	/* tick before glClear: issue #533 */
 	if( ! isPaused_ )
-		[scheduler_ update: dt];
+		[_scheduler update: dt];
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -174,12 +177,18 @@ CGFloat	__ccContentScaleFactor = 1;
 		[self calculateMPF];
 }
 
+-(void) setViewport
+{
+	CGSize size = winSizeInPixels_;
+	glViewport(0, 0, size.width, size.height );
+}
+
 -(void) setProjection:(ccDirectorProjection)projection
 {
 	CGSize size = winSizeInPixels_;
 	CGSize sizePoint = winSizeInPoints_;
-
-	glViewport(0, 0, size.width, size.height );
+    
+	[self setViewport];
 
 	switch (projection) {
 		case kCCDirectorProjection2D:
@@ -315,6 +324,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	[self setContentScaleFactor:newScale];
 
 	// Load Hi-Res FPS label
+	[[CCFileUtils sharedFileUtils] buildSearchResolutionsOrder];
 	[self createStatsLabel];
 
 	return YES;
@@ -428,10 +438,11 @@ GLToClipTransform(kmMat4 *transformOut)
 	return ret;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	// do something ?
-}
+//-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//	if( [delegate_ respondsToSelector:_cmd] )
+//		[delegate_ willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+//}
 
 
 -(void) viewWillAppear:(BOOL)animated
@@ -485,6 +496,27 @@ GLToClipTransform(kmMat4 *transformOut)
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
+
+#pragma mark helper
+
+-(void)getFPSImageData:(unsigned char**)datapointer length:(NSUInteger*)len
+{
+	int device = [[CCConfiguration sharedConfiguration] runningDevice];
+
+	if( device == kCCDeviceiPadRetinaDisplay) {
+		*datapointer = cc_fps_images_ipadhd_png;
+		*len = cc_fps_images_ipadhd_len();
+		
+	} else if( device == kCCDeviceiPhoneRetinaDisplay || device == kCCDeviceiPhone5RetinaDisplay ) {
+		*datapointer = cc_fps_images_hd_png;
+		*len = cc_fps_images_hd_len();
+
+	} else {
+		*datapointer = cc_fps_images_png;
+		*len = cc_fps_images_len();
+	}
+}
+
 @end
 
 

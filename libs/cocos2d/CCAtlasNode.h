@@ -29,6 +29,8 @@
 #import "CCNode.h"
 #import "CCProtocols.h"
 
+@class CCTexture2D;
+
 /** CCAtlasNode is a subclass of CCNode that implements the CCRGBAProtocol and
  CCTextureProtocol protocol
 
@@ -63,7 +65,7 @@
 	GLubyte		opacity_;
 	ccColor3B	color_;
 	ccColor3B	colorUnmodified_;
-	BOOL opacityModifyRGB_;
+	BOOL _opacityModifyRGB;
 
 	// color uniform
 	GLint	uniformColor_;
@@ -88,6 +90,10 @@
 
 /** initializes an CCAtlasNode  with an Atlas file the width and height of each item measured in points and the quantity of items to render*/
 -(id) initWithTileFile:(NSString*)tile tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c;
+
+/** initializes an CCAtlasNode  with a texture the width and height of each item measured in points and the quantity of items to render*/
+-(id) initWithTexture:(CCTexture2D*)texture tileWidth:(NSUInteger)w tileHeight:(NSUInteger)h itemsToRender: (NSUInteger) c;
+
 
 /** updates the Atlas (indexed vertex array).
  * Shall be overridden in subclasses

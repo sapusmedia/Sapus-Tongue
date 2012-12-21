@@ -84,6 +84,10 @@
 		[director runWithScene: [SapusIntroNode scene] ];
 	}
 }
+
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+}
 @end
 
 #endif // defined(__CC_PLATFORM_IOS)

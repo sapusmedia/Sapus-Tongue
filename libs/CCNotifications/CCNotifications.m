@@ -125,8 +125,8 @@ static CCNotifications *sharedManager;
 	if([delegate_ respondsToSelector:@selector(notification:newState:)])
 		[delegate_ notification:currentNotification_ newState:state_];
 	
-	if([delegate_ respondsToSelector:@selector(notificationChangeState:tag:)])
-		[delegate_ notificationChangeState:state_ tag:[currentNotification_ tag]];
+//	if([delegate_ respondsToSelector:@selector(notificationChangeState:tag:)])
+//		[delegate_ notificationChangeState:state_ tag:[currentNotification_ tag]];
 }
 
 - (void) setPosition:(char)positions

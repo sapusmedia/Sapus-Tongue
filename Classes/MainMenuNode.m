@@ -189,6 +189,8 @@ static BOOL firstTime = YES;
 		CCDirector *director = [CCDirector sharedDirector];
 	
 		[adViewController_ createADBannerView];
+		
+		// XXX: BUG, it should not use the Director view, but the main UI Navigation controller
 		[director.view addSubview:adViewController_.view];
 		
 		inStage_ = YES;		
