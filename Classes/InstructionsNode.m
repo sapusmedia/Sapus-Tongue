@@ -216,7 +216,7 @@ enum {
 	cpSpaceAddStaticShape(space_, shape);
 	
 	// link sprite and body
-	[fly setBody:pivotBody_];
+	[fly setCPBody:pivotBody_];
 
 	[self setupSapus];
 	[self setupJoint];
@@ -301,7 +301,7 @@ enum {
 	cpSpaceAddShape(space_, shape);
 	
 	// link sprite and body
-	[sapusSprite_ setBody:sapusBody_];
+	[sapusSprite_ setCPBody:sapusBody_];
 }
 
 -(void) setupTongue

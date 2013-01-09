@@ -1,3 +1,3 @@
-[submodule "libs/Chipmunk"]
-	path = libs/Chipmunk
-	url = git://github.com/slembcke/Chipmunk-Physics.git
+[submodule "libs/cocos2d"]
+	path = libs/cocos2d
+	url = git://github.com/cocos2d/cocos2d-iphone.git

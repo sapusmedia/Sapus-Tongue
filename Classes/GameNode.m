@@ -363,7 +363,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceAddStaticShape(space_, shape);
 	
 	// link body and sprite
-	[fly setBody:pivotBody_];
+	[fly setCPBody:pivotBody_];
 	
 	GLfloat wallWidth = 1;
 
@@ -566,7 +566,7 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	cpSpaceAddShape(space_, shape);
 	
 	// link Body and Sprite
-	[sapusSprite_ setBody:sapusBody_];
+	[sapusSprite_ setCPBody:sapusBody_];
 	
 }
 
