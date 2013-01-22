@@ -31,4 +31,4 @@ Where to start ?
 
     $ git clone git://github.com/sapusmedia/Sapus-Tongue.git
     $ cd Sapus-Tongue
-    $ git submodule update --init
+    $ git submodule update --init --recursive
