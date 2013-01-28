@@ -56,14 +56,14 @@ enum {
 //
 // private methods
 //
-@interface GameHUD (Private)
+@interface GameHUD ()
 -(void) loadPauseButton;
 -(void) showTryAgain;
--(void) showViewScores;
 -(void) createScore;
 -(void) createAngle;
 -(void) createSpeed;
 -(void) createGlobalScoresVars;
+-(void) createToggleDebug;
 @end
 
 @implementation GameHUD
@@ -91,6 +91,7 @@ enum {
 		[self createAngle];
 		[self createSpeed];
 		[self createGlobalScoresVars];
+		[self createToggleDebug];
 
 		[self loadPauseButton];
 		
@@ -140,6 +141,21 @@ enum {
 	CCSprite *score = [CCSprite spriteWithSpriteFrameName:@"score.png"];
 	score.position = ccp(s.width/2, s.height-7);
 	[self addChild:score];
+}
+
+-(void) createToggleDebug
+{
+#if DEBUG
+	[CCMenuItemFont setFontSize:16];
+	CCMenuItem *item = [CCMenuItemFont itemWithString:@"Toggle Debug" block:^(id sender) {
+		game_.debugPhysics.visible = !game_.debugPhysics.visible;
+	}];
+	CCMenu *menu = [CCMenu menuWithItems:item, nil];
+	[self addChild:menu];
+	[menu alignItemsHorizontally];
+	CGSize s = [[CCDirector sharedDirector] winSize];
+	[menu setPosition:ccp(50, s.height-50)];
+#endif // DEBUG
 }
 
 -(void) createGlobalScoresVars

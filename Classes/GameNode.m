@@ -204,6 +204,8 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 
 @implementation GameNode
 
+@synthesize debugPhysics = debugPhysics_;
+
 +(int) score
 {
 	return totalScore;
@@ -399,16 +401,6 @@ int collisionSapusFloor(cpArbiter *arb, struct cpSpace *sapce, void *data)
 	debugPhysics_ = [CCPhysicsDebugNode debugNodeForCPSpace:space_];
 	[self addChild:debugPhysics_ z:100];
 	debugPhysics_.visible = NO;
-	
-	[CCMenuItemFont setFontSize:16];
-	CCMenuItem *item = [CCMenuItemFont itemWithString:@"Toggle Debug" block:^(id sender) {
-		debugPhysics_.visible = !debugPhysics_.visible;
-	}];
-	CCMenu *menu = [CCMenu menuWithItems:item, nil];
-	[self addChild:menu];
-	[menu alignItemsHorizontally];
-	CGSize s = [[CCDirector sharedDirector] winSize];
-	[menu setPosition:ccp(50, s.height-50)];
 #endif
 }
 

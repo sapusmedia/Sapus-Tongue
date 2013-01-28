@@ -79,6 +79,8 @@ typedef enum {
 	int				displayFrame_;	
 }
 
+@property (nonatomic, readonly) CCPhysicsDebugNode *debugPhysics;
+
 // returns the scene
 +(CCScene*) scene;
 
